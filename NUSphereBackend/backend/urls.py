@@ -16,9 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from backend import settings
 from cart.views import AddToCartView
+from django.conf.urls.static import static
+from listings.views import AddListingView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/cart', AddToCartView.as_view(), name='add-to-cart'),
+    path('api/listings', AddListingView.as_view(), name='add-listing'),
 ]
+
+#Dis is for security reasons so when i deploy i wont be using local files :D
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

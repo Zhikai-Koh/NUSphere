@@ -42,7 +42,7 @@ export function Outline() {
                 display: 'flex', 
                 flexDirection: 'column', 
                 backgroundColor: '#f0f0f0', 
-                minHeight: '100vh' }}>
+                }}>
 
                 <div style = {{ 
                     display: 'flex',
@@ -115,8 +115,6 @@ export function Outline() {
                     alignItems: 'start', 
                     padding: '0 20px 20px 20px',
                     backgroundColor: '#f0f0f0', 
-                    height: '100%',
-                    minHeight: '100vh' 
                     }}
                 >
                     <h1 style={{fontSize: '2em',marginBottom: '20px', color: '#333'}}>Categories</h1>
