@@ -8,7 +8,6 @@ import { NavigationBar } from './Navigation.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Outline />
     <NavigationBar />
   </StrictMode>,
 )
