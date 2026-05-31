@@ -97,7 +97,7 @@ if DATABASE_URL:
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    os.environ.get("FRONTEND_URL", "http://localhost:3000")
+    os.environ.get("FRONTEND_URL", "http://localhost:3000"),
     'nusphere-production-28af.up.railway.app',
     '.railway.app', 
     'localhost',
