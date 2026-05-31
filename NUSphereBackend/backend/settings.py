@@ -104,7 +104,19 @@ CORS_ALLOWED_ORIGINS = [
     '127.0.0.1',
 ]
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'nusphere-production-28af.up.railway.app',
+    '.railway.app',
+    'localhost',
+    '127.0.0.1',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'https://nusphere-production-28af.up.railway.app',
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://127.0.0.1:3000',
+]
 
 ROOT_URLCONF = 'backend.urls'
 
