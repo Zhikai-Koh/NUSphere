@@ -45,7 +45,7 @@ return (
             padding: '20px',
           }}>
 
-            {listings.map((listing) => (
+            {listings?.map((listing) => (
                 <div 
                   key={listing.id} 
                   style={{
