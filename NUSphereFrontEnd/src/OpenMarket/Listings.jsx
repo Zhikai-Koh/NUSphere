@@ -59,9 +59,9 @@ return (
                           gap: '10px'
                         }}>
                     <h4 style={{ margin: 0, fontSize: '20px', color: '#4b4747' }}>
-                        {listing.image && (
+                        {/* {listing.image && (
                             <img src={`${API_BASE_URL}${listing.image}`} alt={listing.item_name} style={{ width: '100%', height: 'auto', marginBottom: '10px' }} />
-                        )}
+                        )} */}
                         {listing.item_name}
                     </h4>
 
