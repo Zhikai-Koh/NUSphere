@@ -78,10 +78,15 @@ STATIC_URL = '/static/'
 # }
 
 #For Railway Deployment:
+database_url = os.environ.get('DATABASE_URL')
+
+if database_url and database_url.startswith('postgresql://'):
+    database_url = database_url.replace('postgresql://', 'postgres://', 1)
+
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=0,
+        default=database_url,
+        conn_max_age=600,
         ssl_require=True
     )
 }
