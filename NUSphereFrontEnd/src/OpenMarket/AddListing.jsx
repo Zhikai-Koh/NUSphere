@@ -55,7 +55,6 @@ export function AddListingForm() {
                 type="file" 
                 accept="image/*" 
                 onChange={(e) => setImageFile(e.target.files[0])} // Captures the single chosen file
-                required 
             />
 
             <button type="submit">Upload Listing</button>
