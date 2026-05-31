@@ -33,7 +33,7 @@ export function AddListingForm() {
             formData.append("image", imageFile);
         }
         try {
-            const response = await fetch(`${API_BASE_URL}/api/listings`, {
+            const response = await fetch(`${API_BASE_URL}/api/listings/`, {
                 method: "POST",
                 body: formData,
             });

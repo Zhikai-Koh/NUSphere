@@ -45,7 +45,7 @@ export function CartButton() {
 
   const fetchCartItems = async () => {
       try{
-      const response = await fetch(`${API_BASE_URL}/api/cart`);
+      const response = await fetch(`${API_BASE_URL}/api/cart/`);
           if (!response.ok) {
               throw new Error('Network response failure');
           }
@@ -73,7 +73,7 @@ export function CartButton() {
       return;
     }
     try {
-      const response = await fetch(`${API_BASE_URL}/api/cart`, {
+      const response = await fetch(`${API_BASE_URL}/api/cart/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

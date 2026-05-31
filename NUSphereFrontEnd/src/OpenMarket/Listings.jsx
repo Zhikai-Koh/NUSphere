@@ -8,7 +8,7 @@ export function Listings() {
 
     const fetchListings = async () => {
       try{
-      const response = await fetch(`${API_BASE_URL}/api/listings`);
+      const response = await fetch(`${API_BASE_URL}/api/listings/`);
           if (!response.ok) {
               throw new Error('Network response failure');
           }

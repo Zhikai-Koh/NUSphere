@@ -23,8 +23,8 @@ from listings.views import AddListingView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/cart', AddToCartView.as_view(), name='add-to-cart'),
-    path('api/listings', AddListingView.as_view(), name='add-listing'),
+    path('api/cart/', AddToCartView.as_view(), name='add-to-cart'),
+    path('api/listings/', AddListingView.as_view(), name='add-listing'),
 ]
 
 #Dis is for security reasons so when i deploy i wont be using local files :D
