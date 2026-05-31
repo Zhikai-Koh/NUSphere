@@ -30,9 +30,6 @@ SECRET_KEY = 'django-insecure-ydas29=6oyub0n-%sob&o^e)6!p8531$)!cn%=gg=*sr9esn(c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -95,15 +92,6 @@ if DATABASE_URL:
         "sslmode": "require",
     }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    os.environ.get("FRONTEND_URL", "http://localhost:3000"),
-    'nusphere-production-28af.up.railway.app',
-    '.railway.app', 
-    'localhost',
-    '127.0.0.1',
-]
-
 ALLOWED_HOSTS = [
     'nusphere-production-28af.up.railway.app',
     '.railway.app',
@@ -136,17 +124,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
