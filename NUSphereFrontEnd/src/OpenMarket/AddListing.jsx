@@ -1,4 +1,6 @@
 import { useState } from "react";
+import API_BASE_URL from "../config.js";
+
 
 function ListingCard({ listing }) {
         return (
@@ -32,7 +34,7 @@ export function AddListingForm() {
             formData.append("image", imageFile);
         }
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/listings", {
+            const response = await fetch(`${API_BASE_URL}/api/listings`, {
                 method: "POST",
                 body: formData,
             });

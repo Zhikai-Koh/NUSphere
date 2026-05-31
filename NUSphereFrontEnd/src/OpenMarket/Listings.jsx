@@ -1,4 +1,5 @@
 import {createContext, useState, useEffect} from "react";
+import API_BASE_URL from "../config.js";
 
 export function Listings() {
     const [listings, setListings] = useState([]);
@@ -7,7 +8,7 @@ export function Listings() {
 
     const fetchListings = async () => {
       try{
-      const response = await fetch('http://127.0.0.1:8000/api/listings');
+      const response = await fetch(`${API_BASE_URL}/api/listings`);
           if (!response.ok) {
               throw new Error('Network response failure');
           }
@@ -59,7 +60,7 @@ return (
                         }}>
                     <h4 style={{ margin: 0, fontSize: '20px', color: '#4b4747' }}>
                         {listing.image && (
-                            <img src={`http://127.0.0.1:8000${listing.image}`} alt={listing.item_name} style={{ width: '100%', height: 'auto', marginBottom: '10px' }} />
+                            <img src={`${API_BASE_URL}${listing.image}`} alt={listing.item_name} style={{ width: '100%', height: 'auto', marginBottom: '10px' }} />
                         )}
                         {listing.item_name}
                     </h4>
