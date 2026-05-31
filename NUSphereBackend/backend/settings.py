@@ -78,18 +78,22 @@ STATIC_URL = '/static/'
 # }
 
 #For Railway Deployment:
-database_url = os.environ.get('DATABASE_URL')
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-if database_url and database_url.startswith('postgresql://'):
-    database_url = database_url.replace('postgresql://', 'postgres://', 1)
+if DATABASE_URL and DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgres://", 1)
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=database_url,
-        conn_max_age=600,
-        ssl_require=True
+    "default": dj_database_url.config(
+        default=DATABASE_URL,
+        conn_max_age=0,
     )
 }
+
+if DATABASE_URL:
+    DATABASES["default"]["OPTIONS"] = {
+        "sslmode": "require",
+    }
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
