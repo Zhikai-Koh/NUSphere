@@ -50,6 +50,7 @@ export function NavigationBar() {
                     <Route path="add-listing" element={<AddListingForm />} />
                     <Route path="visit-own-store" element={<div> Own Store Placeholder :D</div>} />
                     <Route path="shops" element={<Outline />} />
+                    <Route path="/" element={<Outline />} />
                 </Routes>
                 <nav style = {{display: 'flex',
                 flexDirection: 'row',

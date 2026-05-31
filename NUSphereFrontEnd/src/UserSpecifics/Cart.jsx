@@ -1,5 +1,5 @@
 import { useState, createContext, useContext, useEffect} from 'react';
-import API_BASE_URL from "../config.js";
+import { API_BASE_URL } from "../config.js";
 
 
 function CartItems({ data, loading }) {

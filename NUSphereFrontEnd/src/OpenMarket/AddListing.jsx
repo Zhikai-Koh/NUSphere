@@ -1,6 +1,5 @@
 import { useState } from "react";
-import API_BASE_URL from "../config.js";
-
+import { API_BASE_URL } from "../config.js";
 
 function ListingCard({ listing }) {
         return (
