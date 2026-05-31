@@ -79,7 +79,11 @@ STATIC_URL = '/static/'
 
 #For Railway Deployment:
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=0,
+        ssl_require=False
+    )
 }
 
 CORS_ALLOWED_ORIGINS = [
