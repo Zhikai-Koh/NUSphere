@@ -51,11 +51,11 @@ export function AddListingForm() {
             <input type="text" placeholder="Item Name" value={item_name} onChange={(e) => setName(e.target.value)} required />
             <input type="number" placeholder="Price" value={item_price} onChange={(e) => setPrice(e.target.value)} required />
             <input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} required />
-            <input 
+            {/* <input 
                 type="file" 
                 accept="image/*" 
                 onChange={(e) => setImageFile(e.target.files[0])} // Captures the single chosen file
-            />
+            /> */}
 
             <button type="submit">Upload Listing</button>
         </form>
