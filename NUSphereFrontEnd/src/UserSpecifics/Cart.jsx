@@ -1,4 +1,6 @@
 import { useState, createContext, useContext, useEffect} from 'react';
+import { API_BASE_URL } from "../config.js";
+
 
 function CartItems({ data, loading }) {
     return (
@@ -43,7 +45,7 @@ export function CartButton() {
 
   const fetchCartItems = async () => {
       try{
-      const response = await fetch('http://127.0.0.1:8000/api/cart');
+      const response = await fetch(`${API_BASE_URL}/api/cart/`);
           if (!response.ok) {
               throw new Error('Network response failure');
           }
@@ -71,7 +73,7 @@ export function CartButton() {
       return;
     }
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/cart', {
+      const response = await fetch(`${API_BASE_URL}/api/cart/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

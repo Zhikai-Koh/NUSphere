@@ -1,12 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
-import { CartButton } from './Cart.jsx'
-import { Product } from './Product.jsx'
+import { CartButton } from './UserSpecifics/Cart.jsx'
+import { Product } from './UserSpecifics/Product.jsx'
 import { Outline } from './Outline.jsx'
+import { NavigationBar } from './Defaults/Navigation.jsx'
+import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Outline />
+    <NavigationBar />
   </StrictMode>,
 )
