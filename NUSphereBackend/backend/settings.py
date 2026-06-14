@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import dj_database_url
 import os
 from pathlib import Path
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -62,34 +61,33 @@ MIDDLEWARE = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-#For Local Use:
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'shopping_db',
-#         'USER': 'cart_admin',
-#         'PASSWORD': 'secure_pass123',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
-
-#For Railway Deployment:
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
-if DATABASE_URL and DATABASE_URL.startswith("postgresql://"):
-    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgres://", 1)
-
-DATABASES = {
-    "default": dj_database_url.config(
-        default=DATABASE_URL,
-        conn_max_age=0,
-    )
-}
-
 if DATABASE_URL:
-    DATABASES["default"]["OPTIONS"] = {
-        "sslmode": "require",
+    if DATABASE_URL and DATABASE_URL.startswith("postgresql://"):
+        DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgres://", 1)
+
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=0,
+        )
+    }
+
+    if DATABASE_URL:
+        DATABASES["default"]["OPTIONS"] = {
+            "sslmode": "require",
+        }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'shopping_db',
+            'USER': 'cart_admin',
+            'PASSWORD': 'secure_pass123',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
     }
 
 ALLOWED_HOSTS = [
