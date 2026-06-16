@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'cloudinary_storage',
+    'cloudinary',
     'cart',
     'listings',
 ]
@@ -60,6 +62,8 @@ MIDDLEWARE = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+## DATABASE RELATED SETTINGS
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
@@ -89,6 +93,18 @@ else:
             'PORT': '5432',
         }
     }
+
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+
+if CLOUDINARY_STORAGE['CLOUD_NAME'] and CLOUDINARY_STORAGE['API_KEY'] and CLOUDINARY_STORAGE['API_SECRET']:
+    #Make cloudinary the default file storage if all credentials are provided so that images are saved online.
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 ALLOWED_HOSTS = [
     'nusphere-production-28af.up.railway.app',

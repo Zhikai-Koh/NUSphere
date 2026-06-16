@@ -40,6 +40,10 @@ export function AddListingForm() {
 
             if (response.ok) {
                 alert("Listing added locally successfully!");
+            }else {
+                const errorData = await response.json();
+                console.error("Django Validation Errors:", errorData);
+                alert(`Failed: ${JSON.stringify(errorData)}`);
             }
         } catch (error) {
             console.error("Error saving listing:", error);
@@ -51,11 +55,11 @@ export function AddListingForm() {
             <input type="text" placeholder="Item Name" value={item_name} onChange={(e) => setName(e.target.value)} required />
             <input type="number" placeholder="Price" value={item_price} onChange={(e) => setPrice(e.target.value)} required />
             <input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} required />
-            {/* <input 
+            <input 
                 type="file" 
                 accept="image/*" 
                 onChange={(e) => setImageFile(e.target.files[0])} // Captures the single chosen file
-            /> */}
+            />
 
             <button type="submit">Upload Listing</button>
         </form>
