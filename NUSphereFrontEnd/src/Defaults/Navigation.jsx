@@ -2,8 +2,10 @@ import {createContext, useState, useEffect, useRef} from "react";
 import { BrowserRouter, Routes, Route, Link, Outlet, NavLink} from 'react-router-dom';
 import {Outline} from "../Outline.jsx";
 import {Listings} from "../OpenMarket/Listings.jsx";
+import {LoginForm} from "../LoginPage/Login.jsx";
 
 import {AddListingForm} from "../OpenMarket/AddListing.jsx";
+import {RegistrationForm} from "../LoginPage/Registration.jsx";
 
 function NavigateTo({page, buttonDisplay, setActivePage}) {
     
@@ -51,6 +53,8 @@ export function NavigationBar() {
                     <Route path="visit-own-store" element={<div> Own Store Placeholder :D</div>} />
                     <Route path="shops" element={<Outline />} />
                     <Route path="/" element={<Outline />} />
+                    <Route path="/login" element={<LoginForm />} />
+                    <Route path="/register" element={<RegistrationForm />} />
                 </Routes>
                 <nav style = {{display: 'flex',
                 flexDirection: 'row',

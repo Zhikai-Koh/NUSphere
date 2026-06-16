@@ -1,0 +1,27 @@
+# serializers.py
+from django.contrib.auth.models import User
+from rest_framework import serializers
+
+class RegisterSerializer(serializers.ModelSerializer):
+    # Ensure the password fields are write-only so they don't get returned in JSON responses
+    password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+    password_confirm = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+
+    class Meta:
+        model = User
+        fields = ('username', 'password', 'password_confirm', 'email')
+
+    def validate(self, inputs):
+        # Double check that both passwords entered match perfectly
+        if inputs['password'] != inputs['password_confirm']:
+            raise serializers.ValidationError({"password": "Password fields must match."})
+        return inputs
+
+    def create(self, validated_data):
+        # Create the user using Django's special create_user method to handle password hashing
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data.get('email', ''),
+            password=validated_data['password']
+        )
+        return user

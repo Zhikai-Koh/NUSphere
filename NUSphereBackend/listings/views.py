@@ -4,7 +4,13 @@ from rest_framework import status
 from .models import Listing
 from .serializers import ListingSerializer
 
+# For login system
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
 class AddListingView(APIView):
+    #This allows logged in people to add listings, but anyone can view listings :o
+    permission_classes = [IsAuthenticatedOrReadOnly] 
+
     def post(self, request):
         serializer = ListingSerializer(data=request.data)
         if serializer.is_valid():

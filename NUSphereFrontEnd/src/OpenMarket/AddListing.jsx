@@ -21,6 +21,8 @@ export function AddListingForm() {
     const [category, setCategory] = useState("");
     const [imageFile, setImageFile] = useState(null);
 
+    const logInToken = localStorage.getItem('access_token');
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -36,6 +38,9 @@ export function AddListingForm() {
             const response = await fetch(`${API_BASE_URL}/api/listings/`, {
                 method: "POST",
                 body: formData,
+                headers: {
+                    'Authorization': `Bearer ${logInToken}`,
+                },
             });
 
             if (response.ok) {

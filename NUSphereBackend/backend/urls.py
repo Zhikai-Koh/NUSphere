@@ -21,10 +21,23 @@ from cart.views import AddToCartView
 from django.conf.urls.static import static
 from listings.views import AddListingView
 
+from login.views import RegisterView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/cart/', AddToCartView.as_view(), name='add-to-cart'),
     path('api/listings/', AddListingView.as_view(), name='add-listing'),
+
+    # The registration route, React will POST user details here to create a new account
+    path('api/auth/register/', RegisterView.as_view(), name='auth_register'),
+    # The login route, React will POST credentials here to get a token
+    path('api/auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # The refresh route, Used to renew expired access tokens
+    path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 #Dis is for security reasons so when i deploy i wont be using local files :D
