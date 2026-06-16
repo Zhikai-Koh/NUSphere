@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny # Anyone should be able to sign 
 from .serializers import RegisterSerializer
 
 class RegisterView(APIView):
-    # Ensure this view is wide open to the public
+    # Ensure this view is accessible even if not logged in
     permission_classes = [AllowAny]
 
     def post(self, request):

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
+import { API_BASE_URL } from "../config.js";
+
 
 export function RegistrationForm() {
     const [username, setUsername] = useState("");
@@ -13,7 +15,7 @@ export function RegistrationForm() {
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://127.0.0.1:8000/api/auth/register/', {
+            await axios.post(`${API_BASE_URL}/api/auth/register/`, {
                 username: username,
                 email: email,
                 password: password,
