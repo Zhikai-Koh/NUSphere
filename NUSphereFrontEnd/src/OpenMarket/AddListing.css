@@ -1,0 +1,24 @@
+.add-listing-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background-color: var(--surface);
+    color: var(--text-main);
+    border-radius: 8px;
+    max-width: 400px;
+}
+
+.add-listing-form input {
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 4px;
+}
+
+.add-listing-form button {
+    width: 100%;
+}
+
+.add-listing-form button:hover {
+    background-color: #0056b3;
+}
