@@ -1,12 +1,14 @@
 # serializers.py
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from .models import Profile
 
 class RegisterSerializer(serializers.ModelSerializer):
     # Ensure the password fields are write-only so they don't get returned in JSON responses for security reasons so that da hashed user passwords not sent back to frontend
     #instead oni the id username and email will be sent back as response
     password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
     password_confirm = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+    
 
     class Meta:
         model = User
@@ -26,3 +28,11 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+    
+class ProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+    email = serializers.CharField(source='user.email', read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = ['username', 'email', 'profile_picture']

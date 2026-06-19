@@ -20,7 +20,9 @@ from backend import settings
 from cart.views import CartAPIView
 from django.conf.urls.static import static
 from listings.views import AddListingView
+from login.views import LogoutView
 
+from login.views import ProfileView
 from login.views import RegisterView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -38,7 +40,10 @@ urlpatterns = [
     path('api/auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # The refresh route, Used to renew expired access tokens
     path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    
+    # The logout route, React will POST the refresh token here to blacklist it
+    path('api/auth/logout/', LogoutView.as_view(), name='auth_logout'),
+    path('api/auth/profile/', ProfileView.as_view(), name='auth_profile')
+
 ]
 
 #Dis is for security reasons so when i deploy i wont be using local files :D

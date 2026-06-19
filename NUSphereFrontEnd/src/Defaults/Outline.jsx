@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import {createContext, useState, useEffect, useRef} from "react";
 import { Link } from "react-router-dom";
 import nusphereLogo from "../assets/NUSphereLogo.png";
 import nusphereName from "../assets/NUSphereName.png";
@@ -10,6 +10,9 @@ import notificationIcon from "../assets/NotificationIcon.jpg";
 import profileIcon from "../assets/ProfilePhotoIcon.png";
 import searchIcon from "../assets/SearchIcon.png";
 import "./Outline.css";
+import { ProfileDropdown } from "../LoginPage/ProfileDropDown";
+import { API_BASE_URL } from "../config.js";
+import axios from "axios";
 
 const categories = [
     { name: 'Electronics', image: electronicsImage },
@@ -28,6 +31,29 @@ function CategoryCards({categoryName, categoryImage}) {
 
 export function Outline() {
     const searchBar = useRef()
+    const [currentUser, setCurrentUser] = useState(null);
+    const token = localStorage.getItem('access_token'); 
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+            const response = await axios.get(`${API_BASE_URL}/api/auth/profile/`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+                const userData = await response.data;
+                setCurrentUser(userData);
+            } catch (error) {
+                console.error("Failed to fetch profile", error);
+            }
+        };
+
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            fetchProfile();
+        }
+    }, []);
+
+
     return(
         <div className="outline-page">
         <section
@@ -38,8 +64,7 @@ export function Outline() {
                 
                 <div className="banner-brand-row">
                 
-                    <img className="profile-icon" src={profileIcon} alt="Profile" />
-                    <img className="nusphere-logo" src={nusphereLogo} alt="NUSphere Logo" />
+                    <ProfileDropdown user={currentUser} style={{ width: '10%', height: 'auto', marginRight: '20px' }}/>                    <img className="nusphere-logo" src={nusphereLogo} alt="NUSphere Logo" />
                     <img className="nusphere-name" src={nusphereName} alt="NUSphere Name" />
 
                     <Link to="/cart" className="cart-link">

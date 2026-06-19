@@ -2,8 +2,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny # Anyone should be able to sign up!
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import RegisterSerializer
+from .serializers import ProfileSerializer
+from .models import Profile
 
 class RegisterView(APIView):
     # Ensure this view is accessible even if not logged in
@@ -15,3 +18,26 @@ class RegisterView(APIView):
             serializer.save()
             return Response({"message": "User registered successfully!"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh"]
+            token = RefreshToken(refresh_token)
+            
+            token.blacklist()
+            
+            return Response({"message": "Successfully logged out."}, status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response({"error": "Invalid token or request."}, status=status.HTTP_400_BAD_REQUEST)

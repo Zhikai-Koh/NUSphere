@@ -1,13 +1,14 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from "../config.js";
+
 
 export const CartContext = createContext();
 
 export function CartProvider({ children }) {
     const [cartItems, setCartItems] = useState([]);
-    const token = localStorage.getItem('access_token'); // Get user session key
+    const token = localStorage.getItem('access_token'); 
 
-    // Automatically load the database cart data the second the user loads the application
     useEffect(() => {
         if (token) {
             fetchCart();
@@ -18,7 +19,7 @@ export function CartProvider({ children }) {
 
     const fetchCart = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/cart/', {
+            const response = await axios.get(`${API_BASE_URL}/api/cart/`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setCartItems(response.data.items); // Set state to your nested items array
