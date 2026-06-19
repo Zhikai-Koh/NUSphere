@@ -1,8 +1,11 @@
 import {createContext, useState, useEffect, useRef} from "react";
-import { BrowserRouter, Routes, Route, Link, Outlet, NavLink} from 'react-router-dom';
-import {Outline} from "../Outline.jsx";
+import { BrowserRouter, Routes, Route, Link, Outlet, NavLink, Navigate} from 'react-router-dom';
+import {Outline} from "./Outline.jsx";
 import {Listings} from "../OpenMarket/Listings.jsx";
 import {LoginForm} from "../LoginPage/Login.jsx";
+
+import {CartProvider} from "../UserSpecifics/CartContext.jsx";
+import {Cart} from "../UserSpecifics/CartItems.jsx";
 
 import {AddListingForm} from "../OpenMarket/AddListing.jsx";
 import {RegistrationForm} from "../LoginPage/Registration.jsx";
@@ -48,13 +51,15 @@ export function NavigationBar() {
         <BrowserRouter>
             <div style ={{display: 'flex', flexDirection: 'column',minHeight: '100vh', backgroundColor: '#f0f0f0'}}>
                 <Routes>
-                    <Route path="open-market" element={<div style = {{display: 'flex', flexDirection: 'column'}}><Outline /> <Listings /></div>} />
+                    <Route path="open-market" element={<CartProvider style = {{display: 'flex', flexDirection: 'column'}}><Outline /> <Listings /></CartProvider>} />
                     <Route path="add-listing" element={<AddListingForm />} />
                     <Route path="visit-own-store" element={<div> Own Store Placeholder :D</div>} />
                     <Route path="shops" element={<Outline />} />
-                    <Route path="/" element={<Outline />} />
+                    <Route path="/" element={<Navigate to="open-market"/>} />
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/register" element={<RegistrationForm />} />
+                    <Route path="/cart" element={<CartProvider><Cart /></CartProvider>} />
+        
                 </Routes>
                 <nav style = {{display: 'flex',
                 flexDirection: 'row',

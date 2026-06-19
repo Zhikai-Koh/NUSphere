@@ -1,12 +1,13 @@
 import {createContext, useState, useEffect, useRef} from "react";
-import nusphereLogo from "./assets/NUSphereLogo.png";
-import nusphereName from "./assets/NUSphereName.png";
-import electronicsImage from "./assets/Categories/Electronics.jpg";
-import clothingImage from "./assets/Categories/Clothes.jpg";
-import cartIcon from "./assets/CartIcon.png";
-import notificationIcon from "./assets/NotificationIcon.jpg";
-import profileIcon from "./assets/ProfilePhotoIcon.png";
-import searchIcon from "./assets/SearchIcon.png";
+import { Link } from "react-router-dom";
+import nusphereLogo from "../assets/NUSphereLogo.png";
+import nusphereName from "../assets/NUSphereName.png";
+import electronicsImage from "../assets/Categories/Electronics.jpg";
+import clothingImage from "../assets/Categories/Clothes.jpg";
+import cartIcon from "../assets/CartIcon.png";
+import notificationIcon from "../assets/NotificationIcon.jpg";
+import profileIcon from "../assets/ProfilePhotoIcon.png";
+import searchIcon from "../assets/SearchIcon.png";
 
 const categories = [
     { name: 'Electronics', image: electronicsImage },
@@ -58,7 +59,7 @@ export function Outline() {
                     boxSizing: 'border-box',
                     }}
                 >
-                    <a href="#product" style = {{
+                    <div style = {{
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",
@@ -70,9 +71,16 @@ export function Outline() {
                         <img src={profileIcon} alt="Profile Icon" style={{ width: '10%', height: 'auto', marginRight: '20px' }}/>
                         <img src={nusphereLogo} alt="NUSphere Logo" style={{ width: '20%', height: 'auto' }}/>
                         <img src={nusphereName} alt="NUSphere Name" style={{ width: '70%', height: 'auto'}}/>
-                        <img src={cartIcon} alt="Cart Icon" style={{ width: '10%', height: 'auto', marginLeft: '20px' }}/>
+                        <Link to="/cart" style={{
+                            display: 'flex',
+                            flexShrink: 0,
+                            width: '10%',
+                            marginLeft: '20px',
+                        }}>
+                            <img src={cartIcon} alt="Cart Icon" style={{ width: '100%', height: 'auto'}} />
+                        </Link>
                         <img src={notificationIcon} alt="Notification Icon" style={{ width: '10%', height: 'auto', marginLeft: '20px' }}/>
-                    </a>
+                    </div>
                     <form onClick = {() => searchBar.current.focus()}
                     
                     style = {{

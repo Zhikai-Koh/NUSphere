@@ -19,6 +19,8 @@ export function AddListingForm() {
     const [item_name, setName] = useState("");
     const [item_price, setPrice] = useState("");
     const [category, setCategory] = useState("");
+    const [item_quantity, setQuantity] = useState("");
+    const [item_description, setDescription] = useState("");
     const [imageFile, setImageFile] = useState(null);
 
     const logInToken = localStorage.getItem('access_token');
@@ -30,6 +32,8 @@ export function AddListingForm() {
         formData.append("item_name", item_name);
         formData.append("item_price", item_price);
         formData.append("category", '1');
+        formData.append("item_quantity", item_quantity);
+        formData.append("item_description", item_description);
 
         if (imageFile) {
             formData.append("image", imageFile);
@@ -60,6 +64,8 @@ export function AddListingForm() {
             <input type="text" placeholder="Item Name" value={item_name} onChange={(e) => setName(e.target.value)} required />
             <input type="number" placeholder="Price" value={item_price} onChange={(e) => setPrice(e.target.value)} required />
             <input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} required />
+            <input type="number" placeholder="Quantity" value={item_quantity} onChange={(e) => setQuantity(e.target.value)} required />
+            <textarea placeholder="Description" value={item_description} onChange={(e) => setDescription(e.target.value)} />
             <input 
                 type="file" 
                 accept="image/*" 

@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from backend import settings
-from cart.views import AddToCartView
+from cart.views import CartAPIView
 from django.conf.urls.static import static
 from listings.views import AddListingView
 
@@ -29,7 +29,7 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/cart/', AddToCartView.as_view(), name='add-to-cart'),
+    path('api/cart/', CartAPIView.as_view(), name='cart-detail'),
     path('api/listings/', AddListingView.as_view(), name='add-listing'),
 
     # The registration route, React will POST user details here to create a new account
@@ -38,6 +38,7 @@ urlpatterns = [
     path('api/auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # The refresh route, Used to renew expired access tokens
     path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
 ]
 
 #Dis is for security reasons so when i deploy i wont be using local files :D
