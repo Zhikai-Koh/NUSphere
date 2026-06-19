@@ -1,0 +1,50 @@
+.listing-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: box-shadow 0.3s ease;
+}
+
+.listing-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
+
+.listing-image {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.add-listing-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background-color: #fff;
+    color: #333;
+    border-radius: 8px;
+    max-width: 400px;
+}
+
+.add-listing-form input {
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 4px;
+}
+
+.add-listing-form button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #ccc;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-listing-form button:hover {
+    background-color: #0056b3;
+}

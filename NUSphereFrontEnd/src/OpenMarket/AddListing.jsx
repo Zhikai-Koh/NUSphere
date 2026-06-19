@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { API_BASE_URL } from "../config.js";
+import './Listings.css';
 
-function ListingCard({ listing }) {
+export function ListingCard({ listing }) {
         return (
-        <div style={{ border: '1px solid #ccc', padding: '15px', borderRadius: '8px' }}>
+        <div className="listing-card">
             <img 
                 src={listing.image} 
                 alt={listing.title} 
-                style={{ width: '100%', maxHeight: '200px', objectFit: 'cover' }} 
+                className="listing-image"
             />
             <h3>{listing.title}</h3>
             <p>${listing.price}</p>
@@ -60,7 +61,7 @@ export function AddListingForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px', padding: '20px', color: 'white' }}>
+        <form onSubmit={handleSubmit} className="add-listing-form">
             <input type="text" placeholder="Item Name" value={item_name} onChange={(e) => setName(e.target.value)} required />
             <input type="number" placeholder="Price" value={item_price} onChange={(e) => setPrice(e.target.value)} required />
             <input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} required />
