@@ -1,35 +1,29 @@
-import {createContext, useState, useEffect, useRef} from "react";
-import { BrowserRouter, Routes, Route, Link, Outlet, NavLink, Navigate} from 'react-router-dom';
-import {Outline} from "./Outline.jsx";
-import {Listings} from "../OpenMarket/Listings.jsx";
-import {LoginForm} from "../LoginPage/Login.jsx";
+import { useState } from "react";
+import { BrowserRouter, Routes, Route, NavLink, Navigate} from 'react-router-dom';
+import { Outline } from "./Outline.jsx";
+import { Listings } from "../OpenMarket/Listings.jsx";
+import { LoginForm } from "../LoginPage/Login.jsx";
 
-import {CartProvider} from "../UserSpecifics/CartContext.jsx";
-import {Cart} from "../UserSpecifics/CartItems.jsx";
+import { CartProvider } from "../UserSpecifics/CartContext.jsx";
+import { Cart } from "../UserSpecifics/CartItems.jsx";
 
-import {AddListingForm} from "../OpenMarket/AddListing.jsx";
-import {RegistrationForm} from "../LoginPage/Registration.jsx";
+import { AddListingForm } from "../OpenMarket/AddListing.jsx";
+import { RegistrationForm } from "../LoginPage/Registration.jsx";
+
+import "./Navigation.css";
 
 function NavigateTo({page, buttonDisplay, setActivePage}) {
     
         return(
             <NavLink to={page}
-            style ={({isActive}) => ({
-                display: 'flex',
-                flexDirection: 'column',
-                color: isActive ? 'white' : 'black',
-                backgroundColor:  isActive ? '#555' : 'white',
-                padding: '10px 20px',
-                borderRadius: '120px',
-                border: '1px solid black',
-                cursor: 'pointer',
-                width: '250px',
-            })}
+            className ={({isActive}) => 
+                isActive ? "bottom-nav-link active" : "bottom-nav-link"
+            }
             onClick={() => setActivePage(page)}
             >
                 {buttonDisplay}
             </NavLink>
-        )
+        );
     }
 
 export function NavigationBar() {
@@ -49,9 +43,9 @@ export function NavigationBar() {
 
     return(
         <BrowserRouter>
-            <div style ={{display: 'flex', flexDirection: 'column',minHeight: '100vh', backgroundColor: '#f0f0f0'}}>
+            <div className="app-shell">
                 <Routes>
-                    <Route path="open-market" element={<CartProvider style = {{display: 'flex', flexDirection: 'column'}}><Outline /> <Listings /></CartProvider>} />
+                    <Route path="open-market" element={<CartProvider><Outline /> <Listings /></CartProvider>} />
                     <Route path="add-listing" element={<AddListingForm />} />
                     <Route path="visit-own-store" element={<div> Own Store Placeholder :D</div>} />
                     <Route path="shops" element={<Outline />} />
@@ -59,25 +53,12 @@ export function NavigationBar() {
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/register" element={<RegistrationForm />} />
                     <Route path="/cart" element={<CartProvider><Cart /></CartProvider>} />
-        
                 </Routes>
-                <nav style = {{display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                alignItems: 'center',
-                backgroundColor: 'white',
-                color: 'black',
-                padding: '10px 0',
-
-                position: 'fixed',
-                bottom: 0,
-                left: 0,
-                width: '100%',
-                }}>
+                
+                <nav className="bottom-nav">
                     {activePageName === 'open-market' || activePageName === 'add-listing' ? openMarket : shops}
                 </nav>
             </div>
         </BrowserRouter>
-
     )
 }

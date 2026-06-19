@@ -1,25 +1,47 @@
-import { useState, createContext, useContext, useEffect} from 'react';
+import { useContext } from 'react';
 import { API_BASE_URL } from "../config.js";
 import { CartContext } from './CartContext.jsx';
+import './CartItems.css';
 
 
 function CartItems({ data }) {
-    return (
-          data.length === 0 ? <h2 style = {{ margin: '20px', fontSize: '48px', color: 'black' }}>Your cart is empty</h2> :
-        <>
-          <h2 style={{ margin: '20px', fontSize: '48px', color: 'black' }}>Cart Items</h2>
-          <ul style={{ listStyleType: 'none', padding: 0 }}>
-              {data.map((cartItem) => (
-                  <li key={cartItem.id} style={{ display: 'flex', flexDirection: 'row', marginBottom: '20px', fontSize: '24px', color: 'black' }}>
-                      {cartItem.product_details.image && (
-                          <img src={`${API_BASE_URL}${cartItem.product_details.image}`} alt={cartItem.product_details.item_name} style={{ width: '100px', height: 'auto', marginBottom: '10px' }} />
-                      )}
-                      {cartItem.product_details.item_name} - Quantity: {cartItem.quantity} - Price: ${cartItem.product_details.item_price}
-                  </li>
-              ))}
-          </ul>
-        </>
-    );
+  const hasItems = Array.isArray(data) && data.length > 0;
+
+  if (!hasItems) {
+    return null;
+  }
+
+  return (
+    <section className="cart-page">
+      <div className="cart-header">
+        <h2>Cart Items</h2>
+        <span>{data.length} item{data.length === 1 ? "" : "s"}</span>
+      </div>
+
+        <ul className="cart-list">
+            {data.map((cartItem) => (
+                <li key={cartItem.id} className="cart-item">
+                    {cartItem.product_details.image && (
+                        <img 
+                        className="cart-item-image"
+                        src={`${API_BASE_URL}${cartItem.product_details.image}`}
+                        alt={cartItem.product_details.item_name}
+                        />
+                    )}
+
+                    <div className="cart-item-details">
+                      <h3>{cartItem.product_details.item_name}</h3>
+                      <p>Quantity: {cartItem.quantity}</p>
+                    </div>
+
+                    <div className="cart-item-price">
+                      ${parseFloat(cartItem.product_details.item_price).toFixed(2)}
+                    </div>
+                </li>
+            ))}
+        </ul>
+    </section>
+  );
 }
 
 export function Cart() {
