@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import './Dropdown.css';
+import './DropDown.css';
 import profileIcon from "../assets/ProfilePhotoIcon.png";
 import { API_BASE_URL } from "../config.js";
 
