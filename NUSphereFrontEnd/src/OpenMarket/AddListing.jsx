@@ -29,6 +29,11 @@ export function AddListingForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (category === "") {
+            alert("Please select a category.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("item_name", item_name);
         formData.append("item_price", item_price);
@@ -72,6 +77,9 @@ export function AddListingForm() {
                 <option value="Academics">Academics</option>
                 <option value="Dorm Living">Dorm Living</option>
                 <option value="Services & Collaboration">Services & Collaboration</option>
+                <option value="Food">Food</option>
+                <option value="Others">Others</option>
+
             </select>
             <input type="number" placeholder="Quantity" value={item_quantity} onChange={(e) => setQuantity(e.target.value)} required />
             <textarea placeholder="Description" value={item_description} onChange={(e) => setDescription(e.target.value)} />
