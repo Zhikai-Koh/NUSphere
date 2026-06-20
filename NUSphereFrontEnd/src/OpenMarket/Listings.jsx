@@ -1,6 +1,7 @@
 import {useContext, createContext, useState, useEffect} from "react";
 import { API_BASE_URL } from "../config.js";
 import {CartContext} from "../UserSpecifics/CartContext.jsx";
+import "./Listings.css";
 
 export function Listings() {
     const [listings, setListings] = useState([]);
@@ -30,71 +31,41 @@ export function Listings() {
         fetchListings();
     }, []);
 
-return (
-    !loadSuccess ? listings :
-      loading ? <p>Loading listings...</p> :
-          listings.length === 0 ? <h2>No listings available</h2> :
-            <>
-                <div style={{
-                    display: 'grid',
-                    backgroundColor: '#f0f0f0',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-                    gap: '20px',
-                    width: '100%',
-                    boxSizing: 'border-box',
-                    padding: '20px',
-                }}>
+    return (
+        !loadSuccess ? listings :
+        loading ? <p>Loading listings...</p> :
+        listings.length === 0 ? <h2>No listings available</h2> :
+        <div className="listings-grid">
+            {listings?.map((listing) => (
+                <div key={listing.id} className="listing-card">
 
-                    {listings?.map((listing) => (
-                        <div key={listing.id} 
-                        style={{
-                                backgroundColor: '#f9f9f9',
-                                border: '1px solid #e0e0e0', 
-                                borderRadius: '10px',
-                                padding: '20px',
-                                boxSizing: 'border-box',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '10px'
-                                }}>
+                    {listing.image && (
+                        <img src={`${API_BASE_URL}${listing.image}`} 
+                        alt={listing.item_name}
+                        className="listing-image"
+                        />
+                    )}
 
-                            <h4 style={{ margin: 0, fontSize: '20px', color: '#4b4747' }}>
-                                {listing.image && (
-                                    <img src={`${API_BASE_URL}${listing.image}`} alt={listing.item_name} style={{ width: '100%', height: 'auto', marginBottom: '10px' }} />
-                                )}
-                                {listing.item_name}
-                            </h4>
+                    <h4 className="card-title">
+                        {listing.item_name}
+                    </h4>
 
-                            <div style={{ color: '#666', fontSize: '14px' }}>
-                                Quantity: <strong style={{ color: '#000' }}>{listing.item_quantity}</strong>
-                            </div>
-                            
-                            <div style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'center'
-                            }}>
-                                <button onClick={() => {
-                                    handleAddToCart(listing.id, 1);
-                                }}>
-                                    Add to Cart
-                                </button>
-                                <div style={{ 
-                                    fontSize: '18px', 
-                                    fontWeight: 'bold', 
-                                    color: '#2e7d32', 
-                                    marginTop: 'auto',
-                                    paddingTop: '10px',
-                                    textAlign: 'right',
-                                    paddingTop: '20px'
-                                }}>
-                                    ${parseFloat(listing.item_price).toFixed(2)}
-                                </div>
-                            </div>
+                    <div className="card-quantity">
+                        Quantity: <strong>{listing.item_quantity}</strong>
+                    </div>
+                    
+                    <div className="card-footer">
+                        <button onClick={() => {
+                            handleAddToCart(listing.id, 1);
+                        }}>
+                            Add to Cart
+                        </button>
+                        <div className="card-price">
+                            ${parseFloat(listing.item_price).toFixed(2)}
                         </div>
-                    ))}
+                    </div>
                 </div>
-            </>
+            ))}
+        </div>       
     );
 }
