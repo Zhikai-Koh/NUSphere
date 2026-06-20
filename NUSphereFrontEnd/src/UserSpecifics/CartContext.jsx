@@ -13,7 +13,7 @@ export function CartProvider({ children }) {
         if (token) {
             fetchCart();
         } else {
-            setCartItems([]); // Clear local UI cart if user logs out
+            setCartItems([]); // Clear cart if user logs out
         }
     }, [token]);
 
@@ -22,7 +22,7 @@ export function CartProvider({ children }) {
             const response = await axios.get(`${API_BASE_URL}/api/cart/`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            setCartItems(response.data.items); // Set state to your nested items array
+            setCartItems(response.data.items);
         } catch (error) {
             console.error("Could not load database cart data:", error);
         }
@@ -41,14 +41,32 @@ export function CartProvider({ children }) {
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            setCartItems(response.data.items); // React UI instantly updates!
+            setCartItems(response.data.items);
+            alert("Item Successfully Added to Cart")
         } catch (error) {
             console.error("Add item transaction failed:", error);
         }
     };
 
+    const handleRemoveFromCart = async (product_id) => {
+        if (!token) {
+            alert("Please log in to remove items from your cart!");
+            return;
+        }
+
+        try {
+            const response = await axios.delete(`${API_BASE_URL}/api/cart/`,{
+                headers: { Authorization: `Bearer ${token}` },
+                        data: {product_id: product_id}
+            });
+            setCartItems(response.data.items);
+        } catch (error) {
+            console.error("Remove item transaction failed:", error);
+        }
+    };
+
     return (
-        <CartContext.Provider value={{ cartItems, handleAddToCart, fetchCart }}>
+        <CartContext.Provider value={{ cartItems, handleAddToCart, fetchCart, handleRemoveFromCart}}>
             {children}
         </CartContext.Provider>
     );

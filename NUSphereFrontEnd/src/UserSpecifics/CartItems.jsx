@@ -6,6 +6,7 @@ import './CartItems.css';
 
 function CartItems({ data }) {
   const hasItems = Array.isArray(data) && data.length > 0;
+  const { handleRemoveFromCart } = useContext(CartContext);
 
   if (!hasItems) {
     return null;
@@ -36,6 +37,10 @@ function CartItems({ data }) {
 
                     <div className="cart-item-price">
                       ${parseFloat(cartItem.product_details.item_price).toFixed(2)}
+                    </div>
+
+                    <div className="cart-item-actions">
+                      <button onClick={() => handleRemoveFromCart(cartItem.product_details.id)}>Remove</button>
                     </div>
                 </li>
             ))}
