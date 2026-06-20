@@ -45,7 +45,7 @@ export function NavigationBar() {
         <BrowserRouter>
             <div className="app-shell">
                 <Routes>
-                    <Route path="open-market" element={<CartProvider><Outline /> <Listings /></CartProvider>} />
+                    <Route path="open-market" element={<CartProvider><Outline><Listings /></Outline></CartProvider>} />
                     <Route path="add-listing" element={<AddListingForm />} />
                     <Route path="visit-own-store" element={<div> Own Store Placeholder :D</div>} />
                     <Route path="shops" element={<Outline />} />

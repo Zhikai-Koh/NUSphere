@@ -84,6 +84,24 @@
     gap: 14px;
 }
 
+.main-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: 250px 1fr;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.categories-sidebar {
+    background-color: var(--surface, #ffffff);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border, #e0e0e0);
+    top: 20px;
+}
+
 .categories-section {
     max-width: 1120px;
     width: 100%;
@@ -115,6 +133,10 @@
     font-weight: 650;
 }
 
+.page-content {
+    min-width: 0;
+}
+
 @media (max-width: 640px) {
   .main-banner {
     padding: 18px 14px;
@@ -126,20 +148,28 @@
   }
 
   .profile-icon,
-  .header-icon,
-  .icon-link {
+  .notification-icon,
+  .cart-link {
     width: 34px;
   }
 
-  .brand-logo {
+  .nusphere-logo {
     width: 52px;
   }
 
-  .brand-name {
+  .nusphere-name {
     max-height: 44px;
   }
 
-  .category-section {
+  .main-content-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .categories-sidebar {
+    position: static;
+  }
+
+  .categories-section {
     padding-inline: 14px;
   }
 

@@ -4,6 +4,11 @@
     border-radius: 8px;
     background-color: var(--surface);
     transition: box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .listing-card:hover {
@@ -16,4 +21,45 @@
     max-height: 200px;
     object-fit: cover;
     border-radius: 4px;
+}
+
+.listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #7e8b93;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 15px;
+}
+
+.card-price {
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #2e7d32;
+}
+
+.card-footer button {
+    background-color: var(--text-main, #1a3644);
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+}
+
+.card-footer button:hover {
+    opacity: 0.85;
 }
