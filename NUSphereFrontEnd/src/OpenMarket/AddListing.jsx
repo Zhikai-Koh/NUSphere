@@ -32,7 +32,7 @@ export function AddListingForm() {
         const formData = new FormData();
         formData.append("item_name", item_name);
         formData.append("item_price", item_price);
-        formData.append("category", '1');
+        formData.append("category", category);
         formData.append("item_quantity", item_quantity);
         formData.append("item_description", item_description);
 
@@ -64,15 +64,22 @@ export function AddListingForm() {
         <form onSubmit={handleSubmit} className="add-listing-form">
             <input type="text" placeholder="Item Name" value={item_name} onChange={(e) => setName(e.target.value)} required />
             <input type="number" placeholder="Price" value={item_price} onChange={(e) => setPrice(e.target.value)} required />
-            <input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} required />
+            <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+                <option value="">Select Category</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Furnitures">Furnitures</option>
+                <option value="Academics">Academics</option>
+                <option value="Dorm Living">Dorm Living</option>
+                <option value="Services & Collaboration">Services & Collaboration</option>
+            </select>
             <input type="number" placeholder="Quantity" value={item_quantity} onChange={(e) => setQuantity(e.target.value)} required />
             <textarea placeholder="Description" value={item_description} onChange={(e) => setDescription(e.target.value)} />
             <input 
                 type="file" 
                 accept="image/*" 
-                onChange={(e) => setImageFile(e.target.files[0])} // Captures the single chosen file
+                onChange={(e) => setImageFile(e.target.files[0])}
             />
-
             <button type="submit">Upload Listing</button>
         </form>
     );

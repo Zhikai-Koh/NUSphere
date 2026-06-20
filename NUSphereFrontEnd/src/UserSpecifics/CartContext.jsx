@@ -35,7 +35,7 @@ export function CartProvider({ children }) {
         }
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/cart/', {
+            const response = await axios.post(`${API_BASE_URL}/api/cart/`, {
                 product_id: productId,
                 quantity: qty
             }, {

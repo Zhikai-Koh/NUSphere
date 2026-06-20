@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Listing
+from .models import Listing, Categories
 from .serializers import ListingSerializer
 
 # For login system
@@ -12,12 +12,20 @@ class AddListingView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly] 
 
     def post(self, request):
-        serializer = ListingSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+        category = Categories.objects.get(name=request.data.get("category"))
+
+        listing, created = Listing.objects.get_or_create(
+            item_name=request.data.get("item_name"),
+            item_price=request.data.get("item_price"),
+            category=category,
+            item_quantity=request.data.get("item_quantity"),
+            item_description=request.data.get("item_description"),
+            image=request.FILES.get("image")
+        )
+        listing.save()
+        serializer = ListingSerializer(listing)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     def get(self, request):
         listings = Listing.objects.all()
         serializer = ListingSerializer(listings, many=True)
