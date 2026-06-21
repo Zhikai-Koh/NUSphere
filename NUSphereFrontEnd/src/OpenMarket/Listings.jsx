@@ -1,53 +1,19 @@
-import {useContext, createContext, useState, useEffect} from "react";
+import {useContext, useState} from "react";
 import { API_BASE_URL } from "../config.js";
 import { CartContext } from "../UserSpecifics/CartContext.jsx";
-import { useNavigate } from "react-router-dom";
+import { ListingsContext } from "./ListingContext.jsx";
 import "./Listings.css";
 import axios from "axios";
 
 export function Listings() {
-    const [listings, setListings] = useState([]);
-    const [loadSuccess, setLoadSuccess] = useState(true);
-    const [loading, setLoading] = useState(true);
     const [expandedId, setExpandedId] = useState(null);
-    const navigate = useNavigate();
 
     const { handleAddToCart } = useContext(CartContext);
-
-    const fetchListings = async () => {
-      try{
-        let response;
-        if (localStorage.getItem('access_token') !== null) {
-            response = await axios.get(`${API_BASE_URL}/api/listings/`, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-            }
-            });
-        }
-        else{
-            response = await axios.get(`${API_BASE_URL}/api/listings/`);
-        }
-
-        if (!response) {
-            throw new Error('Network response failure');
-        }
-        setListings(response.data);
-        } catch (error) {
-            console.error('Error fetching listings:', error);
-            setLoadSuccess(false);
-            setListings(<p style={{ color: 'red' }}>Failed to load listings. Please try again later.</p>);
-        } finally {
-            setLoading(false);
-      }
-  }
-
-    useEffect(() => {
-        fetchListings();
-    }, []);
+    const { listings, loadSuccess } = useContext(ListingsContext);
 
     return (
         !loadSuccess ? listings :
-        loading ? <p>Loading listings...</p> :
+
         listings.length === 0 ? <h2>No listings available</h2> :
         <div className="listings-grid">
             {listings?.map((listing) => (

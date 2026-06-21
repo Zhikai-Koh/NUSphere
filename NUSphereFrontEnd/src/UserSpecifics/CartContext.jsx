@@ -6,14 +6,14 @@ import { API_BASE_URL } from "../config.js";
 export const CartContext = createContext();
 
 export function CartProvider({ children }) {
-    const [cartItems, setCartItems] = useState([]);
+    const [cartItems, setCartItems] = useState("No Token");
     const token = localStorage.getItem('access_token'); 
 
     useEffect(() => {
         if (token) {
             fetchCart();
         } else {
-            setCartItems([]); // Clear cart if user logs out
+            setCartItems("No Token"); // Clear cart if user logs out
         }
     }, [token]);
 

@@ -5,11 +5,14 @@ import './CartItems.css';
 
 
 function CartItems({ data }) {
-  const hasItems = Array.isArray(data) && data.length > 0;
   const { handleRemoveFromCart } = useContext(CartContext);
 
-  if (!hasItems) {
-    return null;
+  if (data == "No Token") {
+    return <p style={{ color: "red" }}>Please Log In To Access Your Cart</p>;
+  }
+
+  if (data.length === 0) {
+    return <p>Your cart is empty</p>;
   }
 
   return (
