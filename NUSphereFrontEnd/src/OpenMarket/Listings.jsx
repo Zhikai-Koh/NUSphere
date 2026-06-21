@@ -60,9 +60,9 @@ export function Listings() {
                         Quantity: <strong>{listing.item_quantity}</strong>
                     </div>
                     
-                    <div className="card-footer">
-                        <button onClick={() => {
-                            expandedId.stopPropagation();
+                    <div className="card-footer">                        
+                        <button onClick={(e) =>{
+                            e.stopPropagation(listing.id, 1);
                             handleAddToCart(listing.id, 1);
                         }}>
                             Add to Cart
