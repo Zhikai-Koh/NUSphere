@@ -11,6 +11,7 @@ import { AddListingForm } from "../OpenMarket/AddListing.jsx";
 import { RegistrationForm } from "../LoginPage/Registration.jsx";
 
 import "./Navigation.css";
+import { PersonalListings } from "../OpenMarket/MyListings.jsx";
 
 function NavigateTo({page, buttonDisplay, setActivePage}) {
     
@@ -53,6 +54,7 @@ export function NavigationBar() {
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/register" element={<RegistrationForm />} />
                     <Route path="/cart" element={<CartProvider><Cart /></CartProvider>} />
+                    <Route path="/PersonalListings" element ={<PersonalListings/>} />
                 </Routes>
                 
                 <nav className="bottom-nav">

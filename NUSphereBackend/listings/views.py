@@ -15,6 +15,7 @@ class AddListingView(APIView):
         category = Categories.objects.get(name=request.data.get("category"))
 
         listing, created = Listing.objects.get_or_create(
+            user=request.user,
             item_name=request.data.get("item_name"),
             item_price=request.data.get("item_price"),
             category=category,
