@@ -54,7 +54,15 @@ export function PersonalListings() {
     return (
         !loadSuccess ? listings :
         loading ? <p>Loading listings...</p> :
-        listings.length === 0 ? <h2>No listings available</h2>:
+        listings.length === 0 ? <div
+            className="listing-card add-new-card"
+            onClick={() => navigate('/add-listing') }
+        >
+            <div className="plus-icon-circle">
+                <span className="plus-symbol">+</span>
+            </div>
+            <h3 className="add-card-text">Create New Listing</h3>
+        </div>:
         
         <div className="my-listings-grid">
             {listings?.map((listing) => (

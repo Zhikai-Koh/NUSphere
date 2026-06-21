@@ -15,7 +15,7 @@ import bannerImage from "../assets/MainBanner.jpg";
 import electronicsImage from "../assets/Categories/Electronics.jpg";
 import clothingImage from "../assets/Categories/Clothes.jpg";
 import cartIcon from "../assets/CartIcon.png";
-import notificationIcon from "../assets/NotificationIcon.jpg";
+import notificationIcon from "../assets/NotificationIcon.png";
 import profileIcon from "../assets/ProfilePhotoIcon.png";
 import searchIcon from "../assets/SearchIcon.png";
 
