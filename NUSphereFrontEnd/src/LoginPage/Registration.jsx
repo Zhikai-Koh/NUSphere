@@ -45,12 +45,17 @@ export function RegistrationForm() {
     };
 
     return (
-        <form onSubmit={handleSignup} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <input type="text" placeholder="Username" onChange={e => setUsername(e.target.value)} required />
-            <input type="email" placeholder="Email" onChange={e => setEmail(e.target.value)} />
-            <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} required />
-            <input type="password" placeholder="Confirm Password" onChange={e => setPasswordConfirm(e.target.value)} required />
-            <button type="submit">Sign Up</button>
-        </form>
+        <>
+            <form onSubmit={handleSignup} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <input type="text" placeholder="Username" onChange={e => setUsername(e.target.value)} required />
+                <input type="email" placeholder="Email" onChange={e => setEmail(e.target.value)} />
+                <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} required />
+                <input type="password" placeholder="Confirm Password" onChange={e => setPasswordConfirm(e.target.value)} required />
+                <button type="submit">Sign Up</button>
+            </form>
+            <div style={{ marginTop: '10px', textAlign: 'center' }}>
+                Already have an account? <button onClick={() => navigate("/login")}>Log In</button>
+            </div>
+        </>
     );
 }
