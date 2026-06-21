@@ -29,6 +29,13 @@
     gap: 20px;
 }
 
+.my-listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 32px;
+}
+
 .card-title {
     margin: 0;
     font-size: 0.9rem;

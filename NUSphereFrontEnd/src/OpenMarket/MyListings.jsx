@@ -1,11 +1,13 @@
 import {useContext, createContext, useState, useEffect} from "react";
 import { API_BASE_URL } from "../config.js";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export function PersonalListings() {
     const [listings, setListings] = useState([]);
     const [loadSuccess, setLoadSuccess] = useState(true);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     const deleteListing = async (listingId) => {
         try {
@@ -52,8 +54,9 @@ export function PersonalListings() {
     return (
         !loadSuccess ? listings :
         loading ? <p>Loading listings...</p> :
-        listings.length === 0 ? <h2>No listings available</h2> :
-        <div className="listings-grid">
+        listings.length === 0 ? <h2>No listings available</h2>:
+        
+        <div className="my-listings-grid">
             {listings?.map((listing) => (
                 <div key={listing.id} className="listing-card">
 
@@ -87,6 +90,16 @@ export function PersonalListings() {
                     </div>
                 </div>
             ))}
-        </div>       
+            <div
+                className="listing-card add-new-card"
+                onClick={() => navigate('/add-listing') }
+            >
+                <div className="plus-icon-circle">
+                    <span className="plus-symbol">+</span>
+                </div>
+                <h3 className="add-card-text">Create New Listing</h3>
+            </div>
+        </div>  
+             
     );
 }
