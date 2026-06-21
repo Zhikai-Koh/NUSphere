@@ -85,7 +85,7 @@
     align-items: center;
     justify-content: center;
     background-color: transparent;
-    border: 2px dashed var(--border, #ccc);
+    border: 2px dashed var(--border, #cccccc);
     cursor: pointer;
     min-height: 250px;
     transition: all 0.2s ease-in-out;
@@ -106,7 +106,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     transition: transform 0.2s ease;
 }
 
@@ -116,9 +116,10 @@
 
 .plus-symbol {
     color: #ffffff;
-    font-size: 36px;
+    font-size: 42px;
     font-weight: 300;
     line-height: 1;
+    transform: translateY(-4px);
 }
 
 .add-card-text {

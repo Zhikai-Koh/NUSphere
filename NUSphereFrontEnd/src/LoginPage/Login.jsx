@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {useNavigate} from "react-router-dom";
 import axios from 'axios';
 import { API_BASE_URL } from "../config.js";
+import './AuthForm.css'
 
 
 export function LoginForm() {
@@ -31,15 +32,30 @@ export function LoginForm() {
     };
 
     return (
-        <>
-            <form>
-                <input type="text" placeholder="Username" onChange={e => setUsername(e.target.value)} />
-                <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+        <div className="auth-container">
+            <form className="auth-form">
+                <input 
+                    className="auth-input"
+                    type="text" placeholder="Username"
+                    onChange={e => setUsername(e.target.value)}
+                />
+
+                <input 
+                    className="auth-input"
+                    type="password" 
+                    placeholder="Password" onChange={e => setPassword(e.target.value)} 
+                />
             </form>
-            <form style={{ display: 'flex',  marginTop: '10px' }}>
-                <button type="submit" onClick={handleLogin}>Log In</button>
-                <button type="submit" onClick={() => navigate("/register") } style={{ marginLeft: '10px' }}>Register</button>
+
+            <form className="auth-buttons">
+                <button className="auth-btn-primary"  onClick={handleLogin}>
+                    Log In
+                </button>
+
+                <button className="auth-btn-secondary" onClick={() => navigate("/register") }>
+                    Register
+                </button>
             </form>
-        </>
+        </div>
     );
 }
