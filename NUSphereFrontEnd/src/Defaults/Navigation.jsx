@@ -30,18 +30,6 @@ function NavigateTo({page, buttonDisplay, setActivePage}) {
 export function NavigationBar() {
     const [activePageName, setActivePageName] = useState('open-market');
 
-    const openMarket = <>
-                            <NavigateTo page="open-market" buttonDisplay="Open Market" setActivePage={(page) => setActivePageName(page)} />
-                            <NavigateTo page="add-listing" buttonDisplay="Add Listing" setActivePage={(page) => setActivePageName(page)} />
-                            <NavigateTo page="shops" buttonDisplay="Shops" setActivePage={(page) => setActivePageName(page)}/>
-                        </>
-
-    const shops = <>
-                        <NavigateTo page="open-market" buttonDisplay="Open Market" setActivePage={(page) => setActivePageName(page)} />
-                        <NavigateTo page="visit-own-store" buttonDisplay="Visit Your Store" setActivePage={(page) => setActivePageName(page)} />
-                        <NavigateTo page="shops" buttonDisplay="Shops" setActivePage={(page) => setActivePageName(page)}/>
-                    </>
-
     return(
         <BrowserRouter>
             <div className="app-shell">
@@ -58,7 +46,8 @@ export function NavigationBar() {
                 </Routes>
                 
                 <nav className="bottom-nav">
-                    {activePageName === 'open-market' || activePageName === 'add-listing' ? openMarket : shops}
+                    <NavigateTo page="open-market" buttonDisplay="Open Market" setActivePage={(page) => setActivePageName(page)} />
+                    <NavigateTo page="shops" buttonDisplay="Shops" setActivePage={(page) => setActivePageName(page)}/>
                 </nav>
             </div>
         </BrowserRouter>

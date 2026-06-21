@@ -1,6 +1,7 @@
 import {useContext, createContext, useState, useEffect} from "react";
 import { API_BASE_URL } from "../config.js";
-import {CartContext} from "../UserSpecifics/CartContext.jsx";
+import { CartContext } from "../UserSpecifics/CartContext.jsx";
+import { useNavigate } from "react-router-dom";
 import "./Listings.css";
 
 export function Listings() {
@@ -8,6 +9,7 @@ export function Listings() {
     const [loadSuccess, setLoadSuccess] = useState(true);
     const [loading, setLoading] = useState(true);
     const [expandedId, setExpandedId] = useState(null);
+    const navigate = useNavigate();
 
     const { handleAddToCart } = useContext(CartContext);
 
@@ -77,6 +79,17 @@ export function Listings() {
                     )}
                 </div>
             ))}
+
+            <div
+                className="listing-card add-new-card"
+                onClick={() => navigate('/add-listing') }
+            >
+                <div className="plus-icon-circle">
+                    <span className="plus-symbol">+</span>
+                </div>
+                <h3 className="add-card-text">Create New Listing</h3>
+            </div>
+
         </div>       
     );
 }
