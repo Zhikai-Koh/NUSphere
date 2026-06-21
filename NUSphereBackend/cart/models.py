@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from listings.models import Listing  # Pulls your existing product details
+from listings.models import Listing 
 
 class Cart(models.Model):
     #OneToOneField make each user have exactly one cart row

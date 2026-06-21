@@ -90,6 +90,6 @@ export function Listings() {
                     )}
                 </div>
             ))}
-        </div>       
+        </div>
     );
 }

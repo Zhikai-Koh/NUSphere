@@ -4,7 +4,7 @@ import { Outline } from "./Outline.jsx";
 import { Listings } from "../OpenMarket/Listings.jsx";
 import { LoginForm } from "../LoginPage/Login.jsx";
 
-import { CartProvider } from "../UserSpecifics/CartContext.jsx";
+import { AllProviders } from "./AllProviders.jsx";
 import { Cart } from "../UserSpecifics/CartItems.jsx";
 
 import { AddListingForm } from "../OpenMarket/AddListing.jsx";
@@ -34,14 +34,14 @@ export function NavigationBar() {
         <BrowserRouter>
             <div className="app-shell">
                 <Routes>
-                    <Route path="open-market" element={<CartProvider><Outline><Listings /></Outline></CartProvider>} />
+                    <Route path="open-market" element={<AllProviders><Outline><Listings /></Outline></AllProviders>} />
                     <Route path="add-listing" element={<AddListingForm />} />
                     <Route path="visit-own-store" element={<div> Own Store Placeholder :D</div>} />
                     <Route path="shops" element={<Outline />} />
                     <Route path="/" element={<Navigate to="open-market"/>} />
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/register" element={<RegistrationForm />} />
-                    <Route path="/cart" element={<CartProvider><Cart /></CartProvider>} />
+                    <Route path="/cart" element={<AllProviders><Cart /></AllProviders>} />
                     <Route path="/PersonalListings" element ={<PersonalListings/>} />
                 </Routes>
                 

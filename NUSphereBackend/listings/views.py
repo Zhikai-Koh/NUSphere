@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Listing, Categories
 from .serializers import ListingSerializer
+from django.contrib.auth.models import User
 
 # For login system
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -28,6 +29,9 @@ class AddListingView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get(self, request):
-        listings = Listing.objects.all()
+        if request.user.is_authenticated:
+            listings = Listing.objects.exclude(user=request.user)
+        else:
+            listings = Listing.objects.all()
         serializer = ListingSerializer(listings, many=True)
         return Response(serializer.data)

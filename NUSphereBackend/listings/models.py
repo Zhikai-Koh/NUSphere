@@ -15,3 +15,4 @@ class Listing(models.Model):
     item_description = models.TextField(default="", null=True, blank=True)
     category = models.ForeignKey(Categories, on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(upload_to='listings/', null=True, blank=True)
+    status = models.CharField(max_length=50, default="unsold")
