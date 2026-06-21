@@ -7,6 +7,7 @@ export function Listings() {
     const [listings, setListings] = useState([]);
     const [loadSuccess, setLoadSuccess] = useState(true);
     const [loading, setLoading] = useState(true);
+    const [expandedId, setExpandedId] = useState(null);
 
     const { handleAddToCart } = useContext(CartContext);
 
@@ -37,7 +38,10 @@ export function Listings() {
         listings.length === 0 ? <h2>No listings available</h2> :
         <div className="listings-grid">
             {listings?.map((listing) => (
-                <div key={listing.id} className="listing-card">
+                <div key={listing.id} 
+                className="listing-card"
+                onClick={() => setExpandedId(expandedId === listing.id ? null : listing.id)}
+                >
 
                     {listing.image && (
                         <img src={`${API_BASE_URL}${listing.image}`} 
@@ -56,6 +60,7 @@ export function Listings() {
                     
                     <div className="card-footer">
                         <button onClick={() => {
+                            expandedId.stopPropagation();
                             handleAddToCart(listing.id, 1);
                         }}>
                             Add to Cart
@@ -64,6 +69,12 @@ export function Listings() {
                             ${parseFloat(listing.item_price).toFixed(2)}
                         </div>
                     </div>
+
+                    {expandedId === listing.id && (
+                        <div className="card-description">
+                            {listing.item_description || "No description provided for this listing."}
+                        </div>
+                    )}
                 </div>
             ))}
         </div>       
