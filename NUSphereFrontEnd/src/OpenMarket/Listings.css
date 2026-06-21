@@ -128,3 +128,9 @@
     font-weight: 600;
     margin: 0;
 }
+
+.price-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

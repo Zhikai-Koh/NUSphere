@@ -1,10 +1,27 @@
 import {useContext, createContext, useState, useEffect} from "react";
 import { API_BASE_URL } from "../config.js";
+import axios from "axios";
 
 export function PersonalListings() {
     const [listings, setListings] = useState([]);
     const [loadSuccess, setLoadSuccess] = useState(true);
     const [loading, setLoading] = useState(true);
+
+    const deleteListing = async (listingId) => {
+        try {
+            const response = await axios.delete(`${API_BASE_URL}/api/listings/personal/`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                },
+                data: {
+                    listing_id: listingId
+                }
+            });
+            fetchListings();
+        } catch (error) {
+            console.error('Error deleting listing:', error);
+        }
+    };
 
     const fetchListings = async () => {
       try{
@@ -54,11 +71,19 @@ export function PersonalListings() {
                     <div className="card-quantity">
                         Quantity: <strong>{listing.item_quantity}</strong>
                     </div>
+
+                    <div className="price-label">
+                        <div> Price: </div>
+                        <div className="card-price">
+                                ${parseFloat(listing.item_price).toFixed(2)}
+                        </div>
+                    </div>
                     
                     <div className="card-footer">
-                        <div className="card-price">
-                            ${parseFloat(listing.item_price).toFixed(2)}
-                        </div>
+                        <div>Status: {listing.status}</div>
+                        <button onClick={() => deleteListing(listing.id)}>
+                            Delete Listing
+                        </button>
                     </div>
                 </div>
             ))}

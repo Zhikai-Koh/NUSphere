@@ -3,6 +3,7 @@ import { API_BASE_URL } from "../config.js";
 import { CartContext } from "../UserSpecifics/CartContext.jsx";
 import { useNavigate } from "react-router-dom";
 import "./Listings.css";
+import axios from "axios";
 
 export function Listings() {
     const [listings, setListings] = useState([]);
@@ -15,18 +16,28 @@ export function Listings() {
 
     const fetchListings = async () => {
       try{
-        const response = await fetch(`${API_BASE_URL}/api/listings/`);
-          if (!response.ok) {
-              throw new Error('Network response failure');
-          }
-          const data = await response.json();
-          setListings(data);
-      } catch (error) {
-          console.error('Error fetching listings:', error);
-          setLoadSuccess(false);
-          setListings(<p style={{ color: 'red' }}>Failed to load listings. Please try again later.</p>);
-      } finally {
-          setLoading(false);
+        let response;
+        if (localStorage.getItem('access_token') !== null) {
+            response = await axios.get(`${API_BASE_URL}/api/listings/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+            });
+        }
+        else{
+            response = await axios.get(`${API_BASE_URL}/api/listings/`);
+        }
+
+        if (!response) {
+            throw new Error('Network response failure');
+        }
+        setListings(response.data);
+        } catch (error) {
+            console.error('Error fetching listings:', error);
+            setLoadSuccess(false);
+            setListings(<p style={{ color: 'red' }}>Failed to load listings. Please try again later.</p>);
+        } finally {
+            setLoading(false);
       }
   }
 
