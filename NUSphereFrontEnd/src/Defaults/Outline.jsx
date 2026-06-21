@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config.js";
 import { Outlet } from "react-router-dom";
+import { CartButton } from "../UserSpecifics/CartButton.jsx"
 
 // Components
 import { ProfileDropdown } from "../LoginPage/ProfileDropDown";
@@ -70,11 +71,7 @@ export function Outline({ children }) {
                     
                         <ProfileDropdown user={currentUser} style={{ width: '10%', height: 'auto', marginRight: '20px' }}/>                    <img className="nusphere-logo" src={nusphereLogo} alt="NUSphere Logo" />
                         <img className="nusphere-name" src={nusphereName} alt="NUSphere Name" />
-
-                        <Link to="/cart" className="cart-link">
-                            <img src={cartIcon} alt="Cart Icon" />
-                        </Link>
-
+                        <CartButton />
                         <img className="notification-icon" src={notificationIcon} alt="Notification Icon" />
                     </div>
 
