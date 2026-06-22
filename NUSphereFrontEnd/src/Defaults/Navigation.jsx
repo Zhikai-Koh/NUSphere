@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, NavLink, Navigate} from 'react-router-dom
 import { Outline } from "./Outline.jsx";
 import { Listings } from "../OpenMarket/Listings.jsx";
 import { LoginForm } from "../LoginPage/Login.jsx";
+import { StoresPage } from "../Stores/StoresPage.jsx"
 
 import { AllProviders } from "./AllProviders.jsx";
 import { Cart } from "../UserSpecifics/CartItems.jsx";
@@ -37,7 +38,7 @@ export function NavigationBar() {
                     <Route path="open-market" element={<AllProviders><Outline><Listings /></Outline></AllProviders>} />
                     <Route path="add-listing" element={<AddListingForm />} />
                     <Route path="visit-own-store" element={<div> Own Store Placeholder :D</div>} />
-                    <Route path="shops" element={<Outline />} />
+                    <Route path="stores" element={<AllProviders><Outline><StoresPage /></Outline></AllProviders>} />
                     <Route path="/" element={<Navigate to="open-market"/>} />
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/register" element={<RegistrationForm />} />
@@ -47,7 +48,7 @@ export function NavigationBar() {
                 
                 <nav className="bottom-nav">
                     <NavigateTo page="open-market" buttonDisplay="Open Market" setActivePage={(page) => setActivePageName(page)} />
-                    <NavigateTo page="shops" buttonDisplay="Shops" setActivePage={(page) => setActivePageName(page)}/>
+                    <NavigateTo page="stores" buttonDisplay="Stores" setActivePage={(page) => setActivePageName(page)}/>
                 </nav>
             </div>
         </BrowserRouter>

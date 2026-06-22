@@ -73,14 +73,14 @@ export function AddListingForm() {
                 <option value="">Select Category</option>
                 <option value="Electronics">Electronics</option>
                 <option value="Fashion">Fashion</option>
-                <option value="Furnitures">Furnitures</option>
+                <option value="Furniture">Furniture</option>
                 <option value="Academics">Academics</option>
                 <option value="Dorm Living">Dorm Living</option>
                 <option value="Services & Collaboration">Services & Collaboration</option>
                 <option value="Food">Food</option>
                 <option value="Others">Others</option>
-
             </select>
+            
             <input type="number" placeholder="Quantity" value={item_quantity} onChange={(e) => setQuantity(e.target.value)} required />
             <textarea placeholder="Description" value={item_description} onChange={(e) => setDescription(e.target.value)} />
             <input 
