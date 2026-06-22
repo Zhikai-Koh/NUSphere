@@ -16,8 +16,10 @@ export function Listings() {
 
     const fetchListings = async () => {
       try{
+        const token = localStorage.getItem('access_token');
+
         let response;
-        if (localStorage.getItem('access_token') !== null) {
+        if (token && token !== "null" && token !== "undefined") {
             response = await axios.get(`${API_BASE_URL}/api/listings/`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
@@ -25,6 +27,8 @@ export function Listings() {
             });
         }
         else{
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
             response = await axios.get(`${API_BASE_URL}/api/listings/`);
         }
 
@@ -90,6 +94,6 @@ export function Listings() {
                     )}
                 </div>
             ))}
-        </div>       
+        </div>
     );
 }

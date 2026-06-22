@@ -90,3 +90,8 @@
     justify-self: start;
   }
 }
+.checkout-button {
+    margin-top: 10px;
+    display: flex;
+    justify-content: right;
+}

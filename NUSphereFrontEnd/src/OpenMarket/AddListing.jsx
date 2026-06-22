@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { API_BASE_URL } from "../config.js";
 import './AddListing.css';
+import { useNavigate } from "react-router-dom";
 
 export function ListingCard({ listing }) {
         return (
@@ -24,6 +25,7 @@ export function AddListingForm() {
     const [item_description, setDescription] = useState("");
     const [imageFile, setImageFile] = useState(null);
 
+    const navigate = useNavigate()
     const logInToken = localStorage.getItem('access_token');
 
     const handleSubmit = async (e) => {
@@ -55,6 +57,7 @@ export function AddListingForm() {
 
             if (response.ok) {
                 alert("Listing added locally successfully!");
+                navigate("/PersonalListings")
             }else {
                 const errorData = await response.json();
                 console.error("Django Validation Errors:", errorData);

@@ -9,6 +9,25 @@ export function CartProvider({ children }) {
     const [cartItems, setCartItems] = useState("No Token");
     const token = localStorage.getItem('access_token'); 
 
+    const handleCheckOut = async (productId, qty) => {
+        if (!token) {
+            alert("Please log in to check out items in your cart!");
+            return;
+        }
+
+        try {
+            const response = await axios.post(`${API_BASE_URL}/api/listings/checkout/`, {
+                product_id: productId,
+                quantity: qty
+            }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            alert("Items Successfully Checked Out")
+        } catch (error) {
+            console.error("Checking out cart failed:", error);
+        }
+    };
+
     useEffect(() => {
         if (token) {
             fetchCart();
@@ -66,7 +85,7 @@ export function CartProvider({ children }) {
     };
 
     return (
-        <CartContext.Provider value={{ cartItems, handleAddToCart, fetchCart, handleRemoveFromCart}}>
+        <CartContext.Provider value={{ cartItems, handleAddToCart, fetchCart, handleRemoveFromCart, handleCheckOut}}>
             {children}
         </CartContext.Provider>
     );

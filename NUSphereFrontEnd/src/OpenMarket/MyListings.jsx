@@ -25,6 +25,7 @@ export function PersonalListings() {
         }
     };
 
+    //fetching personal listings 
     const fetchListings = async () => {
       try{
         const response = await fetch(`${API_BASE_URL}/api/listings/personal/`, {
@@ -91,7 +92,12 @@ export function PersonalListings() {
                     </div>
                     
                     <div className="card-footer">
-                        <div>Status: {listing.status}</div>
+                        <div className = "item-status" style = {{display: "flex", flexDirection: "column"}}>
+                            <div><strong>Status:</strong></div>
+                            <div>Unsold: {listing.inventory.unsold}</div>
+                            <div>Pending: {listing.inventory.pending}</div>
+                            <div>Sold: {listing.inventory.sold}</div>
+                        </div>
                         <button onClick={() => deleteListing(listing.id)}>
                             Delete Listing
                         </button>
