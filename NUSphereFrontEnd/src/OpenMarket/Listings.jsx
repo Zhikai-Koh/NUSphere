@@ -27,8 +27,6 @@ export function Listings() {
             });
         }
         else{
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
             response = await axios.get(`${API_BASE_URL}/api/listings/`);
         }
 
@@ -38,6 +36,11 @@ export function Listings() {
         setListings(response.data);
         } catch (error) {
             console.error('Error fetching listings:', error);
+            if (error.response.status === 401){
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                window.location.reload();
+            }
             setLoadSuccess(false);
             setListings(<p style={{ color: 'red' }}>Failed to load listings. Please try again later.</p>);
         } finally {
