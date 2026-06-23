@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from listings.personal.views import PersonalListingView
+from listings.confirmsold.views import ConfirmSoldView
+from listings.checkout.views import CheckOutView
 from backend import settings
 from cart.views import CartAPIView
 from django.conf.urls.static import static
@@ -35,6 +37,8 @@ urlpatterns = [
     path('api/cart/', CartAPIView.as_view(), name='cart-detail'),
     path('api/listings/', AddListingView.as_view(), name='add-listing'),
     path('api/listings/personal/', PersonalListingView.as_view(), name='personal-listing'),
+    path('api/listings/checkout/', CheckOutView.as_view(), name='check-out'),
+    path('api/listings/confirmsold/', ConfirmSoldView.as_view(), name='confirm-sold'),
 
     # The registration route, React will POST user details here to create a new account
     path('api/auth/register/', RegisterView.as_view(), name='auth_register'),
