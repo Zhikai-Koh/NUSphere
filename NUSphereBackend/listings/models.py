@@ -24,5 +24,5 @@ class Order(models.Model):
     listingItem = models.ForeignKey(ListingItem, on_delete=models.PROTECT, related_name="order_details")
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="purchases")
     purchase_price = models.DecimalField(max_digits=10, decimal_places=2)
-    purchased_at = models.DateTimeField(auto_now_add=True);
+    purchased_at = models.DateTimeField(auto_now_add=True)
     order_status = models.CharField(max_length=50, default = "pending seller confirmation")

@@ -15,8 +15,9 @@ class CartAPIView(APIView):
 
     def post(self, request):
         cart, _ = Cart.objects.get_or_create(user=request.user)
+        post_type = request.data.get('post_type')
         product_id = request.data.get('product_id')
-        quantity = int(request.data.get('quantity', 1))
+        quantity = int(request.data.get('quantity', 0))
 
         if not product_id:
             return Response({"error": "product_id is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -25,9 +26,13 @@ class CartAPIView(APIView):
         # Since we queried for the cart at the top, we dont need to use the cart's foreign key, instead we directly use the cart object to query for the cart item.
     
         cart_item, created = CartItem.objects.get_or_create(cart=cart, product_id=product_id)
-        if not created:
-            cart_item.quantity += quantity
-        else:
+
+        if post_type =='add':
+            if(not created):
+                cart_item.quantity += quantity
+            else:
+                cart_item.quantity = quantity
+        elif post_type == 'change':
             cart_item.quantity = quantity
         cart_item.save()
 

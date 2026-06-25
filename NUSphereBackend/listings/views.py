@@ -4,6 +4,7 @@ from rest_framework import status
 from .models import Listing, Categories, ListingItem, Order
 from .serializers import ListingSerializer
 from django.contrib.auth.models import User
+from django.db.models import Count, Q
 
 # For login system
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -39,5 +40,28 @@ class AddListingView(APIView):
             listings = Listing.objects.exclude(user=request.user)
         else:
             listings = Listing.objects.all()
-        serializer = ListingSerializer(listings, many=True)
-        return Response(serializer.data)
+
+        listings = listings.annotate(
+            total_unsold = Count('listing_item', filter = Q(listing_item__status = 'unsold')),
+            total_pending = Count('listing_item', filter = Q(listing_item__status = 'pending')),
+            total_sold = Count('listing_item', filter = Q(listing_item__status = 'sold'))
+        )
+
+        data = []
+        for listing in listings:
+            if listing.total_unsold > 0:
+                data.append({
+                    "id": listing.id,
+                    "item_description": listing.item_description,
+                    "item_name": listing.item_name,
+                    "item_price": str(listing.item_price),
+                    "item_quantity": str(listing.item_quantity),
+                    "image": listing.image.url if listing.image else None,
+                    "inventory": {
+                        "unsold": listing.total_unsold,
+                        "pending": listing.total_pending,
+                        "sold": listing.total_sold,
+                        "total": listing.total_unsold + listing.total_pending + listing.total_sold
+                    }
+            })
+        return Response(data)

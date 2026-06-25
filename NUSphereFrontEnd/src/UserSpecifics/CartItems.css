@@ -32,7 +32,7 @@
 
 .cart-item {
   display: grid;
-  grid-template-columns: 96px minmax(0, 1fr) auto;
+  grid-template-columns: 96px auto 1fr 1fr auto;
   align-items: center;
   gap: 16px;
   padding: 12px;
@@ -94,4 +94,10 @@
     margin-top: 10px;
     display: flex;
     justify-content: right;
+}
+
+.cart-item-actions{
+    display: flex;
+    flex-direction: column;
+    gap: 6px
 }

@@ -2,13 +2,31 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from ..models import Listing, Categories, ListingItem, Order
-from ..serializers import ListingSerializer
+from ..serializers import ListingSerializer, ListingItemSerializer
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Count, Q
 
 from django.db import transaction
 
 class CheckOutView(APIView):
     permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        listing_id = request.query_params.get("product_id")
+
+        if not listing_id:
+            return Response({"error": "Product ID is required"}, status=400)
+
+        try:
+            itemCount = ListingItem.objects.filter(listing_id=listing_id, status='unsold').count()
+            data = {
+                "item_quantity": itemCount
+            }
+            return Response(data)
+            
+        except Listing.DoesNotExist:
+            return Response({"error": "Listing not found"}, status=404)
+    
 
     #Changing state of listing items to pending
     def post(self,request):
@@ -30,7 +48,7 @@ class CheckOutView(APIView):
 
                 if len(available_items) < quantity:
                     return Response(
-                        {"error": f"Not enough stock available. Only {len(available_items)} remaining."}, 
+                        {"Not enough stock available."}, 
                         status=status.HTTP_400_BAD_REQUEST
                     )
 

@@ -4,6 +4,7 @@ import { CartContext } from "../UserSpecifics/CartContext.jsx";
 import { useNavigate } from "react-router-dom";
 import "./Listings.css";
 import axios from "axios";
+import {SelectQuantity} from "./SelectQuantity.jsx"
 
 export function Listings() {
     const [listings, setListings] = useState([]);
@@ -11,6 +12,7 @@ export function Listings() {
     const [loading, setLoading] = useState(true);
     const [expandedId, setExpandedId] = useState(null);
     const navigate = useNavigate();
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     const { handleAddToCart } = useContext(CartContext);
 
@@ -51,7 +53,6 @@ export function Listings() {
     useEffect(() => {
         fetchListings();
     }, []);
-
     return (
         !loadSuccess ? listings :
         loading ? <p>Loading listings...</p> :
@@ -75,20 +76,24 @@ export function Listings() {
                     </h4>
 
                     <div className="card-quantity">
-                        Quantity: <strong>{listing.item_quantity}</strong>
+                        Quantity: <strong>{listing.inventory.unsold}</strong>
                     </div>
                     
-                    <div className="card-footer">                        
+                    <div className="card-footer">
                         <button onClick={(e) =>{
-                            e.stopPropagation(listing.id, 1);
-                            handleAddToCart(listing.id, 1);
+                            e.stopPropagation()
+                            setSelectedProduct(listing);
                         }}>
                             Add to Cart
                         </button>
+
                         <div className="card-price">
                             ${parseFloat(listing.item_price).toFixed(2)}
                         </div>
                     </div>
+                    {selectedProduct===listing &&
+                        <SelectQuantity product={selectedProduct} onClose={() => setSelectedProduct(null)}/>
+                    }
 
                     {expandedId === listing.id && (
                         <div className="card-description">

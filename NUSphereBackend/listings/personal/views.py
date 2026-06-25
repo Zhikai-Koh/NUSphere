@@ -37,12 +37,18 @@ class PersonalListingView(APIView):
 
         return Response(data)
     
-    #For logged in people to delete their listings
+    #For logged in people to delete their unsold listings
     def delete(self, request):
         listing_id = request.data.get("listing_id")
         try:
-            listing = Listing.objects.get(id=listing_id, user=request.user)
-            listing.delete()
-            return Response({"message": "Listing deleted successfully"}, status=status.HTTP_200_OK)
+            unsold_listings = ListingItem.objects.filter(listing_id=listing_id, listing__user=request.user, status="unsold")
+
+            if not unsold_listings.exists():
+                return Response({
+                    "error": "No unsold items found for this listing, or you don't have permission."
+                }, status=status.HTTP_404_NOT_FOUND)
+
+            unsold_listings.delete()
+            return Response({"message": "Unsold stock deleted successfully"}, status=status.HTTP_200_OK)
         except Listing.DoesNotExist:
             return Response({"error": "Listing not found or you do not have permission to delete it"}, status=status.HTTP_404_NOT_FOUND)
