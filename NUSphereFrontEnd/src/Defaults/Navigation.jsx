@@ -15,6 +15,9 @@ import "./Navigation.css";
 import { PersonalListings } from "../OpenMarket/MyListings.jsx";
 import { PendingListings } from "../OpenMarket/PendingListing.jsx";
 import { MyOrders } from "../OpenMarket/MyOrders.jsx";
+import { MyStore } from "../Stores/MyStore.jsx";
+import { SelectMyStore } from "../Stores/SelectMyStore.jsx";
+import { AddStoreForm } from "../Stores/AddStore.jsx";
 
 function NavigateTo({page, buttonDisplay, setActivePage}) {
     
@@ -37,16 +40,23 @@ export function NavigationBar() {
         <BrowserRouter>
             <div className="app-shell">
                 <Routes>
-                    <Route path="open-market" element={<AllProviders><Outline><Listings /></Outline></AllProviders>} />
-                    <Route path="add-listing" element={<AddListingForm />} />
-                    <Route path="visit-own-store" element={<div> Own Store Placeholder :D</div>} />
-                    <Route path="stores" element={<AllProviders><Outline><StoresPage /></Outline></AllProviders>} />
                     <Route path="/" element={<Navigate to="open-market"/>} />
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/register" element={<RegistrationForm />} />
                     <Route path="/cart" element={<AllProviders><Cart /></AllProviders>} />
+                    
+                    <Route path="open-market" element={<AllProviders><Outline/></AllProviders>}>
+                        <Route index element = {<Listings />}/>
+                    </Route>
+                    
+                    <Route path="add-listing" element={<AddListingForm />} />
                     <Route path="/PersonalListings" element ={<><PersonalListings/><PendingListings/></>} />
                     <Route path="/orders" element = {<MyOrders/>}/>
+
+                    <Route path="stores" element={<AllProviders><Outline><StoresPage /></Outline></AllProviders>} />
+                    <Route path="add-store" element={<AddStoreForm />} />
+                    <Route path="/MyStores" element = {<SelectMyStore/>}/>
+                    <Route path="/MyStores/:storeID" element = {<MyStore/>}/>
                 </Routes>
                 
                 <nav className="bottom-nav">

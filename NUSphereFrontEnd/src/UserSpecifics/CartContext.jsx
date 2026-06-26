@@ -82,7 +82,8 @@ export function CartProvider({ children }) {
             const response = await axios.post(`${API_BASE_URL}/api/cart/`, {
                 product_id: productId,
                 quantity: qty,
-                post_type: "add"
+                post_type: "add",
+                product_type: "listing"
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -103,7 +104,9 @@ export function CartProvider({ children }) {
         try {
             const response = await axios.delete(`${API_BASE_URL}/api/cart/`,{
                 headers: { Authorization: `Bearer ${token}` },
-                data: {product_id: product_id}
+                data: {product_id: product_id,
+                    product_type: "listing"
+                }
             });
             setCartItems(response.data.items);
         } catch (error) {

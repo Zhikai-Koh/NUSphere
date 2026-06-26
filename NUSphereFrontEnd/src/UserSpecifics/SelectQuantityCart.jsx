@@ -38,7 +38,9 @@ export function SelectQuantityCart({product_id, input_Quantity, updateQty}) {
             const response = await axios.post(`${API_BASE_URL}/api/cart/`, {
                 product_id: productId,
                 quantity: qty,
-                post_type: "change"
+                post_type: "change",
+                product_type: "listing"
+
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });

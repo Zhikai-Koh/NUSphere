@@ -24,6 +24,9 @@ from listings.personal.views import PersonalListingView
 from listings.confirmsold.views import ConfirmSoldView
 from listings.checkout.views import CheckOutView
 
+from shop.views import AddStoreView
+from shop.personalStores.views import PersonalStoresView
+
 from cart.views import CartAPIView
 from django.conf.urls.static import static
 
@@ -39,11 +42,15 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/cart/', CartAPIView.as_view(), name='cart-detail'),
+
     path('api/listings/', AddListingView.as_view(), name='add-listing'),
     path('api/listings/personal/', PersonalListingView.as_view(), name='personal-listing'),
     path('api/listings/checkout/', CheckOutView.as_view(), name='check-out'),
     path('api/listings/confirmsold/', ConfirmSoldView.as_view(), name='confirm-sold'),
     path('api/listings/orderhistory/', OrderHistoryView.as_view(), name='order-history'),
+
+    path('api/store/', AddStoreView.as_view(), name='add-store'),
+    path('api/store/personal/', PersonalStoresView.as_view(), name='personal-stores'),
 
     # The registration route, React will POST user details here to create a new account
     path('api/auth/register/', RegisterView.as_view(), name='auth_register'),

@@ -13,7 +13,7 @@ export function Listings() {
     const [expandedId, setExpandedId] = useState(null);
     const navigate = useNavigate();
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const { selectCategory } = useOutletContext();
+    const { selectedCategory } = useOutletContext();
 
     const filteredListings = selectedCategory === "All"
         ? listings
@@ -58,12 +58,13 @@ export function Listings() {
     useEffect(() => {
         fetchListings();
     }, []);
+
     return (
         !loadSuccess ? listings :
         loading ? <p>Loading listings...</p> :
-        listings.length === 0 ? <h2>No listings available</h2> :
+        filteredListings.length === 0 ? <h2>No listings available</h2> :
         <div className="listings-grid">
-            {listings?.map((listing) => (
+            {filteredListings?.map((listing) => (
                 <div key={listing.id} 
                 className="listing-card"
                 onClick={() => setExpandedId(expandedId === listing.id ? null : listing.id)}

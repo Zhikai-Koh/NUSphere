@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 from listings.models import Listing 
 
 class Cart(models.Model):
@@ -13,9 +15,9 @@ class Cart(models.Model):
 class CartItem(models.Model):
     # Links each row to a parent Cart table row
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
-    # Links each row to a specific product
-    product = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
 
-    def __str__(self):
-        return f"{self.quantity} x {self.product.title} in {self.cart.user.username}'s cart"
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    product_id = models.PositiveIntegerField()
+    product = GenericForeignKey('content_type', 'product_id')
+
+    quantity = models.PositiveIntegerField(default=1)

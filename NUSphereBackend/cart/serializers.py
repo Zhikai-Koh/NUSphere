@@ -1,15 +1,39 @@
 from rest_framework import serializers
 from .models import Cart, CartItem
+from listings.models import Listing
 from listings.serializers import ListingSerializer
 
 class CartItemSerializer(serializers.ModelSerializer):
-    #This embeds the full product details (title, price, image) inside the response.
-    #read-only true means dat this field is only when a GET request is sent, a POST request will ignore the field
-    product_details = ListingSerializer(source='product', read_only=True)
+    product_details = serializers.SerializerMethodField()
 
     class Meta:
         model = CartItem
-        fields = ['id', 'product', 'product_details', 'quantity']
+        fields = ['id', 'product_id', 'product_details', 'quantity']
+
+    def get_product_details(self, obj):
+        item = obj.product
+        if not item:
+            return None
+
+        if isinstance(item, Listing):
+            return {
+                "id": item.id,
+                "type": "listing",
+                "item_name": item.item_name,
+                "item_price": item.item_price,
+                "image": item.image.url,
+            }
+        
+        # elif isinstance(item, ShopProduct):
+        #     return {
+        #         "id": item.id,
+        #         "type": "shop_product",
+        #         "title": item.name,
+        #         "price": str(item.price),
+        #         "image": item.image.url if item.image else None,
+        #     }
+
+        return None
 
 class CartSerializer(serializers.ModelSerializer):
     #Tells Django to lookup all CartItem with column "cart" that matches the current Cart row's ID.
@@ -19,3 +43,4 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ['id', 'user', 'items']
+

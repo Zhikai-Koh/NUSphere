@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { API_BASE_URL } from "../config.js";
-import './AddListing.css';
+import '../OpenMarket/AddListing.css';
 import { useNavigate } from "react-router-dom";
 
 export function ListingCard({ listing }) {
@@ -17,11 +17,9 @@ export function ListingCard({ listing }) {
     );
 }
 
-export function AddListingForm() {
-    const [item_name, setName] = useState("");
-    const [item_price, setPrice] = useState("");
+export function AddStoreForm() {
+    const [shop_name, setName] = useState("");
     const [category, setCategory] = useState("");
-    const [item_quantity, setQuantity] = useState("");
     const [item_description, setDescription] = useState("");
     const [imageFile, setImageFile] = useState(null);
 
@@ -37,17 +35,15 @@ export function AddListingForm() {
         }
 
         const formData = new FormData();
-        formData.append("item_name", item_name);
-        formData.append("item_price", item_price);
+        formData.append("store_name", shop_name);
         formData.append("category", category);
-        formData.append("item_quantity", item_quantity);
         formData.append("item_description", item_description);
 
         if (imageFile) {
             formData.append("image", imageFile);
         }
         try {
-            const response = await fetch(`${API_BASE_URL}/api/listings/`, {
+            const response = await fetch(`${API_BASE_URL}/api/store/`, {
                 method: "POST",
                 body: formData,
                 headers: {
@@ -56,22 +52,22 @@ export function AddListingForm() {
             });
 
             if (response.ok) {
-                alert("Listing added successfully!");
-                navigate("/PersonalListings")
+                alert("Store created successfully!");
+                navigate("/MyStores")
             }else {
                 const errorData = await response.json();
                 console.error("Django Validation Errors:", errorData);
                 alert(`Failed: ${JSON.stringify(errorData)}`);
             }
         } catch (error) {
-            console.error("Error saving listing:", error);
+            console.error("Error creating store:", error);
         }
     };
 
     return (
         <form onSubmit={handleSubmit} className="add-listing-form">
-            <input type="text" placeholder="Item Name" value={item_name} onChange={(e) => setName(e.target.value)} required />
-            <input type="number" placeholder="Price" value={item_price} onChange={(e) => setPrice(e.target.value)} required />
+            <input type="text" placeholder="Store Name" value={shop_name} onChange={(e) => setName(e.target.value)} required />
+            
             <select value={category} onChange={(e) => setCategory(e.target.value)} required>
                 <option value="">Select Category</option>
                 <option value="Electronics">Electronics</option>
@@ -84,14 +80,13 @@ export function AddListingForm() {
                 <option value="Others">Others</option>
             </select>
             
-            <input type="number" placeholder="Quantity" value={item_quantity} onChange={(e) => setQuantity(e.target.value)} required />
             <textarea placeholder="Description" value={item_description} onChange={(e) => setDescription(e.target.value)} />
             <input 
                 type="file" 
                 accept="image/*" 
                 onChange={(e) => setImageFile(e.target.files[0])}
             />
-            <button type="submit">Upload Listing</button>
+            <button type="submit">Create Store</button>
         </form>
     );
 }

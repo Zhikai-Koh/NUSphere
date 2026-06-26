@@ -3,24 +3,9 @@ import { API_BASE_URL } from "../config.js";
 import './AddListing.css';
 import { useNavigate } from "react-router-dom";
 
-export function ListingCard({ listing }) {
-        return (
-        <div className="listing-card">
-            <img 
-                src={listing.image} 
-                alt={listing.title} 
-                className="listing-image"
-            />
-            <h3>{listing.title}</h3>
-            <p>${listing.price}</p>
-        </div>
-    );
-}
-
-export function AddListingForm() {
+export function AddProductForm() {
     const [item_name, setName] = useState("");
     const [item_price, setPrice] = useState("");
-    const [category, setCategory] = useState("");
     const [item_quantity, setQuantity] = useState("");
     const [item_description, setDescription] = useState("");
     const [imageFile, setImageFile] = useState(null);
@@ -31,15 +16,9 @@ export function AddListingForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (category === "") {
-            alert("Please select a category.");
-            return;
-        }
-
         const formData = new FormData();
         formData.append("item_name", item_name);
         formData.append("item_price", item_price);
-        formData.append("category", category);
         formData.append("item_quantity", item_quantity);
         formData.append("item_description", item_description);
 
@@ -56,8 +35,8 @@ export function AddListingForm() {
             });
 
             if (response.ok) {
-                alert("Listing added successfully!");
-                navigate("/PersonalListings")
+                alert("Product added successfully!");
+                navigate("/PersonalStore")
             }else {
                 const errorData = await response.json();
                 console.error("Django Validation Errors:", errorData);
@@ -72,18 +51,6 @@ export function AddListingForm() {
         <form onSubmit={handleSubmit} className="add-listing-form">
             <input type="text" placeholder="Item Name" value={item_name} onChange={(e) => setName(e.target.value)} required />
             <input type="number" placeholder="Price" value={item_price} onChange={(e) => setPrice(e.target.value)} required />
-            <select value={category} onChange={(e) => setCategory(e.target.value)} required>
-                <option value="">Select Category</option>
-                <option value="Electronics">Electronics</option>
-                <option value="Fashion">Fashion</option>
-                <option value="Furniture">Furniture</option>
-                <option value="Academics">Academics</option>
-                <option value="Dorm Living">Dorm Living</option>
-                <option value="Services & Collaboration">Services & Collaboration</option>
-                <option value="Food">Food</option>
-                <option value="Others">Others</option>
-            </select>
-            
             <input type="number" placeholder="Quantity" value={item_quantity} onChange={(e) => setQuantity(e.target.value)} required />
             <textarea placeholder="Description" value={item_description} onChange={(e) => setDescription(e.target.value)} />
             <input 
