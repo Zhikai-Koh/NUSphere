@@ -53,58 +53,13 @@ export function PersonalListings() {
     }, []);
 
     return (
-        !loadSuccess ? listings :
-        loading ? <p>Loading listings...</p> :
-        listings.length === 0 ? <div
-            className="listing-card add-new-card"
-            onClick={() => navigate('/add-listing') }
-        >
-            <div className="plus-icon-circle">
-                <span className="plus-symbol">+</span>
-            </div>
-            <h3 className="add-card-text">Create New Listing</h3>
-        </div>:
-        
-        <div className="my-listings-grid">
-            {listings?.map((listing) => (
-                <div key={listing.id} className="listing-card">
+        <div className="pending-listing-container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
+            
+            <h2>All Listings</h2>
 
-                    {listing.image && (
-                        <img src={`${API_BASE_URL}${listing.image}`} 
-                        alt={listing.item_name}
-                        className="listing-image"
-                        />
-                    )}
-
-                    <h4 className="card-title">
-                        {listing.item_name}
-                    </h4>
-
-                    <div className="card-quantity">
-                        Quantity: <strong>{listing.item_quantity}</strong>
-                    </div>
-
-                    <div className="price-label">
-                        <div> Price: </div>
-                        <div className="card-price">
-                                ${parseFloat(listing.item_price).toFixed(2)}
-                        </div>
-                    </div>
-                    
-                    <div className="card-footer">
-                        <div className = "item-status" style = {{display: "flex", flexDirection: "column"}}>
-                            <div><strong>Status:</strong></div>
-                            <div>Unsold: {listing.inventory.unsold}</div>
-                            <div>Pending: {listing.inventory.pending}</div>
-                            <div>Sold: {listing.inventory.sold}</div>
-                        </div>
-                        <button onClick={() => deleteListing(listing.id)}>
-                            Delete Listing
-                        </button>
-                    </div>
-                </div>
-            ))}
-            <div
+            {!loadSuccess ? listings :
+            loading ? <p>Loading listings...</p> :
+            listings.length === 0 ? <div
                 className="listing-card add-new-card"
                 onClick={() => navigate('/add-listing') }
             >
@@ -112,7 +67,57 @@ export function PersonalListings() {
                     <span className="plus-symbol">+</span>
                 </div>
                 <h3 className="add-card-text">Create New Listing</h3>
-            </div>
-        </div>              
+            </div>:
+            
+            <div className="my-listings-grid">
+                {listings?.map((listing) => (
+                    <div key={listing.id} className="listing-card">
+
+                        {listing.image && (
+                            <img src={`${API_BASE_URL}${listing.image}`} 
+                            alt={listing.item_name}
+                            className="listing-image"
+                            />
+                        )}
+
+                        <h4 className="card-title">
+                            {listing.item_name}
+                        </h4>
+
+                        <div className="card-quantity">
+                            Quantity: <strong>{listing.item_quantity}</strong>
+                        </div>
+
+                        <div className="price-label">
+                            <div> Price: </div>
+                            <div className="card-price">
+                                    ${parseFloat(listing.item_price).toFixed(2)}
+                            </div>
+                        </div>
+                        
+                        <div className="card-footer">
+                            <div className = "item-status" style = {{display: "flex", flexDirection: "column"}}>
+                                <div><strong>Status:</strong></div>
+                                <div>Unsold: {listing.inventory.unsold}</div>
+                                <div>Pending: {listing.inventory.pending}</div>
+                                <div>Sold: {listing.inventory.sold}</div>
+                            </div>
+                            <button onClick={() => deleteListing(listing.id)}>
+                                Delete Listing
+                            </button>
+                        </div>
+                    </div>
+                ))}
+                <div
+                    className="listing-card add-new-card"
+                    onClick={() => navigate('/add-listing') }
+                >
+                    <div className="plus-icon-circle">
+                        <span className="plus-symbol">+</span>
+                    </div>
+                    <h3 className="add-card-text">Create New Listing</h3>
+                </div>
+            </div>}
+        </div>
     );
 }

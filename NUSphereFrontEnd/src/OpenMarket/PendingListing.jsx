@@ -2,7 +2,6 @@ import {useContext, createContext, useState, useEffect} from "react";
 import { API_BASE_URL } from "../config.js";
 import { CartContext } from "../UserSpecifics/CartContext.jsx";
 import { useNavigate } from "react-router-dom";
-import "./Listings.css";
 import axios from "axios";
 
 export function PendingListings(){
@@ -53,43 +52,49 @@ export function PendingListings(){
     }, []);
 
     return (
-        !loadSuccess ? pendings :
-        loading ? <p>Loading listings...</p> :
-        pendings.length === 0 ? <h2>No pending listings available</h2> :
-        <div className="listings-grid">
-            {pendings?.map((pending) => (
-                <div key={pending.listingItem__listing__id} 
-                className="listing-card"
-                >
+        <div className="pending-listing-container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
+            
+            <h2>Pending Listings</h2>
 
-                    {pending.listingItem__listing__image && (
-                        <img src={`${API_BASE_URL}/media/${pending.listingItem__listing__image}`} 
-                        alt={pending.listingItem__listing__item_name}
-                        className="listing-image"
-                        />
-                    )}
+            {!loadSuccess ? pendings :
+            loading ? <p>Loading listings...</p> :
+            pendings.length === 0 ? <h2>No pending listings available</h2> :
+            <div className="my-listings-grid">
+                {pendings?.map((pending) => (
+                    <div key={pending.listingItem__listing__id} 
+                    className="listing-card"
+                    >
+                        {pending.listingItem__listing__image && (
+                            <img src={`${API_BASE_URL}/media/${pending.listingItem__listing__image}`} 
+                            alt={pending.listingItem__listing__item_name}
+                            className="listing-image"
+                            />
+                        )}
 
-                    <h4 className="card-title">
-                        {pending.listingItem__listing__item_name}
-                    </h4>
+                        <h4 className="card-title">
+                            {pending.listingItem__listing__item_name}
+                        </h4>
 
-                    <div className="card-quantity">
-                        Quantity: <strong>{pending.quantity}</strong>
-                    </div>
-                    
-                    <div className="card-footer">                        
-                        <button onClick={(e) =>{
-                            e.stopPropagation(pending.listingItem__listing__id, pending.buyer);
-                            handleConfirmSale(pending.listingItem__listing__id, pending.buyer);
-                        }}>
-                            Confirm Sale
-                        </button>
-                        <div className="card-price">
-                            ${parseFloat(pending.listingItem__listing__item_price).toFixed(2)}
+                        <div className="card-quantity">
+                            Quantity: <strong>{pending.quantity}</strong>
+                        </div>
+                        
+                        <div className="card-footer">                        
+                            <button onClick={(e) =>{
+                                e.stopPropagation(pending.listingItem__listing__id, pending.buyer);
+                                handleConfirmSale(pending.listingItem__listing__id, pending.buyer);
+                            }}
+                            style = {{backgroundColor:"#11ac38ff"}}
+                            >
+                                Confirm Sale
+                            </button>
+                            <div className="card-price">
+                                ${parseFloat(pending.listingItem__listing__item_price).toFixed(2)}
+                            </div>
                         </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>}
         </div>
     );
 }
