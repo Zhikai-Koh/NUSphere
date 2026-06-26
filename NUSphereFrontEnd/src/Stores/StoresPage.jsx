@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { API_BASE_URL } from "../config.js";
+import { useOutletContext } from "react-router-dom";
 import './StoresPage.css';
 
 function StoreCard({ store }) {
@@ -35,6 +36,11 @@ export function StoresPage() {
             category: "Academics"
         }
     ])
+    const { selectedCategory } = useOutletContext();
+
+    const filteredStores = selectedCategory === "All"
+        ? stores
+        : stores.filter(store => store.category === selectedCategory);
 
     return (
         <main className="stores-main-content">

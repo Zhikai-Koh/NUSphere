@@ -1,8 +1,7 @@
 import {createContext, useState, useEffect, useRef} from "react";
-import { Link } from "react-router-dom";
+import {Link, Outlet} from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config.js";
-import { Outlet } from "react-router-dom";
 import { CartButton } from "../UserSpecifics/CartButton.jsx"
 
 // Components
@@ -12,8 +11,15 @@ import { ProfileDropdown } from "../LoginPage/ProfileDropDown";
 import nusphereLogo from "../assets/NUSphereLogo.png";
 import nusphereName from "../assets/NUSphereName.png";
 import bannerImage from "../assets/MainBanner.jpg";
-import electronicsImage from "../assets/Categories/Electronics.jpg";
-import clothingImage from "../assets/Categories/Clothes.jpg";
+import allImage from "../assets/Categories/All.png"
+import electronicsImage from "../assets/Categories/Electronics.png";
+import furnitureImage from "../assets/Categories/Furniture.png";
+import academicsImage from "../assets/Categories/Academics.png";
+import clothingImage from "../assets/Categories/Clothes.png";
+import dormImage from "../assets/Categories/Dorm.png";
+import serviceImage from "../assets/Categories/Service.png";
+import foodImage from "../assets/Categories/Food.png";
+import othersImage from "../assets/Categories/Others.png";
 import cartIcon from "../assets/CartIcon.png";
 import notificationIcon from "../assets/NotificationIcon.png";
 import profileIcon from "../assets/ProfilePhotoIcon.png";
@@ -22,22 +28,34 @@ import searchIcon from "../assets/SearchIcon.png";
 import "./Outline.css";
 
 const categories = [
+    { name: 'All', image: allImage },
     { name: 'Electronics', image: electronicsImage },
-    { name: 'Clothing', image: clothingImage },
+    { name: 'Fashion', image: clothingImage },
+    { name: 'Furniture', image: furnitureImage },
+    { name: 'Academics', image: academicsImage },
+    { name: 'Dorm Living', image: dormImage },
+    { name: 'Services & Collaboration', image: serviceImage },
+    { name: 'Food', image: foodImage },
+    { name: 'Others', image: othersImage }
 ];
 
-function CategoryCards({categoryName, categoryImage}) {
+function CategoryCards({categoryName, categoryImage, isActive, onClick}) {
     return(
-        <div className="category-card">
+        <div 
+            className={`category-card ${isActive ? "active" : ""}`}
+            onClick={onClick}
+            style={{ cursor: "pointer", fontWeight: isActive ? "bold" : "normal" }}
+        >
             <img src={categoryImage} alt={`${categoryName} Image`} />
             {categoryName}
         </div>
     )
 }
 
-export function Outline({ children }) {
+export function Outline() {
     const searchBar = useRef(null)
     const [currentUser, setCurrentUser] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState("All");
     const token = localStorage.getItem('access_token'); 
 
     useEffect(() => {
@@ -53,7 +71,6 @@ export function Outline({ children }) {
             }
         };
 
-        const token = localStorage.getItem('access_token');
         if (token) {
             fetchProfile();
         }
@@ -75,7 +92,11 @@ export function Outline({ children }) {
                         <img className="notification-icon" src={notificationIcon} alt="Notification Icon" />
                     </div>
 
-                    <form className="banner-search" onClick = {() => searchBar.current.focus()}>
+                    <form 
+                        className="banner-search"
+                        onClick = {() => searchBar.current.focus()}
+                        onSubmit={(e) => e.preventDefault()}
+                    >
                         <input
                             ref={searchBar}
                             type="text"
@@ -87,21 +108,23 @@ export function Outline({ children }) {
             </section>
 
             <main className="main-content-wrapper">
-                <aside className="categories-sidebar">
+                <aside className="categories-bar">
                     <h1>Categories</h1>
-                    <div className="category-row">
+                    <div className="category-row">                        
                         {categories.map((category, index) => (
                             <CategoryCards
                                 key={index}
                                 categoryName={category.name}
                                 categoryImage={category.image}
+                                isActive={selectedCategory === category.name}
+                                onClick={() => setSelectedCategory(category.name)}
                             />
                         ))}
                     </div>
                 </aside>
 
                 <section className="page-content">
-                        {children}
+                        <Outlet context={{ selectedCategory}} />
                 </section>
             </main>
         </div>
