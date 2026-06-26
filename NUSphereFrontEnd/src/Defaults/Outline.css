@@ -8,8 +8,8 @@
     padding: 28px 20px;
     background:
         linear-gradient(
-            rgba(255, 255, 255, 0.75),
-            rgba(255, 255, 255, 0.75)
+            rgba(255, 255, 255, 0.45),
+            rgba(255, 255, 255, 0.4)
         ),
         var(--banner-image);
     background-size: cover;
