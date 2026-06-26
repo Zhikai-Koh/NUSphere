@@ -113,7 +113,6 @@ export function PersonalListings() {
                 </div>
                 <h3 className="add-card-text">Create New Listing</h3>
             </div>
-        </div>  
-             
+        </div>              
     );
 }

@@ -16,17 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from backend import settings
+
+from listings.views import AddListingView
+from listings.orderhistory.views import OrderHistoryView
 from listings.personal.views import PersonalListingView
 from listings.confirmsold.views import ConfirmSoldView
 from listings.checkout.views import CheckOutView
-from backend import settings
+
 from cart.views import CartAPIView
 from django.conf.urls.static import static
-from listings.views import AddListingView
-from login.views import LogoutView
 
+from login.views import LogoutView
 from login.views import ProfileView
 from login.views import RegisterView
+
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -39,6 +43,7 @@ urlpatterns = [
     path('api/listings/personal/', PersonalListingView.as_view(), name='personal-listing'),
     path('api/listings/checkout/', CheckOutView.as_view(), name='check-out'),
     path('api/listings/confirmsold/', ConfirmSoldView.as_view(), name='confirm-sold'),
+    path('api/listings/orderhistory/', OrderHistoryView.as_view(), name='order-history'),
 
     # The registration route, React will POST user details here to create a new account
     path('api/auth/register/', RegisterView.as_view(), name='auth_register'),

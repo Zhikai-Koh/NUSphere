@@ -48,6 +48,7 @@ class ConfirmSoldView(APIView):
         except Exception as e:
             return Response({"error": "An error occurred processing your order."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
+    #This is for sellers to get list of pending orders by buyers
     def get(self, request):
         pending_orders = Order.objects.filter(
             listingItem__listing__user=request.user,

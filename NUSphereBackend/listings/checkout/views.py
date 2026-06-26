@@ -11,6 +11,7 @@ from django.db import transaction
 class CheckOutView(APIView):
     permission_classes = [IsAuthenticated]
 
+    #This is to check if the amount the buyer want to check out is available in the listings db
     def get(self,request):
         listing_id = request.query_params.get("product_id")
 
