@@ -1,7 +1,7 @@
 import {useContext, createContext, useState, useEffect} from "react";
 import { API_BASE_URL } from "../config.js";
 import { CartContext } from "../UserSpecifics/CartContext.jsx";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 import "./Listings.css";
 import axios from "axios";
 import {SelectQuantity} from "./SelectQuantity.jsx"
@@ -13,6 +13,11 @@ export function Listings() {
     const [expandedId, setExpandedId] = useState(null);
     const navigate = useNavigate();
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const { selectCategory } = useOutletContext();
+
+    const filteredListings = selectedCategory === "All"
+        ? listings
+        : listings.filter(listing => listing.category === selectedCategory);
 
     const { handleAddToCart } = useContext(CartContext);
 
