@@ -15,12 +15,6 @@ export function Listings() {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const { selectedCategory } = useOutletContext();
 
-    const filteredListings = selectedCategory === "All"
-        ? listings
-        : listings.filter(listing => listing.category === selectedCategory);
-
-    const { handleAddToCart } = useContext(CartContext);
-
     const fetchListings = async () => {
       try{
         const token = localStorage.getItem('access_token');
@@ -41,6 +35,7 @@ export function Listings() {
             throw new Error('Network response failure');
         }
         setListings(response.data);
+        console.log(response.data)
         } catch (error) {
             console.error('Error fetching listings:', error);
             if (error.response.status === 401){
@@ -52,12 +47,20 @@ export function Listings() {
             setListings(<p style={{ color: 'red' }}>Failed to load listings. Please try again later.</p>);
         } finally {
             setLoading(false);
-      }
-  }
+        }
+    }
 
     useEffect(() => {
         fetchListings();
     }, []);
+
+    const filteredListings = selectedCategory === "All"
+            ? listings
+            : listings.filter(listing => listing.category === selectedCategory);
+
+    console.log(selectedCategory)
+    console.log(filteredListings)
+
 
     return (
         !loadSuccess ? listings :

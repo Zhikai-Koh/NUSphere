@@ -1,6 +1,6 @@
 import {useContext, createContext, useState, useEffect} from "react";
 import { API_BASE_URL } from "../config.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 
 export function MyStore() {
@@ -8,6 +8,7 @@ export function MyStore() {
     const [loadSuccess, setLoadSuccess] = useState(true);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const {storeId} = useParams();
 
     //For deleting products
     // const deleteListing = async (listingId) => {
@@ -27,9 +28,9 @@ export function MyStore() {
     // };
 
     //fetching products
-    const fetchListings = async () => {
+    const fetchShopProducts = async () => {
       try{
-        const response = await fetch(`${API_BASE_URL}/api/listings/personal/`, {
+        const response = await fetch(`${API_BASE_URL}/api/store/storeitems/${storeId}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('access_token')}`
@@ -50,7 +51,7 @@ export function MyStore() {
   }
 
     useEffect(() => {
-        fetchListings();
+        fetchShopProducts();
     }, []);
 
     return (
@@ -58,7 +59,7 @@ export function MyStore() {
         loading ? <p>Loading listings...</p> :
         listings.length === 0 ? <div
             className="listing-card add-new-card"
-            onClick={() => navigate('/add-listing') }
+            onClick={() => navigate('/AddProduct/' +  storeId)}
         >
             <div className="plus-icon-circle">
                 <span className="plus-symbol">+</span>
@@ -70,8 +71,8 @@ export function MyStore() {
             {listings?.map((listing) => (
                 <div key={listing.id} className="listing-card">
 
-                    {listing.image && (
-                        <img src={`${API_BASE_URL}${listing.image}`} 
+                    {listing.item_image && (
+                        <img src={`${API_BASE_URL}${listing.item_image}`} 
                         alt={listing.item_name}
                         className="listing-image"
                         />
@@ -82,7 +83,7 @@ export function MyStore() {
                     </h4>
 
                     <div className="card-quantity">
-                        In Stock: <strong>{listing.inventory.unsold}</strong>
+                        In Stock: <strong>{listing.item_quantity}</strong>
                     </div>
 
                     <div className="price-label">
@@ -95,8 +96,8 @@ export function MyStore() {
                     <div className="card-footer">
                         <div className = "item-status" style = {{display: "flex", flexDirection: "column"}}>
                             <div><strong>Status:</strong></div>
-                            <div>Pending: {listing.inventory.pending}</div>
-                            <div>Sold: {listing.inventory.sold}</div>
+                            {/* <div>Pending: {listing.inventory.pending}</div>
+                            <div>Sold: {listing.inventory.sold}</div> */}
                         </div>
                         <button onClick={() => deleteListing(listing.id)}>
                             Delete Product/Service
@@ -106,7 +107,7 @@ export function MyStore() {
             ))}
             <div
                 className="listing-card add-new-card"
-                onClick={() => navigate('/add-listing') }
+                onClick={() => navigate('/AddProduct/' +  storeId) }
             >
                 <div className="plus-icon-circle">
                     <span className="plus-symbol">+</span>

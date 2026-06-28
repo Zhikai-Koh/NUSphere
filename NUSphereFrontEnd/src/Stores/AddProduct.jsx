@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { API_BASE_URL } from "../config.js";
-import './AddListing.css';
-import { useNavigate } from "react-router-dom";
+import '../OpenMarket/AddListing.css';
+import { useNavigate, useParams} from "react-router-dom";
 
 export function AddProductForm() {
     const [item_name, setName] = useState("");
@@ -9,6 +9,8 @@ export function AddProductForm() {
     const [item_quantity, setQuantity] = useState("");
     const [item_description, setDescription] = useState("");
     const [imageFile, setImageFile] = useState(null);
+    const {storeId} = useParams();
+
 
     const navigate = useNavigate()
     const logInToken = localStorage.getItem('access_token');
@@ -26,7 +28,7 @@ export function AddProductForm() {
             formData.append("image", imageFile);
         }
         try {
-            const response = await fetch(`${API_BASE_URL}/api/listings/`, {
+            const response = await fetch(`${API_BASE_URL}/api/store/storeitems/${storeId}`, {
                 method: "POST",
                 body: formData,
                 headers: {
@@ -36,14 +38,14 @@ export function AddProductForm() {
 
             if (response.ok) {
                 alert("Product added successfully!");
-                navigate("/PersonalStore")
+                navigate("/MyStores/" + storeId);
             }else {
                 const errorData = await response.json();
                 console.error("Django Validation Errors:", errorData);
                 alert(`Failed: ${JSON.stringify(errorData)}`);
             }
         } catch (error) {
-            console.error("Error saving listing:", error);
+            console.error("Error saving product:", error);
         }
     };
 

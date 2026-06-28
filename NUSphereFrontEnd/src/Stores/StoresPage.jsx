@@ -36,6 +36,42 @@ export function StoresPage() {
             category: "Academics"
         }
     ])
+
+    const fetchStores = async () => {
+      try{
+        const token = localStorage.getItem('access_token');
+
+        let response;
+        if (token && token !== "null" && token !== "undefined") {
+            response = await axios.get(`${API_BASE_URL}/api/listings/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+            });
+        }
+        else{
+            response = await axios.get(`${API_BASE_URL}/api/listings/`);
+        }
+
+        if (!response) {
+            throw new Error('Network response failure');
+        }
+        setListings(response.data);
+        console.log(response.data)
+        } catch (error) {
+            console.error('Error fetching listings:', error);
+            if (error.response.status === 401){
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                window.location.reload();
+            }
+            setLoadSuccess(false);
+            setListings(<p style={{ color: 'red' }}>Failed to load listings. Please try again later.</p>);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const { selectedCategory } = useOutletContext();
 
     const filteredStores = selectedCategory === "All"

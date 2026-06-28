@@ -18,6 +18,7 @@ import { MyOrders } from "../OpenMarket/MyOrders.jsx";
 import { MyStore } from "../Stores/MyStore.jsx";
 import { SelectMyStore } from "../Stores/SelectMyStore.jsx";
 import { AddStoreForm } from "../Stores/AddStore.jsx";
+import { AddProductForm } from "../Stores/AddProduct.jsx";
 
 function NavigateTo({page, buttonDisplay, setActivePage}) {
     
@@ -53,10 +54,14 @@ export function NavigationBar() {
                     <Route path="/PersonalListings" element ={<><PersonalListings/><PendingListings/></>} />
                     <Route path="/orders" element = {<MyOrders/>}/>
 
-                    <Route path="stores" element={<AllProviders><Outline><StoresPage /></Outline></AllProviders>} />
+                    <Route path="stores" element={<AllProviders><Outline/></AllProviders>} >
+                        <Route index element = {<StoresPage />}/>
+                    </Route>
                     <Route path="add-store" element={<AddStoreForm />} />
                     <Route path="/MyStores" element = {<SelectMyStore/>}/>
-                    <Route path="/MyStores/:storeID" element = {<MyStore/>}/>
+                    <Route path="/MyStores/:storeId" element = {<MyStore/>}/>
+                    <Route path="/AddProduct/:storeId" element={<AddProductForm />} />
+
                 </Routes>
                 
                 <nav className="bottom-nav">

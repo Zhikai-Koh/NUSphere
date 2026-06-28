@@ -40,6 +40,7 @@ const categories = [
 ];
 
 function CategoryCards({categoryName, categoryImage, isActive, onClick}) {
+    
     return(
         <div 
             className={`category-card ${isActive ? "active" : ""}`}
@@ -56,7 +57,7 @@ export function Outline() {
     const searchBar = useRef(null)
     const [currentUser, setCurrentUser] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState("All");
-    const token = localStorage.getItem('access_token'); 
+    const token = localStorage.getItem('access_token');
 
     useEffect(() => {
         const fetchProfile = async () => {
