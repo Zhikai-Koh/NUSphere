@@ -76,7 +76,7 @@
 
 .banner-brand-row {
     width: 100%;
-    max-width: 680px;
+    max-width: 540px;
     display: grid;
     grid-template-columns: 40px 72px minmax(160px, 1fr) 40px 40px;
     align-items: center;
@@ -97,15 +97,15 @@
     background: var(--surface, #ffffff);
     padding: 20px;
     border-radius: 8px;
-    border: 1px solid var(--border, #e0e0e0);
+    border: 2px solid var(--border, #e0e0e0);
     top: 20px;
-    width: 100%;
+    width: 1200px;
     box-sizing: border-box;
     overflow: hidden;
 }
 
 .categories-section {
-    max-width: 1120px;
+    max-width: 680px;
     width: 100%;
     margin: 0 auto;
     padding: 24px 20px 20px;
