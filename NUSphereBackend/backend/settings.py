@@ -105,10 +105,6 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-print(f"CLOUD_NAME found: {bool(CLOUDINARY_STORAGE['CLOUD_NAME'])}")
-print(f"API_KEY found: {bool(CLOUDINARY_STORAGE['API_KEY'])}")
-print(f"API_SECRET found: {bool(CLOUDINARY_STORAGE['API_SECRET'])}")
-
 if CLOUDINARY_STORAGE['CLOUD_NAME'] and CLOUDINARY_STORAGE['API_KEY'] and CLOUDINARY_STORAGE['API_SECRET']:
     #Make cloudinary the default file storage if all credentials are provided so that images are saved online.
     STORAGES = {
