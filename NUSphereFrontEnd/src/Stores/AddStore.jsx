@@ -7,7 +7,7 @@ export function ListingCard({ listing }) {
         return (
         <div className="listing-card">
             <img 
-                src={listing.image} 
+                src={listing.image.startsWith('http') ? listing.image : `${API_BASE_URL}${listing.image}`}
                 alt={listing.title} 
                 className="listing-image"
             />

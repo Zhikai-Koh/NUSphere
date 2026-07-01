@@ -46,7 +46,7 @@ function CartItems({ data }) {
                       {cartItem.product_details.image && (
                           <img 
                           className="cart-item-image"
-                          src={`${API_BASE_URL}${cartItem.product_details.image}`}
+                          src={listing.image.startsWith('http') ? listing.image : `${API_BASE_URL}${listing.image}`}
                           alt={cartItem.product_details.item_name}
                           />
                       )}

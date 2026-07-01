@@ -65,7 +65,7 @@ export function PendingListings(){
                     className="listing-card"
                     >
                         {pending.listingItem__listing__image && (
-                            <img src={`${API_BASE_URL}/media/${pending.listingItem__listing__image}`} 
+                            <img src={listing.image.startsWith('http') ? listing.image : `${API_BASE_URL}/media/${listing.image}`} 
                             alt={pending.listingItem__listing__item_name}
                             className="listing-image"
                             />

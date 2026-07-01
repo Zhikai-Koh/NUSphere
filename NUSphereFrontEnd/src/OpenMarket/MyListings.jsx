@@ -74,7 +74,7 @@ export function PersonalListings() {
                     <div key={listing.id} className="listing-card">
 
                         {listing.image && (
-                            <img src={`${API_BASE_URL}${listing.image}`} 
+                            <img src={listing.image.startsWith('http') ? listing.image : `${API_BASE_URL}${listing.image}`} 
                             alt={listing.item_name}
                             className="listing-image"
                             />
