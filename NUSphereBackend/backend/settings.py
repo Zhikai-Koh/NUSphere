@@ -111,7 +111,14 @@ print(f"API_SECRET found: {bool(CLOUDINARY_STORAGE['API_SECRET'])}")
 
 if CLOUDINARY_STORAGE['CLOUD_NAME'] and CLOUDINARY_STORAGE['API_KEY'] and CLOUDINARY_STORAGE['API_SECRET']:
     #Make cloudinary the default file storage if all credentials are provided so that images are saved online.
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    STORAGES = {
+            "default": {
+                "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+            },
+            "staticfiles": {
+                "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+            },
+        }
 
 
 # Login related settings:
