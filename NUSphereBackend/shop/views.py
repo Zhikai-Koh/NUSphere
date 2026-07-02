@@ -8,10 +8,10 @@ from django.contrib.auth.models import User
 from django.db.models import Count, Q
 from django.db import transaction
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class AddStoreView(APIView):
-    permission_classes = [IsAuthenticated] 
+    permission_classes = [IsAuthenticatedOrReadOnly] 
 
     #Creating new store
     def post(self, request):
@@ -38,19 +38,19 @@ class AddStoreView(APIView):
     #When people load shop
     def get(self, request):
         if request.user.is_authenticated:
-            shops = Shop.objects.exclude(user=request.user)
+            shops = Shop.objects.exclude(owner=request.user)
         else:
             shops = Shop.objects.all()
 
         data = []
         for shop in shops:
-            if shop.is_open:
-                data.append({
-                    "id": shop.id,
-                    "owner": shop.owner,
-                    "category": shop.category.name,
-                    "description": shop.description,
-                    "store_name": shop.store_name,
-                    "image": shop.image.url if shop.image else None,
+            # if shop.is_open:
+            data.append({
+                "id": shop.id,
+                "owner": shop.owner.username,
+                "category": shop.category.name,
+                "description": shop.description,
+                "store_name": shop.store_name,
+                "image": shop.store_image.url if shop.store_image else None,
             })
         return Response(data)

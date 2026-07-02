@@ -1,35 +1,27 @@
 import {useContext, createContext, useState, useEffect} from "react";
 import { API_BASE_URL } from "../config.js";
 import { CartContext } from "../UserSpecifics/CartContext.jsx";
-import {useNavigate, useOutletContext} from "react-router-dom";
-import "./Listings.css";
+import {useNavigate, useOutletContext, useParams} from "react-router-dom";
+import "../OpenMarket/Listings.css";
 import axios from "axios";
-import {SelectQuantity} from "./SelectQuantity.jsx"
+import { SelectQuantity } from "../OpenMarket/SelectQuantity.jsx";
 
-export function Listings() {
+export function VisitStore() {
     const [listings, setListings] = useState([]);
     const [loadSuccess, setLoadSuccess] = useState(true);
     const [loading, setLoading] = useState(true);
     const [expandedId, setExpandedId] = useState(null);
     const navigate = useNavigate();
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const { selectedCategory } = useOutletContext();
+    const {storeId} = useParams();
+
 
     const fetchListings = async () => {
       try{
         const token = localStorage.getItem('access_token');
 
         let response;
-        if (token && token !== "null" && token !== "undefined") {
-            response = await axios.get(`${API_BASE_URL}/api/listings/`, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-            }
-            });
-        }
-        else{
-            response = await axios.get(`${API_BASE_URL}/api/listings/`);
-        }
+        response = await axios.get(`${API_BASE_URL}/api/store/otherstoreitems/${storeId}`);
 
         if (!response) {
             throw new Error('Network response failure');
@@ -54,11 +46,8 @@ export function Listings() {
         fetchListings();
     }, []);
 
-    const filteredListings = selectedCategory === "All"
-            ? listings
-            : listings.filter(listing => listing.category === selectedCategory);
+    const filteredListings = listings;
 
-    console.log(selectedCategory)
     console.log(filteredListings)
 
 
@@ -73,8 +62,8 @@ export function Listings() {
                 onClick={() => setExpandedId(expandedId === listing.id ? null : listing.id)}
                 >
 
-                    {listing.image && (
-                        <img src={listing.image.startsWith('http') ? listing.image : `${API_BASE_URL}${listing.image}`}
+                    {listing.item_image && (
+                        <img src={listing.item_image.startsWith('http') ? listing.item_image : `${API_BASE_URL}${listing.item_image}`}
                         alt={listing.item_name}
                         className="listing-image"
                         />
@@ -85,7 +74,7 @@ export function Listings() {
                     </h4>
 
                     <div className="card-quantity">
-                        Quantity: <strong>{listing.inventory.unsold}</strong>
+                        Quantity: <strong>{listing.item_quantity}</strong>
                     </div>
                     
                     <div className="card-footer">
@@ -101,7 +90,7 @@ export function Listings() {
                         </div>
                     </div>
                     {selectedProduct===listing &&
-                        <SelectQuantity productid={selectedProduct.id} productMaxQuantity={selectedProduct.inventory.unsold} onClose={() => setSelectedProduct(null)}/>
+                        <SelectQuantity productid={selectedProduct.id} productMaxQuantity={selectedProduct.item_quantity} onClose={() => setSelectedProduct(null)} producttype="shop_product"/>
                     }
 
                     {expandedId === listing.id && (

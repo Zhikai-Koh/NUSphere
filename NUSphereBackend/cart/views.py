@@ -8,6 +8,8 @@ from .models import Cart, CartItem
 from listings.models import Listing
 from .serializers import CartSerializer
 
+from shop.models import ShopProduct
+
 class CartAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -26,8 +28,8 @@ class CartAPIView(APIView):
 
         if product_type == "listing":
             model_class = Listing
-        # elif product_type == "shop_product":
-        #     model_class = ShopProduct
+        elif product_type == "shop_product":
+            model_class = ShopProduct
         else:
             return Response(
                 {"error": "A valid product_type ('listing' or 'shop_product') is required."}, 
@@ -69,8 +71,8 @@ class CartAPIView(APIView):
 
         if product_type == "listing":
             model_class = Listing
-        # elif product_type == "shop_product":
-        #     model_class = ShopProduct
+        elif product_type == "shop_product":
+            model_class = ShopProduct
         else:
             return Response(
                 {"error": "A valid product_type ('listing' or 'shop_product') is required."}, 

@@ -71,7 +71,7 @@ export function SelectMyStore() {
                 <div key={listing.id} className="listing-card" onClick={()=> navigate(`./${listing.id}`)}>
 
                     {listing.store_image && (
-                        <img src={listing.image.startsWith('http') ? listing.image : `${API_BASE_URL}${listing.image}`}
+                        <img src={listing.store_image.startsWith('http') ? listing.store_image : `${API_BASE_URL}${listing.store_image}`}
                         alt={listing.store_name}
                         className="listing-image"
                         />

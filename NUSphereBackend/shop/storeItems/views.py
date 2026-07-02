@@ -29,6 +29,7 @@ class StoreItemView(APIView):
             })
         return Response(data)
     
+    #For logged in people to add products to their own stores
     def post(self, request,store_id):
         shop = Shop.objects.get(owner = request.user, id=store_id)
 

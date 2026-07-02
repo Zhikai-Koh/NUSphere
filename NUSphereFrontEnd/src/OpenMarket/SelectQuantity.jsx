@@ -2,21 +2,21 @@ import React, { useContext, useState } from 'react';
 import { CartContext } from "../UserSpecifics/CartContext";
 
 
-export function SelectQuantity({ product, onClose}) {
+export function SelectQuantity({ productid,productMaxQuantity, onClose, producttype = "listing" }) {
     // or is a fallback :o
     const [quantity, setQuantity] = useState(1 || 1);
     const {handleAddToCart} = useContext(CartContext)
 
     function addToCart(e){
         e.preventDefault()
-        if(quantity > product.inventory.unsold){
-            alert("There is not enough quantity in stock! Maximum quantity is " + product.inventory.unsold)
-            setQuantity(product.inventory.unsold)
+        if(quantity > productMaxQuantity){
+            alert("There is not enough quantity in stock! Maximum quantity is " + productMaxQuantity)
+            setQuantity(productMaxQuantity)
         }else if(quantity < 1){
             alert("You can only add 1 or more item to cart!")
             setQuantity(1)
         }else{
-            handleAddToCart(product.id, quantity)
+            handleAddToCart(productid, quantity, producttype)
         }
     }
 

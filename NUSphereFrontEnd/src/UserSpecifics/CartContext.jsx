@@ -72,7 +72,7 @@ export function CartProvider({ children }) {
         }
     };
 
-    const handleAddToCart = async (productId, qty = 1) => {
+    const handleAddToCart = async (productId, qty = 1, product_type = "listing") => {
         if (!token) {
             alert("Please log in to add items to your cart!");
             return;
@@ -83,7 +83,7 @@ export function CartProvider({ children }) {
                 product_id: productId,
                 quantity: qty,
                 post_type: "add",
-                product_type: "listing"
+                product_type: product_type
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });

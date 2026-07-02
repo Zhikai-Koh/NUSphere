@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Cart, CartItem
 from listings.models import Listing
 from listings.serializers import ListingSerializer
+from shop.models import ShopProduct
 
 class CartItemSerializer(serializers.ModelSerializer):
     product_details = serializers.SerializerMethodField()
@@ -24,14 +25,14 @@ class CartItemSerializer(serializers.ModelSerializer):
                 "image": item.image.url,
             }
         
-        # elif isinstance(item, ShopProduct):
-        #     return {
-        #         "id": item.id,
-        #         "type": "shop_product",
-        #         "title": item.name,
-        #         "price": str(item.price),
-        #         "image": item.image.url if item.image else None,
-        #     }
+        elif isinstance(item, ShopProduct):
+            return {
+                "id": item.id,
+                "type": "shop_product",
+                "item_name": item.item_name,
+                "item_price": item.item_price,
+                "image": item.item_image.url
+            }
 
         return None
 

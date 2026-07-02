@@ -19,6 +19,7 @@ import { MyStore } from "../Stores/MyStore.jsx";
 import { SelectMyStore } from "../Stores/SelectMyStore.jsx";
 import { AddStoreForm } from "../Stores/AddStore.jsx";
 import { AddProductForm } from "../Stores/AddProduct.jsx";
+import { VisitStore } from "../Stores/VisitStore.jsx";
 
 function NavigateTo({page, buttonDisplay, setActivePage}) {
     
@@ -61,6 +62,7 @@ export function NavigationBar() {
                     <Route path="/MyStores" element = {<SelectMyStore/>}/>
                     <Route path="/MyStores/:storeId" element = {<MyStore/>}/>
                     <Route path="/AddProduct/:storeId" element={<AddProductForm />} />
+                    <Route path="/VisitStore/:storeId" element={<AllProviders><VisitStore /></AllProviders>} />
 
                 </Routes>
                 

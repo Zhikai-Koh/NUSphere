@@ -1,18 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config.js";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate} from "react-router-dom";
 import './StoresPage.css';
+import axios from "axios"
 
 function StoreCard({ store }) {
+    const navigate = useNavigate();
+    function handleViewStore(storeId){
+        navigate(`../VisitStore/${storeId}`)
+    }
+
     return (
         <div className="store-card">
             <div className="store-card-body">
-                <h3 className="store-title">{store.name}</h3>
+                <img className="store-image" src={store.image.startsWith('http') ? store.image : `${API_BASE_URL}${store.image}`} alt={store.store_name} />
+                <h3 className="store-title">{store.store_name}</h3>
                 <span className="store-owner">By: {store.owner}</span>
                 <p className="store-description">{store.description}</p>
                 <div className="store-card-footer">
                     <span className="store-category-tag">{store.category}</span>
-                    <button className="view-store-btn">Visit Store</button>
+                    <button className="view-store-btn" onClick={() => handleViewStore(store.id)}>Visit Store</button>
                 </div>
             </div>
         </div>
@@ -20,22 +27,9 @@ function StoreCard({ store }) {
 }
 
 export function StoresPage() {
-    const [stores, setStores] = useState([
-        {
-            id: 1,
-            name: "Corner Cafe",
-            owner: "Danvers (DSA '25)",
-            description: "Home-made Matcha, Hojicha and Latte Art",
-            category: "Food"
-        },
-        {
-            id: 2,
-            name: "Computing Notes Exchange",
-            owner: "Jeff (CS '26)",
-            description: "Collated study materials for Computing Students",
-            category: "Academics"
-        }
-    ])
+    const [stores, setStores] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [loadSuccess, setLoadSuccess] = useState(true);
 
     const fetchStores = async () => {
       try{
@@ -43,34 +37,38 @@ export function StoresPage() {
 
         let response;
         if (token && token !== "null" && token !== "undefined") {
-            response = await axios.get(`${API_BASE_URL}/api/listings/`, {
+            response = await axios.get(`${API_BASE_URL}/api/store/`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
             });
         }
         else{
-            response = await axios.get(`${API_BASE_URL}/api/listings/`);
+            response = await axios.get(`${API_BASE_URL}/api/store/`);
         }
 
         if (!response) {
             throw new Error('Network response failure');
         }
-        setListings(response.data);
+        setStores(response.data);
         console.log(response.data)
         } catch (error) {
-            console.error('Error fetching listings:', error);
+            console.error('Error fetching stores:', error);
             if (error.response.status === 401){
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
                 window.location.reload();
             }
             setLoadSuccess(false);
-            setListings(<p style={{ color: 'red' }}>Failed to load listings. Please try again later.</p>);
+            setStores(<p style={{ color: 'red' }}>Failed to load listings. Please try again later.</p>);
         } finally {
             setLoading(false);
         }
     }
+
+    useEffect(() => {
+        fetchStores();
+    }, []);
 
     const { selectedCategory } = useOutletContext();
 
@@ -79,6 +77,8 @@ export function StoresPage() {
         : stores.filter(store => store.category === selectedCategory);
 
     return (
+        !loadSuccess ? stores :
+        loading ? <p>Loading stores...</p> :
         <main className="stores-main-content">
             <div className="stores-grid-header">
                 <h2>Registered Student Stores</h2>
@@ -89,7 +89,7 @@ export function StoresPage() {
                 </div>
             ) : (
                 <div className="stores-grid">
-                    {stores.map((store) => (
+                    {filteredStores.map((store) => (
                         <StoreCard key={store.id} store={store} />
                     ))}
                 </div>
