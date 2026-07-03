@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1782700313989" clover="3.2.0">
-  <project timestamp="1782700313989" name="All files">
+<coverage generated="1782703070399" clover="3.2.0">
+  <project timestamp="1782703070399" name="All files">
     <metrics statements="21" coveredstatements="19" conditionals="8" coveredconditionals="8" methods="8" coveredmethods="6" elements="37" coveredelements="33" complexity="0" loc="21" ncloc="21" packages="4" files="19" classes="19"/>
     <package name="src">
       <metrics statements="1" coveredstatements="1" conditionals="2" coveredconditionals="2" methods="0" coveredmethods="0"/>
-      <file name="config.js" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\config.js">
+      <file name="config.js" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\config.js">
         <metrics statements="1" coveredstatements="1" conditionals="2" coveredconditionals="2" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="cond" truecount="2" falsecount="0"/>
       </file>
     </package>
     <package name="src.Defaults">
       <metrics statements="20" coveredstatements="18" conditionals="6" coveredconditionals="6" methods="8" coveredmethods="6"/>
-      <file name="Outline.css" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\Defaults\Outline.css">
+      <file name="Outline.css" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\Defaults\Outline.css">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="Outline.jsx" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\Defaults\Outline.jsx">
+      <file name="Outline.jsx" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\Defaults\Outline.jsx">
         <metrics statements="20" coveredstatements="18" conditionals="6" coveredconditionals="6" methods="8" coveredmethods="6"/>
         <line num="30" count="1" type="stmt"/>
         <line num="44" count="63" type="stmt"/>
@@ -40,55 +40,55 @@
     </package>
     <package name="src.assets">
       <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="CartIcon.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\CartIcon.png">
+      <file name="CartIcon.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\CartIcon.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="MainBanner.jpg" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\MainBanner.jpg">
+      <file name="MainBanner.jpg" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\MainBanner.jpg">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="NUSphereLogo.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\NUSphereLogo.png">
+      <file name="NUSphereLogo.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\NUSphereLogo.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="NUSphereName.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\NUSphereName.png">
+      <file name="NUSphereName.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\NUSphereName.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="NotificationIcon.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\NotificationIcon.png">
+      <file name="NotificationIcon.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\NotificationIcon.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="ProfilePhotoIcon.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\ProfilePhotoIcon.png">
+      <file name="ProfilePhotoIcon.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\ProfilePhotoIcon.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="SearchIcon.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\SearchIcon.png">
+      <file name="SearchIcon.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\SearchIcon.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
     </package>
     <package name="src.assets.Categories">
       <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="Academics.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Academics.png">
+      <file name="Academics.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Academics.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="All.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\All.png">
+      <file name="All.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\All.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="Clothes.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Clothes.png">
+      <file name="Clothes.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Clothes.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="Dorm.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Dorm.png">
+      <file name="Dorm.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Dorm.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="Electronics.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Electronics.png">
+      <file name="Electronics.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Electronics.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="Food.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Food.png">
+      <file name="Food.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Food.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="Furniture.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Furniture.png">
+      <file name="Furniture.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Furniture.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="Others.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Others.png">
+      <file name="Others.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Others.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
-      <file name="Service.png" path="C:\Users\simho\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Service.png">
+      <file name="Service.png" path="C:\Users\User\OneDrive\Desktop\Orbital\NUSphereFrontEnd\src\assets\Categories\Service.png">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
     </package>

@@ -79,7 +79,7 @@ const displayOrders = orders[activeTab] || [];
 
                             {/* image */}
                             {order.listingItem__listing__image && (
-                                <img src={listing.image.startsWith('http') ? listing.image : `${API_BASE_URL}/media/${listing.image}`} 
+                                <img src={order.listingItem__listing__image.startsWith('http') ? order.listingItem__listing__image : `${API_BASE_URL}/media/${order.listingItem__listing__image}`} 
                                      alt={order.listingItem__listing__item_name}
                                      className="listing-image"
                                      style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "6px" }}
