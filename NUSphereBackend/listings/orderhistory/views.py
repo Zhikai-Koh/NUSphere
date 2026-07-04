@@ -15,32 +15,48 @@ class OrderHistoryView(APIView):
         pending_orders = Order.objects.filter(
             buyer=request.user,
             listingItem__status='pending'
-        ).values(
-            'listingItem__listing__id',
-            'listingItem__listing__user',
-            'listingItem__listing__item_name',
-            'listingItem__listing__item_price',
-            'listingItem__listing__image'
-        ).annotate(
-            quantity=Count('id')
-        )
+        ).select_related('listingItem__listing', 'listingItem__listing__user')
+
+        pending_data = {}
+        for order in pending_orders:
+            listing_id = order.listingItem.listing.id
+            if listing_id not in pending_data:
+                pending_data[listing_id] = {
+                    "id": listing_id,
+                    "user": order.listingItem.listing.user.username,
+                    "item_name": order.listingItem.listing.item_name,
+                    "item_price": order.listingItem.listing.item_price,
+                    "image": order.listingItem.listing.image.url,
+                    "quantity": 1
+                }
+            else:
+                pending_data[listing_id]["quantity"] += 1
+
 
         sold_orders = Order.objects.filter(
             buyer=request.user,
             listingItem__status='sold'
-        ).values(
-            'listingItem__listing__id',
-            'listingItem__listing__user',
-            'listingItem__listing__item_name',
-            'listingItem__listing__item_price',
-            'listingItem__listing__image'
-        ).annotate(
-            quantity=Count('id')
-        )
+        ).select_related('listingItem__listing', 'listingItem__listing__user')
+
+        sold_data = {}
+        for order in sold_orders:
+            listing_id = order.listingItem.listing.id
+
+            if listing_id not in sold_data:
+                sold_data[listing_id] = {
+                    "id": listing_id,
+                    "user": order.listingItem.listing.user.username,
+                    "item_name": order.listingItem.listing.item_name,
+                    "item_price": order.listingItem.listing.item_price,
+                    "image": order.listingItem.listing.image.url,
+                    "quantity": 1
+                }
+            else:
+                sold_data[listing_id]["quantity"] += 1
 
         data = {
-            "pending": list(pending_orders),
-            "sold": list(sold_orders)
+            "pending": list(pending_data.values()),
+            "sold": list(sold_data.values())
         }
 
         return Response(data, status=status.HTTP_200_OK)

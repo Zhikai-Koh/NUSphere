@@ -53,7 +53,7 @@ const displayOrders = orders[activeTab] || [];
                         color: activeTab === "pending" ? "#fff" : "#64748b"
                     }}
                 >
-                    Pending Confirmations ({orders.pending?.length || 0})
+                    Pending Confirmations ({orders.pending_data?.length || 0})
                 </button>
                 <button 
                     onClick={() => setActiveTab("sold")}
@@ -63,7 +63,7 @@ const displayOrders = orders[activeTab] || [];
                         color: activeTab === "sold" ? "#fff" : "#64748b"
                     }}
                 >
-                    Completed Purchase ({orders.sold?.length || 0})
+                    Completed Purchase ({orders.sold_data?.length || 0})
                 </button>
             </div>
 
@@ -78,17 +78,17 @@ const displayOrders = orders[activeTab] || [];
                         <div key={index} className="listing-card" style={{ border: "1px solid #e2e8f0", padding: "16px", borderRadius: "8px", background: "#fff" }}>
 
                             {/* image */}
-                            {order.listingItem__listing__image && (
-                                <img src={order.listingItem__listing__image.startsWith('http') ? order.listingItem__listing__image : `${API_BASE_URL}${order.listingItem__listing__image}`} 
-                                     alt={order.listingItem__listing__item_name}
+                            {order.image && (
+                                <img src={order.image.startsWith('http') ? order.image : `${API_BASE_URL}${order.image}`} 
+                                     alt={order.item_name}
                                      className="listing-image"
                                      style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "6px" }}
                                 />
                             )}
 
                             {/* Name */}
-                            <h4 className="card-title" style={{ margin: "12px 0 6px" }}>{order.listingItem__listing__item_name}</h4>
-                            
+                            <h4 className="card-title" style={{ margin: "12px 0 6px" }}>{order.item_name}</h4>
+
                             {/* Qty */}
                             <div className="card-quantity" style={{ display: "flex", justifyContent: "space-between", margin: "6px 0", color: "black" }}>
                                 Total Ordered: <strong>{order.quantity}</strong>
@@ -98,12 +98,12 @@ const displayOrders = orders[activeTab] || [];
                             {/* nt sure if da qty and price shd b arranged liddat tho, the spacing looks a lil weird */}
                             <div className="price-label" style={{ display: "flex", justifyContent: "space-between", margin: "12px 0" }}>
                                 <span style={{ color: "black" }}>Unit Price:</span>
-                                <strong className="card-price">${parseFloat(order.listingItem__listing__item_price).toFixed(2)}</strong>
+                                <strong className="card-price">${parseFloat(order.item_price).toFixed(2)}</strong>
                             </div>
 
                             <div className="price-label" style={{ display: "flex", justifyContent: "space-between", margin: "12px 0" }}>
                                 <span style={{ color: "black" }}>Total Price:</span>
-                                <strong className="card-price">${parseFloat(order.listingItem__listing__item_price * order.quantity).toFixed(2)}</strong>
+                                <strong className="card-price">${parseFloat(order.item_price * order.quantity).toFixed(2)}</strong>
                             </div>
 
                             {/* status at the bottom */}
