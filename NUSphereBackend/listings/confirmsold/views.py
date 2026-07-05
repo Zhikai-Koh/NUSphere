@@ -53,14 +53,31 @@ class ConfirmSoldView(APIView):
         pending_orders = Order.objects.filter(
             listingItem__listing__user=request.user,
             listingItem__status='pending'
-        ).values(
-            'buyer',
-            'listingItem__listing__id',
-            'listingItem__listing__item_name',
-            'listingItem__listing__item_price',
-            'listingItem__listing__image'
-        ).annotate(
-            quantity=Count('id')
-        )
+        ).select_related('listingItem__listing', 'listingItem__listing__user')
+        # .values(
+        #     'buyer',
+        #     'listingItem__listing__id',
+        #     'listingItem__listing__item_name',
+        #     'listingItem__listing__item_price',
+        #     'listingItem__listing__image'
+        # ).annotate(
+        #     quantity=Count('id')
+        # )
 
-        return Response(pending_orders, status=status.HTTP_200_OK)
+        data = {}
+        for order in pending_orders:
+            listing_id = order.listingItem.listing.id
+
+            if listing_id not in data:
+                data[listing_id] = {
+                    "buyer": order.buyer.username,
+                    "listing_id": listing_id,
+                    "item_name": order.listingItem.listing.item_name,
+                    "item_price": order.listingItem.listing.item_price,
+                    "image": order.listingItem.listing.image.url,
+                    "quantity": 1
+                }
+            else:
+                data[listing_id]["quantity"] += 1
+
+        return Response(list(data.values()), status=status.HTTP_200_OK)

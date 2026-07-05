@@ -61,18 +61,18 @@ export function PendingListings(){
             pendings.length === 0 ? <h2>No pending listings available</h2> :
             <div className="my-listings-grid">
                 {pendings?.map((pending) => (
-                    <div key={pending.listingItem__listing__id} 
+                    <div key={pending.listing_id} 
                     className="listing-card"
                     >
-                        {pending.listingItem__listing__image && (
-                            <img src={pending.listingItem__listing__image.startsWith('http') ? pending.listingItem__listing__image : `${API_BASE_URL}${pending.listingItem__listing__image}`} 
-                            alt={pending.listingItem__listing__item_name}
+                        {pending.image && (
+                            <img src={pending.image.startsWith('http') ? pending.image : `${API_BASE_URL}${pending.image}`} 
+                            alt={pending.item_name}
                             className="listing-image"
                             />
                         )}
 
                         <h4 className="card-title">
-                            {pending.listingItem__listing__item_name}
+                            {pending.item_name}
                         </h4>
 
                         <div className="card-quantity">
@@ -81,15 +81,15 @@ export function PendingListings(){
                         
                         <div className="card-footer">                        
                             <button onClick={(e) =>{
-                                e.stopPropagation(pending.listingItem__listing__id, pending.buyer);
-                                handleConfirmSale(pending.listingItem__listing__id, pending.buyer);
+                                e.stopPropagation(pending.id, pending.buyer);
+                                handleConfirmSale(pending.id, pending.buyer);
                             }}
                             style = {{backgroundColor:"#11ac38ff"}}
                             >
                                 Confirm Sale
                             </button>
                             <div className="card-price">
-                                ${parseFloat(pending.listingItem__listing__item_price).toFixed(2)}
+                                ${parseFloat(pending.item_price).toFixed(2)}
                             </div>
                         </div>
                     </div>
