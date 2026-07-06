@@ -15,6 +15,13 @@ class AddListingView(APIView):
 
     #When new listing is made
     def post(self, request):
+
+        if int(request.data.get("item_price")) < 0:
+            return Response({"error": "Invalid item price."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if int(request.data.get("item_quantity")) < 0:
+            return Response({"error": "Invalid item price."}, status=status.HTTP_400_BAD_REQUEST)
+
         category = Categories.objects.get(name=request.data.get("category"))
 
         newListing, created = Listing.objects.get_or_create(

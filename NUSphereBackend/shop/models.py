@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from listings.models import Categories
 
 class Shop(models.Model):
-    owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='shop')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='shop')
     store_name = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

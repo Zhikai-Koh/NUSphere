@@ -26,6 +26,9 @@ class CartAPIView(APIView):
         product_id = request.data.get('product_id')
         quantity = int(request.data.get('quantity', 0))
 
+        if quantity <= 0:
+            return Response({"error": "Invalid quantity."}, status=status.HTTP_400_BAD_REQUEST)
+
         if product_type == "listing":
             model_class = Listing
         elif product_type == "shop_product":

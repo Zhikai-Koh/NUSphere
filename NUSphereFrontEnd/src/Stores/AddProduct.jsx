@@ -18,6 +18,26 @@ export function AddProductForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if(item_price < 0) {
+            alert("Please enter a valid price.");
+            return;
+        }
+
+        if(!item_name) {
+            alert("Please enter a valid item name.");
+            return;
+        }
+
+        if(item_quantity < 0) {
+            alert("Please enter a valid quantity.");
+            return;
+        }
+
+        if(!imageFile) {
+            alert("Please upload an image.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("item_name", item_name);
         formData.append("item_price", item_price);

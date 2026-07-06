@@ -54,15 +54,6 @@ class ConfirmSoldView(APIView):
             listingItem__listing__user=request.user,
             listingItem__status='pending'
         ).select_related('listingItem__listing', 'listingItem__listing__user')
-        # .values(
-        #     'buyer',
-        #     'listingItem__listing__id',
-        #     'listingItem__listing__item_name',
-        #     'listingItem__listing__item_price',
-        #     'listingItem__listing__image'
-        # ).annotate(
-        #     quantity=Count('id')
-        # )
 
         data = {}
         for order in pending_orders:

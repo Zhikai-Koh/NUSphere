@@ -31,6 +31,12 @@ class StoreItemView(APIView):
     
     #For logged in people to add products to their own stores
     def post(self, request,store_id):
+        if int(request.data.get("item_price")) < 0:
+            return Response({"error": "Invalid item price."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if int(request.data.get("item_quantity")) < 0:
+            return Response({"error": "Invalid item quantity."}, status=status.HTTP_400_BAD_REQUEST)
+
         shop = Shop.objects.get(owner = request.user, id=store_id)
 
         newProduct, created = ShopProduct.objects.get_or_create(
