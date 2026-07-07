@@ -1,4 +1,3 @@
-# 1. CRITICAL SECURITY
 .env
 .env.local
 .env.*.local
@@ -6,29 +5,15 @@
 *.key
 id_rsa
 secrets.toml
-
-
-# 2. DEPENDENCIES & PACKAGES
 node_modules/
 /jspm_packages/
 /web_modules/
-
-
-# 3. BUILD OUTPUTS & PRODUCTION BUNDLES
 dist/
 build/
 .next/
 out/
 .nuxt/
 .output/
-
-
-# 4. AGENTIC ENGINE ARCHIVE (Clears local memory contexts for Codex)
-.codex/
-.agents/data/
-
-
-# 5. DIAGNOSTICS, LOGS & CACHES
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -37,19 +22,11 @@ yarn-error.log*
 .stylelintcache
 .parcel-cache
 .cache/
-
-
-# 6. SYSTEM-SPECIFIC ARTIFACTS
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
-
-
-# 7. POSTGRESQL DATA
 db.sqlite3
 *.sqlite3
-
-# 8. pycache
 **/__pycache__/
 *.pyc

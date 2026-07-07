@@ -29,7 +29,7 @@ from shop.personalStores.views import PersonalStoresView
 from shop.storeItems.views import StoreItemView
 from shop.othersStores.views import OthersStoreItemView
 from shop.checkout.views import StoreCheckOutView
-from NUSphereBackend.shop.confirmsold.views import StoreConfirmSoldView
+from shop.confirmsold.views import StoreConfirmSoldView
 
 from cart.views import CartAPIView
 from django.conf.urls.static import static

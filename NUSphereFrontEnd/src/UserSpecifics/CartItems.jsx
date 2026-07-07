@@ -14,6 +14,11 @@ function CartItems({ data }) {
 
   const checkAppropriateQuantity = async (product_id, quantity, product_type) => {
       const listingItem = await getListingItem(product_id, product_type)
+      if (!listingItem) {
+          alert("Could not verify available quantity. Please try again.")
+          return
+      }
+
       if(quantity > listingItem.item_quantity){
           alert("Input quantity is more than available quantity! Only " + listingItem.item_quantity + " available!")
       }else if(quantity < 1){
@@ -65,7 +70,6 @@ function CartItems({ data }) {
                       </div>
 
                       <div className="cart-item-actions">
-                        {console.log(cartItem.quantity)}
                         <button onClick={() => checkAppropriateQuantity(cartItem.product_details.id, cartItem.quantity, cartItem.product_details.type)}>Check Out</button>
                         <button onClick={() => handleRemoveFromCart(cartItem.product_details.id, cartItem.product_details.type)}>Remove</button>
                       </div>

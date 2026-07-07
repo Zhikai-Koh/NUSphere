@@ -16,10 +16,16 @@ export function SelectQuantityCart({product_id, input_Quantity, updateQty, produ
 
     const saveToCart= async (productId, qty) => {
         const listingItem= await getListingItem(product_id,product_type)
+        if (!listingItem) {
+            alert("Could not verify available quantity. Please try again.")
+            setQuantity(Number(input_Quantity) || 1)
+            return
+        }
+
         const listingItemQty = listingItem.item_quantity
 
         if(quantity > listingItemQty){
-            alert("Max amount if item is: " + listingItemQty)
+            alert("Max amount of item is: " + listingItemQty)
             setQuantity(listingItemQty)
             qty = listingItemQty
         }

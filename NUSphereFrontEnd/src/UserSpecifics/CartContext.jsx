@@ -67,6 +67,7 @@ export function CartProvider({ children }) {
                 handleRemoveFromCart(productId,product_type)
             } catch (error) {
                 console.error("Checking out cart failed:", error);
+                alert(error.response?.data?.error || "Failed to check out item.");
             }
         }
         else if(product_type == "shop_product"){
@@ -82,6 +83,7 @@ export function CartProvider({ children }) {
                 handleRemoveFromCart(productId,product_type)
             } catch (error) {
                 console.error("Checking out cart failed:", error);
+                alert(error.response?.data?.error || "Failed to check out item.");
             }
         }
     };
