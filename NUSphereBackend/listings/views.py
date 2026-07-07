@@ -5,6 +5,7 @@ from .models import Listing, Categories, ListingItem, Order
 from .serializers import ListingSerializer
 from django.contrib.auth.models import User
 from django.db.models import Count, Q
+from decimal import Decimal, InvalidOperation
 
 # For login system
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -15,27 +16,48 @@ class AddListingView(APIView):
 
     #When new listing is made
     def post(self, request):
+        item_name = request.data.get("item_name")
+        image = request.FILES.get("image")
 
-        if int(request.data.get("item_price")) < 0:
-            return Response({"error": "Invalid item price."}, status=status.HTTP_400_BAD_REQUEST)
-        
-        if int(request.data.get("item_quantity")) < 0:
+        try:
+            item_price = Decimal(request.data.get("item_price", ""))
+        except (InvalidOperation, TypeError):
             return Response({"error": "Invalid item price."}, status=status.HTTP_400_BAD_REQUEST)
 
-        category = Categories.objects.get(name=request.data.get("category"))
+        try:
+            item_quantity = int(request.data.get("item_quantity", ""))
+        except (TypeError, ValueError):
+            return Response({"error": "Invalid item quantity."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if item_price < 0:
+            return Response({"error": "Invalid item price."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if item_quantity < 0:
+            return Response({"error": "Invalid item quantity."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not item_name:
+            return Response({"error": "Item name is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not image:
+            return Response({"error": "Listing image is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            category = Categories.objects.get(name=request.data.get("category"))
+        except Categories.DoesNotExist:
+            return Response({"error": "Invalid category."}, status=status.HTTP_400_BAD_REQUEST)
 
         newListing, created = Listing.objects.get_or_create(
             user=request.user,
-            item_name=request.data.get("item_name"),
-            item_price=request.data.get("item_price"),
+            item_name=item_name,
+            item_price=item_price,
             category=category,
-            item_quantity=request.data.get("item_quantity"),
+            item_quantity=item_quantity,
             item_description=request.data.get("item_description"),
-            image=request.FILES.get("image")
+            image=image
         )
         newListing.save()
 
-        items = [ListingItem(listing=newListing) for _ in range(int(request.data.get("item_quantity")))]
+        items = [ListingItem(listing=newListing) for _ in range(item_quantity)]
         ListingItem.objects.bulk_create(items)
         
         serializer = ListingSerializer(newListing)

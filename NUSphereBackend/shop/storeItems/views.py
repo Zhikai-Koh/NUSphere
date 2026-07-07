@@ -5,6 +5,7 @@ from rest_framework import status
 from ..models import Shop, ShopOrder, ShopProduct
 from ..serializers import ShopProductSerializer, ShopSerializer 
 from django.db.models import ProtectedError
+from decimal import Decimal, InvalidOperation
 
 # For login system
 from rest_framework.permissions import IsAuthenticated
@@ -32,21 +33,43 @@ class StoreItemView(APIView):
     
     #For logged in people to add products to their own stores
     def post(self, request,store_id):
-        if int(request.data.get("item_price")) < 0:
+        item_name = request.data.get("item_name")
+        image = request.FILES.get("image")
+
+        try:
+            item_price = Decimal(request.data.get("item_price", ""))
+        except (InvalidOperation, TypeError):
             return Response({"error": "Invalid item price."}, status=status.HTTP_400_BAD_REQUEST)
 
-        if int(request.data.get("item_quantity")) < 0:
+        try:
+            item_quantity = int(request.data.get("item_quantity", ""))
+        except (TypeError, ValueError):
             return Response({"error": "Invalid item quantity."}, status=status.HTTP_400_BAD_REQUEST)
 
-        shop = Shop.objects.get(owner = request.user, id=store_id)
+        if item_price < 0:
+            return Response({"error": "Invalid item price."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if item_quantity < 0:
+            return Response({"error": "Invalid item quantity."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not item_name:
+            return Response({"error": "Item name is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not image:
+            return Response({"error": "Product image is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            shop = Shop.objects.get(owner = request.user, id=store_id)
+        except Shop.DoesNotExist:
+            return Response({"error": "Store not found or you do not have permission to add products."}, status=status.HTTP_404_NOT_FOUND)
 
         newProduct, created = ShopProduct.objects.get_or_create(
             shop = shop,
-            item_name=request.data.get("item_name"),
-            item_price=request.data.get("item_price"),
-            item_quantity=request.data.get("item_quantity"),
+            item_name=item_name,
+            item_price=item_price,
+            item_quantity=item_quantity,
             item_description=request.data.get("item_description"),
-            item_image=request.FILES.get("image")
+            item_image=image
         )
         newProduct.save()
         
