@@ -24,7 +24,10 @@ class CartAPIView(APIView):
         cart, _ = Cart.objects.get_or_create(user=request.user)
         post_type = request.data.get('post_type')
         product_id = request.data.get('product_id')
-        quantity = int(request.data.get('quantity', 0))
+        try:
+            quantity = int(request.data.get('quantity', 0))
+        except (TypeError, ValueError):
+            return Response({"error": "Invalid quantity."}, status=status.HTTP_400_BAD_REQUEST)
 
         if quantity <= 0:
             return Response({"error": "Invalid quantity."}, status=status.HTTP_400_BAD_REQUEST)

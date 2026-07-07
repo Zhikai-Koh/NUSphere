@@ -32,7 +32,10 @@ class CheckOutView(APIView):
     #Changing state of listing items to pending
     def post(self,request):
         listing_id = request.data.get("product_id")
-        quantity = request.data.get("quantity")
+        try:
+            quantity = int(request.data.get("quantity", 0))
+        except (TypeError, ValueError):
+            return Response({"error": "Invalid listing or quantity."}, status = status.HTTP_400_BAD_REQUEST)
 
         if not listing_id or quantity <= 0:
             return Response({"error": "Invalid listing or quantity."}, status = status.HTTP_400_BAD_REQUEST)
@@ -49,7 +52,7 @@ class CheckOutView(APIView):
 
                 if len(available_items) < quantity:
                     return Response(
-                        {"Not enough stock available."}, 
+                        {"error": "Not enough stock available."},
                         status=status.HTTP_400_BAD_REQUEST
                     )
 

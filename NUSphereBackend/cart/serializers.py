@@ -22,7 +22,7 @@ class CartItemSerializer(serializers.ModelSerializer):
                 "type": "listing",
                 "item_name": item.item_name,
                 "item_price": item.item_price,
-                "image": item.image.url,
+                "image": item.image.url if item.image else None,
             }
         
         elif isinstance(item, ShopProduct):
@@ -31,7 +31,7 @@ class CartItemSerializer(serializers.ModelSerializer):
                 "type": "shop_product",
                 "item_name": item.item_name,
                 "item_price": item.item_price,
-                "image": item.item_image.url
+                "image": item.item_image.url if item.item_image else None
             }
 
         return None
@@ -44,4 +44,3 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ['id', 'user', 'items']
-
