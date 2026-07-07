@@ -12,15 +12,15 @@ function CartItems({ data }) {
   const { getListingItem } = useContext(CartContext);
   const { updateLocalItemQuantity } = useContext(CartContext);
 
-  const checkAppropriateQuantity = async (product_id, quantity) => {
-      const listingItem = await getListingItem(product_id)
+  const checkAppropriateQuantity = async (product_id, quantity, product_type) => {
+      const listingItem = await getListingItem(product_id, product_type)
       if(quantity > listingItem.item_quantity){
           alert("Input quantity is more than available quantity! Only " + listingItem.item_quantity + " available!")
       }else if(quantity < 1){
           alert("Please select more than 1 item to check out.")
       }
       else{
-      handleCheckOut(product_id, quantity)
+      handleCheckOut(product_id, quantity,product_type)
       }
   }
 
@@ -56,7 +56,7 @@ function CartItems({ data }) {
                       </div>
 
                       <div>
-                        <SelectQuantityCart product_id={cartItem.product_details.id} input_Quantity={parseInt(cartItem.quantity)} updateQty={(productId, qty) => updateLocalItemQuantity(productId, qty)}/>
+                        <SelectQuantityCart product_id={cartItem.product_details.id} input_Quantity={parseInt(cartItem.quantity)} updateQty={(productId, qty, product_type) => updateLocalItemQuantity(productId, qty, product_type)} product_type={cartItem.product_details.type}/>
                       </div>
 
                       <div className="cart-item-price">
@@ -66,8 +66,8 @@ function CartItems({ data }) {
 
                       <div className="cart-item-actions">
                         {console.log(cartItem.quantity)}
-                        <button onClick={() => checkAppropriateQuantity(cartItem.product_details.id, cartItem.quantity)}>Check Out</button>
-                        <button onClick={() => handleRemoveFromCart(cartItem.product_details.id)}>Remove</button>
+                        <button onClick={() => checkAppropriateQuantity(cartItem.product_details.id, cartItem.quantity, cartItem.product_details.type)}>Check Out</button>
+                        <button onClick={() => handleRemoveFromCart(cartItem.product_details.id, cartItem.product_details.type)}>Remove</button>
                       </div>
                       
                   </li>

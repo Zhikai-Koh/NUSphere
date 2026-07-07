@@ -28,6 +28,7 @@ from shop.views import AddStoreView
 from shop.personalStores.views import PersonalStoresView
 from shop.storeItems.views import StoreItemView
 from shop.othersStores.views import OthersStoreItemView
+from shop.checkout.views import StoreCheckOutView
 
 from cart.views import CartAPIView
 from django.conf.urls.static import static
@@ -55,6 +56,7 @@ urlpatterns = [
     path('api/store/personal/', PersonalStoresView.as_view(), name='personal-stores'),
     path('api/store/storeitems/<int:store_id>', StoreItemView.as_view(), name='store-items'),
     path('api/store/otherstoreitems/<int:store_id>', OthersStoreItemView.as_view(), name='other-store-items'),
+    path('api/store/checkout/', StoreCheckOutView.as_view(), name='store-checkout'),
 
     # The registration route, React will POST user details here to create a new account
     path('api/auth/register/', RegisterView.as_view(), name='auth_register'),

@@ -8,48 +8,81 @@ export function CartProvider({ children }) {
     const [cartItems, setCartItems] = useState("No Token");
     const token = localStorage.getItem('access_token'); 
 
-    const getListingItem = async (productId) => {
-        try {
-            const response = await axios.get(`${API_BASE_URL}/api/listings/checkout/`,{
-                headers: { Authorization: `Bearer ${token}` },
-                params: { product_id:productId }
-            });
+    const getListingItem = async (productId, product_type) => {
+        if(product_type == "listing"){
+            try {
+                const response = await axios.get(`${API_BASE_URL}/api/listings/checkout/`,{
+                    headers: { Authorization: `Bearer ${token}` },
+                    params: { product_id:productId }
+                });
 
-            return response.data
+                return response.data
 
-        } catch (error) {
-            console.error("Error getting listing quantity: ", error);
+            } catch (error) {
+                console.error("Error getting listing quantity: ", error);
+            }
+        }
+        else if(product_type == "shop_product"){
+            try {
+                const response = await axios.get(`${API_BASE_URL}/api/store/checkout/`,{
+                    headers: { Authorization: `Bearer ${token}` },
+                    params: { product_id:productId }
+                });
+
+                return response.data
+
+            } catch (error) {
+                console.error("Error getting shop product quantity: ", error);
+            }
         }
     }
 
-    const updateLocalItemQuantity = (productId, newQty) => {
+    const updateLocalItemQuantity = (productId, newQty, product_type) => {
         setCartItems(prevItems => 
             prevItems.map(item => 
-                item.product_details.id === productId 
-                ? { ...item, quantity: newQty } 
+                item.product_details.id === productId
+                ? item.product_details.type == product_type
+                    ? { ...item, quantity: newQty } 
+                    : item
                 : item
             )
         );
     };
 
-    const handleCheckOut = async (productId, qty) => {
+    const handleCheckOut = async (productId, qty, product_type="listing") => {
         if (!token) {
             alert("Please log in to check out items in your cart!");
             return;
         }
+        if(product_type == "listing"){
+            try {
+                const response = await axios.post(`${API_BASE_URL}/api/listings/checkout/`, {
+                    product_id: productId,
+                    quantity: qty
+                }, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                alert(qty + " Items Successfully Checked Out")
 
-        try {
-            const response = await axios.post(`${API_BASE_URL}/api/listings/checkout/`, {
-                product_id: productId,
-                quantity: qty
-            }, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            alert(qty + " Items Successfully Checked Out")
+                handleRemoveFromCart(productId,product_type)
+            } catch (error) {
+                console.error("Checking out cart failed:", error);
+            }
+        }
+        else if(product_type == "shop_product"){
+            try {
+                const response = await axios.post(`${API_BASE_URL}/api/store/checkout/`, {
+                    product_id: productId,
+                    quantity: qty
+                }, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                alert(qty + " Items Successfully Checked Out")
 
-            handleRemoveFromCart(productId)
-        } catch (error) {
-            console.error("Checking out cart failed:", error);
+                handleRemoveFromCart(productId,product_type)
+            } catch (error) {
+                console.error("Checking out cart failed:", error);
+            }
         }
     };
 
@@ -95,7 +128,7 @@ export function CartProvider({ children }) {
         }
     };
 
-    const handleRemoveFromCart = async (product_id) => {
+    const handleRemoveFromCart = async (product_id, product_type) => {
         if (!token) {
             alert("Please log in to remove items from your cart!");
             return;
@@ -105,7 +138,7 @@ export function CartProvider({ children }) {
             const response = await axios.delete(`${API_BASE_URL}/api/cart/`,{
                 headers: { Authorization: `Bearer ${token}` },
                 data: {product_id: product_id,
-                    product_type: "listing"
+                    product_type: product_type
                 }
             });
             setCartItems(response.data.items);

@@ -85,7 +85,7 @@ class CartAPIView(APIView):
         target_content_type = ContentType.objects.get_for_model(model_class)
 
         try:
-            cart_item = CartItem.objects.get(cart=cart, product_id=product_id,)
+            cart_item = CartItem.objects.get(cart=cart, product_id=product_id, content_type=target_content_type)
             cart_item.delete()
         except CartItem.DoesNotExist:
             return Response({"error": "Item not found in cart"}, status=status.HTTP_404_NOT_FOUND)

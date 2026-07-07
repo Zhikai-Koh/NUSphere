@@ -4,7 +4,7 @@ import axios from "axios"
 import { API_BASE_URL } from '../config';
 
 
-export function SelectQuantityCart({product_id, input_Quantity, updateQty}) {
+export function SelectQuantityCart({product_id, input_Quantity, updateQty, product_type}) {
     const [quantity, setQuantity] = useState(Number(input_Quantity) || 1);
     const { getListingItem } = useContext(CartContext);
 
@@ -15,7 +15,7 @@ export function SelectQuantityCart({product_id, input_Quantity, updateQty}) {
     }, [input_Quantity]);
 
     const saveToCart= async (productId, qty) => {
-        const listingItem= await getListingItem(product_id)
+        const listingItem= await getListingItem(product_id,product_type)
         const listingItemQty = listingItem.item_quantity
 
         if(quantity > listingItemQty){
@@ -39,7 +39,7 @@ export function SelectQuantityCart({product_id, input_Quantity, updateQty}) {
                 product_id: productId,
                 quantity: qty,
                 post_type: "change",
-                product_type: "listing"
+                product_type: product_type
 
             }, {
                 headers: { Authorization: `Bearer ${token}` }
@@ -48,7 +48,7 @@ export function SelectQuantityCart({product_id, input_Quantity, updateQty}) {
             console.error("Add item transaction failed:", error);
             console.log(response.error)
         }
-        updateQty(productId, qty)
+        updateQty(productId, qty, product_type)
     }
 
     return (

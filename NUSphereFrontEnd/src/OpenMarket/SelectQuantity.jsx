@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { CartContext } from "../UserSpecifics/CartContext";
 
 
-export function SelectQuantity({ productid,productMaxQuantity, onClose, producttype = "listing" }) {
+export function SelectQuantity({ productid,productMaxQuantity, onClose, product_type = "listing" }) {
     // or is a fallback :o
     const [quantity, setQuantity] = useState(1 || 1);
     const {handleAddToCart} = useContext(CartContext)
@@ -16,7 +16,7 @@ export function SelectQuantity({ productid,productMaxQuantity, onClose, productt
             alert("You can only add 1 or more item to cart!")
             setQuantity(1)
         }else{
-            handleAddToCart(productid, quantity, producttype)
+            handleAddToCart(productid, quantity, product_type)
         }
     }
 

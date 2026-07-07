@@ -90,7 +90,7 @@ export function VisitStore() {
                         </div>
                     </div>
                     {selectedProduct===listing &&
-                        <SelectQuantity productid={selectedProduct.id} productMaxQuantity={selectedProduct.item_quantity} onClose={() => setSelectedProduct(null)} producttype="shop_product"/>
+                        <SelectQuantity productid={selectedProduct.id} productMaxQuantity={selectedProduct.item_quantity} onClose={() => setSelectedProduct(null)} product_type="shop_product"/>
                     }
 
                     {expandedId === listing.id && (
