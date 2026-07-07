@@ -86,6 +86,30 @@ class OrderHistoryView(APIView):
             else:
                 sold_data[listing_id]["quantity"] += 1
 
+        confirmed_shop_orders = ShopOrder.objects.filter(
+            buyer=request.user,
+            order_status='sold'
+        ).select_related('product__shop', 'product__shop__owner')
+
+        for order in confirmed_shop_orders:
+            product = order.product
+            product_key = ("shop_product", product.id)
+            if product_key not in sold_data:
+                sold_data[product_key] = {
+                    "id": product.id,
+                    "user": product.shop.owner.username,
+                    "seller": product.shop.owner.username,
+                    "store_name": product.shop.store_name,
+                    "source_type": "store_product",
+                    "source_label": "Store",
+                    "item_name": product.item_name,
+                    "item_price": order.purchase_price,
+                    "image": product.item_image.url if product.item_image else None,
+                    "quantity": order.quantity
+                }
+            else:
+                sold_data[product_key]["quantity"] += order.quantity
+
         data = {
             "pending": list(pending_data.values()),
             "sold": list(sold_data.values())

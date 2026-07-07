@@ -29,6 +29,7 @@ from shop.personalStores.views import PersonalStoresView
 from shop.storeItems.views import StoreItemView
 from shop.othersStores.views import OthersStoreItemView
 from shop.checkout.views import StoreCheckOutView
+from NUSphereBackend.shop.confirmsold.views import StoreConfirmSoldView
 
 from cart.views import CartAPIView
 from django.conf.urls.static import static
@@ -57,6 +58,7 @@ urlpatterns = [
     path('api/store/storeitems/<int:store_id>', StoreItemView.as_view(), name='store-items'),
     path('api/store/otherstoreitems/<int:store_id>', OthersStoreItemView.as_view(), name='other-store-items'),
     path('api/store/checkout/', StoreCheckOutView.as_view(), name='store-checkout'),
+    path('api/store/orders/<int:store_id>', StoreConfirmSoldView.as_view(), name='store-orders'),
 
     # The registration route, React will POST user details here to create a new account
     path('api/auth/register/', RegisterView.as_view(), name='auth_register'),
