@@ -26,6 +26,9 @@ class ConfirmSoldView(APIView):
                     .filter(listing_id=listing_id, status='pending', order_details__buyer__username=buyer)
                 )
 
+                if not available_items:
+                    return Response({"error": "No pending order found for this listing and buyer."}, status=status.HTTP_404_NOT_FOUND)
+
                 orders_edited = []
                 
                 for item in available_items:
@@ -34,6 +37,7 @@ class ConfirmSoldView(APIView):
 
                     order = Order.objects.get(listingItem = item)
                     order.order_status = 'confirmed'
+                    order.save()
 
                     orders_edited.append(order.id)
 
@@ -65,7 +69,7 @@ class ConfirmSoldView(APIView):
                     "listing_id": listing_id,
                     "item_name": order.listingItem.listing.item_name,
                     "item_price": order.listingItem.listing.item_price,
-                    "image": order.listingItem.listing.image.url,
+                    "image": order.listingItem.listing.image.url if order.listingItem.listing.image else None,
                     "quantity": 1
                 }
             else:

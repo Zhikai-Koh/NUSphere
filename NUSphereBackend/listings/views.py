@@ -86,7 +86,7 @@ class AddListingView(APIView):
                     "item_price": str(listing.item_price),
                     "item_quantity": str(listing.item_quantity),
                     "image": listing.image.url if listing.image else None,
-                    "category": listing.category.name,
+                    "category": listing.category.name if listing.category else None,
                     "inventory": {
                         "unsold": listing.total_unsold,
                         "pending": listing.total_pending,
