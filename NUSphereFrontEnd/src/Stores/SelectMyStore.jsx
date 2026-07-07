@@ -9,22 +9,22 @@ export function SelectMyStore() {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    //DELETE STORE OPTION
-    // const deleteListing = async (listingId) => {
-    //     try {
-    //         const response = await axios.delete(`${API_BASE_URL}/api/listings/personal/`, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-    //             },
-    //             data: {
-    //                 listing_id: listingId
-    //             }
-    //         });
-    //         fetchListings();
-    //     } catch (error) {
-    //         console.error('Error deleting listing:', error);
-    //     }
-    // };
+    const deleteStore = async (storeId) => {
+        try {
+            await axios.delete(`${API_BASE_URL}/api/store/personal/`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                },
+                data: {
+                    shop_id: storeId
+                }
+            });
+            fetchListings();
+        } catch (error) {
+            console.error('Error deleting store:', error);
+            alert(error.response?.data?.error || "Failed to delete store.");
+        }
+    };
 
     //FETCH ALL MY STORES
     const fetchListings = async () => {
@@ -82,7 +82,10 @@ export function SelectMyStore() {
                     </h4>
                     
                     <div className="card-footer">
-                        <button onClick={() => deleteListing(listing.id)}>
+                        <button onClick={(event) => {
+                            event.stopPropagation();
+                            deleteStore(listing.id);
+                        }}>
                             Delete Store
                         </button>
                     </div>

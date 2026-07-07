@@ -10,22 +10,22 @@ export function MyStore() {
     const navigate = useNavigate();
     const {storeId} = useParams();
 
-    //For deleting products
-    // const deleteListing = async (listingId) => {
-    //     try {
-    //         const response = await axios.delete(`${API_BASE_URL}/api/listings/personal/`, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-    //             },
-    //             data: {
-    //                 listing_id: listingId
-    //             }
-    //         });
-    //         fetchListings();
-    //     } catch (error) {
-    //         console.error('Error deleting listing:', error);
-    //     }
-    // };
+    const deleteProduct = async (productId) => {
+        try {
+            await axios.delete(`${API_BASE_URL}/api/store/storeitems/${storeId}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                },
+                data: {
+                    product_id: productId
+                }
+            });
+            fetchShopProducts();
+        } catch (error) {
+            console.error('Error deleting product:', error);
+            alert(error.response?.data?.error || "Failed to delete product.");
+        }
+    };
 
     //fetching products
     const fetchShopProducts = async () => {
@@ -99,7 +99,7 @@ export function MyStore() {
                             {/* <div>Pending: {listing.inventory.pending}</div>
                             <div>Sold: {listing.inventory.sold}</div> */}
                         </div>
-                        <button onClick={() => deleteListing(listing.id)}>
+                        <button onClick={() => deleteProduct(listing.id)}>
                             Delete Product/Service
                         </button>
                     </div>

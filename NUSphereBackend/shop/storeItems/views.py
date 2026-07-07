@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from ..models import Shop, ShopOrder, ShopProduct
 from ..serializers import ShopProductSerializer, ShopSerializer 
+from django.db.models import ProtectedError
 
 # For login system
 from rest_framework.permissions import IsAuthenticated
@@ -51,17 +52,18 @@ class StoreItemView(APIView):
         
         serializer = ShopProductSerializer(newProduct)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #For logged in people to delete their shops
-    # def delete(self, request):
-    #     shop_id = request.data.get("shop_id")
-    #     shop = Shop.objects.get(id=shop_id, owner=request.user)
-    #     try:
-    #         if not shop.exists():
-    #             return Response({
-    #                 "error": "No unsold items found for this listing, or you don't have permission."
-    #             }, status=status.HTTP_404_NOT_FOUND)
 
-    #         shop.delete()
-    #         return Response({"message": "Unsold stock deleted successfully"}, status=status.HTTP_200_OK)
-    #     except Shop.DoesNotExist:
-    #         return Response({"error": "Listing not found or you do not have permission to delete it"}, status=status.HTTP_404_NOT_FOUND)
+    def delete(self, request, store_id):
+        product_id = request.data.get("product_id")
+
+        if not product_id:
+            return Response({"error": "Product ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            product = ShopProduct.objects.get(id=product_id, shop_id=store_id, shop__owner=request.user)
+            product.delete()
+            return Response({"message": "Product deleted successfully."}, status=status.HTTP_200_OK)
+        except ShopProduct.DoesNotExist:
+            return Response({"error": "Product not found or you do not have permission to delete it."}, status=status.HTTP_404_NOT_FOUND)
+        except ProtectedError:
+            return Response({"error": "Product cannot be deleted because it already has orders."}, status=status.HTTP_400_BAD_REQUEST)
