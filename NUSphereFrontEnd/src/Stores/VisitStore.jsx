@@ -30,7 +30,7 @@ export function VisitStore() {
         console.log(response.data)
         } catch (error) {
             console.error('Error fetching listings:', error);
-            if (error.response.status === 401){
+            if (error.response?.status === 401){
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
                 window.location.reload();
@@ -95,7 +95,7 @@ export function VisitStore() {
 
                     {expandedId === listing.id && (
                         <div className="card-description">
-                            {listing.item_description || "No description provided for this listing."}
+                            {listing.description || "No description provided for this listing."}
                         </div>
                     )}
                 </div>

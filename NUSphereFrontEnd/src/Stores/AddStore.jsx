@@ -33,11 +33,15 @@ export function AddStoreForm() {
             alert("Please select a category.");
             return;
         }
+        if (!imageFile) {
+            alert("Please upload a store cover image.");
+            return;
+        }
 
         const formData = new FormData();
         formData.append("store_name", shop_name);
         formData.append("category", category);
-        formData.append("item_description", item_description);
+        formData.append("description", item_description);
 
         if (imageFile) {
             formData.append("image", imageFile);

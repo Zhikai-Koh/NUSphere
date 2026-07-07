@@ -16,6 +16,8 @@ class AddStoreView(APIView):
     #Creating new store
     def post(self, request):
         category = Categories.objects.get(name=request.data.get("category"))
+        if not request.FILES.get("image"):
+            return Response({"error": "Store cover image is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             with transaction.atomic():
