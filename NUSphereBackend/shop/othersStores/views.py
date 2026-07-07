@@ -12,7 +12,10 @@ class OthersStoreItemView(APIView):
 
     #For people to see inside other's stores.
     def get(self, request, store_id):
-        shop = Shop.objects.get(id=store_id)
+        try:
+            shop = Shop.objects.get(id=store_id)
+        except Shop.DoesNotExist:
+            return Response({"error": "Store not found."}, status=status.HTTP_404_NOT_FOUND)
 
         products = ShopProduct.objects.filter(shop = shop)
 

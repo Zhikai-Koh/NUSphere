@@ -124,7 +124,7 @@ export function CartProvider({ children }) {
             alert("Item Successfully Added to Cart")
         } catch (error) {
             console.error("Add item transaction failed:", error);
-            console.log(response.error)
+            alert(error.response?.data?.error || "Failed to add item to cart.");
         }
     };
 

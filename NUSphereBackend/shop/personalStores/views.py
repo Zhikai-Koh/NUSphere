@@ -20,7 +20,7 @@ class PersonalStoresView(APIView):
         for shop in shops:
             data.append({
                 "id": shop.id,
-                "category": shop.category.name,
+                "category": shop.category.name if shop.category else None,
                 "description": shop.description,
                 "store_name": shop.store_name,
                 "store_image": shop.store_image.url if shop.store_image else None,

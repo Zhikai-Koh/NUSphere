@@ -38,7 +38,7 @@ export function Listings() {
         console.log(response.data)
         } catch (error) {
             console.error('Error fetching listings:', error);
-            if (error.response.status === 401){
+            if (error.response?.status === 401){
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
                 window.location.reload();

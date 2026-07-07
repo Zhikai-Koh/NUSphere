@@ -15,7 +15,10 @@ class StoreItemView(APIView):
 
     #For logged in people to see their own store products
     def get(self, request, store_id):
-        shop = Shop.objects.get(owner=request.user, id=store_id)
+        try:
+            shop = Shop.objects.get(owner=request.user, id=store_id)
+        except Shop.DoesNotExist:
+            return Response({"error": "Store not found or you do not have permission to view it."}, status=status.HTTP_404_NOT_FOUND)
 
         products = ShopProduct.objects.filter(shop = shop)
 

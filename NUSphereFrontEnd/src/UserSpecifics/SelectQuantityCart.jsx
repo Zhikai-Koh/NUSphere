@@ -46,7 +46,7 @@ export function SelectQuantityCart({product_id, input_Quantity, updateQty, produ
             });
         } catch (error) {
             console.error("Add item transaction failed:", error);
-            console.log(response.error)
+            alert(error.response?.data?.error || "Failed to update cart quantity.");
         }
         updateQty(productId, qty, product_type)
     }

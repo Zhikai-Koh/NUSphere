@@ -15,18 +15,28 @@ class AddStoreView(APIView):
 
     #Creating new store
     def post(self, request):
-        category = Categories.objects.get(name=request.data.get("category"))
-        if not request.FILES.get("image"):
+        store_name = request.data.get("store_name")
+        image = request.FILES.get("image")
+
+        if not store_name:
+            return Response({"error": "Store name is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not image:
             return Response({"error": "Store cover image is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            category = Categories.objects.get(name=request.data.get("category"))
+        except Categories.DoesNotExist:
+            return Response({"error": "Invalid category."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             with transaction.atomic():
                 newShop, created = Shop.objects.get_or_create(
                     owner=request.user,
-                    store_name=request.data.get("store_name"),
+                    store_name=store_name,
                     category=category,
                     description=request.data.get("description"),
-                    store_image=request.FILES.get("image")
+                    store_image=image
                 )
                 
                 serializer = ShopSerializer(newShop)
@@ -50,7 +60,7 @@ class AddStoreView(APIView):
             data.append({
                 "id": shop.id,
                 "owner": shop.owner.username,
-                "category": shop.category.name,
+                "category": shop.category.name if shop.category else None,
                 "description": shop.description,
                 "store_name": shop.store_name,
                 "image": shop.store_image.url if shop.store_image else None,
