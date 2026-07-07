@@ -141,3 +141,33 @@
     align-items: center;
     gap: 5px;
 }
+
+.order-source-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.order-source-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.order-source-badge.market {
+    background: var(--market-badge-bg);
+    color: var(--market-badge-text);
+}
+
+.order-source-badge.store {
+    background: var(--store-badge-bg);
+    color: var(--store-badge-text);
+}
+
+.order-source-meta {
+    color: var(--market-badge-text);
+    font-size: 13px;
+}

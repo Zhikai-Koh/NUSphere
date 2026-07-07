@@ -2,6 +2,7 @@ import {useContext, createContext, useState, useEffect} from "react";
 import { API_BASE_URL } from "../config.js";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./Listings.css";
 
 export function MyOrders() {
     const [activeTab, setActiveTab] = useState("pending")
@@ -88,18 +89,11 @@ const displayOrders = orders[activeTab] || [];
 
                             {/* Name */}
                             <h4 className="card-title" style={{ margin: "12px 0 6px" }}>{order.item_name}</h4>
-                            <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap", marginBottom: "10px" }}>
-                                <span style={{
-                                    padding: "4px 8px",
-                                    borderRadius: "4px",
-                                    fontSize: "12px",
-                                    fontWeight: "bold",
-                                    background: order.source_type === "store_product" ? "#e0f2fe" : "#f1f5f9",
-                                    color: order.source_type === "store_product" ? "#0369a1" : "#475569"
-                                }}>
+                            <div className="order-source-row">
+                                <span className={`order-source-badge ${order.source_type === "store_product" ? "store" : "market"}`}>
                                     {order.source_label || "Open Market"}
                                 </span>
-                                <span style={{ color: "#475569", fontSize: "13px" }}>
+                                <span className="order-source-meta">
                                     {order.source_type === "store_product" && order.store_name
                                         ? `${order.store_name} by ${order.seller || order.user}`
                                         : `Seller: ${order.seller || order.user}`}
