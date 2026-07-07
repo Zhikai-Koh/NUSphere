@@ -53,7 +53,7 @@ const displayOrders = orders[activeTab] || [];
                         color: activeTab === "pending" ? "#fff" : "#64748b"
                     }}
                 >
-                    Pending Confirmations ({orders.pending_data?.length || 0})
+                    Pending Confirmations ({orders.pending?.length || 0})
                 </button>
                 <button 
                     onClick={() => setActiveTab("sold")}
@@ -63,7 +63,7 @@ const displayOrders = orders[activeTab] || [];
                         color: activeTab === "sold" ? "#fff" : "#64748b"
                     }}
                 >
-                    Completed Purchase ({orders.sold_data?.length || 0})
+                    Completed Purchase ({orders.sold?.length || 0})
                 </button>
             </div>
 

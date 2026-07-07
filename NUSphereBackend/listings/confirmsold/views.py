@@ -23,7 +23,7 @@ class ConfirmSoldView(APIView):
             with transaction.atomic():
                 available_items = list(
                     ListingItem.objects.select_for_update()
-                    .filter(listing_id=listing_id, status='pending',order_details__buyer = buyer)
+                    .filter(listing_id=listing_id, status='pending', order_details__buyer__username=buyer)
                 )
 
                 orders_edited = []

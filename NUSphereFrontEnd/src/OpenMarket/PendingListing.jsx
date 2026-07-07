@@ -81,8 +81,8 @@ export function PendingListings(){
                         
                         <div className="card-footer">                        
                             <button onClick={(e) =>{
-                                e.stopPropagation(pending.id, pending.buyer);
-                                handleConfirmSale(pending.id, pending.buyer);
+                                e.stopPropagation();
+                                handleConfirmSale(pending.listing_id, pending.buyer);
                             }}
                             style = {{backgroundColor:"#11ac38ff"}}
                             >
