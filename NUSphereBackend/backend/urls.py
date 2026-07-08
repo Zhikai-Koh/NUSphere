@@ -58,6 +58,7 @@ urlpatterns = [
     path('api/store/storeitems/<int:store_id>', StoreItemView.as_view(), name='store-items'),
     path('api/store/otherstoreitems/<int:store_id>', OthersStoreItemView.as_view(), name='other-store-items'),
     path('api/store/checkout/', StoreCheckOutView.as_view(), name='store-checkout'),
+    path('api/store/orders/', StoreConfirmSoldView.as_view(), name='all-store-orders'),
     path('api/store/orders/<int:store_id>', StoreConfirmSoldView.as_view(), name='store-orders'),
 
     # The registration route, React will POST user details here to create a new account

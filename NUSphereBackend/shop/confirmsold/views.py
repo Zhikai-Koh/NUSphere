@@ -10,12 +10,14 @@ from ..models import ShopOrder
 class StoreConfirmSoldView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, store_id):
+    def get(self, request, store_id=None):
         orders = ShopOrder.objects.filter(
-            product__shop_id=store_id,
             product__shop__owner=request.user,
             order_status='pending'
         ).select_related('product', 'buyer')
+
+        if store_id is not None:
+            orders = orders.filter(product__shop_id=store_id)
 
         data = {}
         for order in orders:
@@ -26,6 +28,8 @@ class StoreConfirmSoldView(APIView):
                 data[key] = {
                     "buyer": order.buyer.username,
                     "product_id": product_id,
+                    "store_id": order.product.shop.id,
+                    "store_name": order.product.shop.store_name,
                     "item_name": order.product.item_name,
                     "item_price": order.purchase_price,
                     "quantity": order.quantity,

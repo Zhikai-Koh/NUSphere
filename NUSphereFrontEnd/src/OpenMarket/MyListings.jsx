@@ -54,8 +54,12 @@ export function PersonalListings() {
 
     return (
         <div className="pending-listing-container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
-            
-            <h2>All Listings</h2>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px", marginBottom: "20px" }}>
+                <h2 style={{ margin: 0 }}>All Listings</h2>
+                <button onClick={() => navigate('/pending-sales')}>
+                    View Pending Sales
+                </button>
+            </div>
 
             {!loadSuccess ? listings :
             loading ? <p>Loading listings...</p> :
@@ -97,9 +101,13 @@ export function PersonalListings() {
                         
                         <div className="card-footer">
                             <div className = "item-status" style = {{display: "flex", flexDirection: "column"}}>
-                                <div><strong>Status:</strong></div>
                                 <div>Unsold: {listing.inventory.unsold}</div>
-                                <div>Pending: {listing.inventory.pending}</div>
+                                <button
+                                    onClick={() => navigate('/pending-sales')}
+                                    style={{ background: "transparent", color: "#1a3644", border: "none", padding: 0, textAlign: "left", cursor: "pointer", fontWeight: "600", font: "inherit" }}
+                                >
+                                    Pending Sales: {listing.inventory.pending}
+                                </button>
                                 <div>Sold: {listing.inventory.sold}</div>
                             </div>
                             <button onClick={() => deleteListing(listing.id)}>

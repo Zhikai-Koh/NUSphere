@@ -20,7 +20,9 @@ class StoreItemView(APIView):
         except Shop.DoesNotExist:
             return Response({"error": "Store not found or you do not have permission to view it."}, status=status.HTTP_404_NOT_FOUND)
 
-        products = ShopProduct.objects.filter(shop = shop)
+        products = ShopProduct.objects.filter(shop = shop).annotate(
+            pending_order_count=Count('shop_orders', filter=Q(shop_orders__order_status='pending'))
+        )
 
         data = []
         for product in products:
@@ -31,6 +33,7 @@ class StoreItemView(APIView):
                 "item_price": product.item_price,
                 "description": product.item_description,
                 "item_image": product.item_image.url if product.item_image else None,
+                "pending_order_count": product.pending_order_count,
             })
         return Response(data)
     

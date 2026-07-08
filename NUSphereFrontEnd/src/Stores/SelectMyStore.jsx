@@ -56,7 +56,15 @@ export function SelectMyStore() {
     return (
         !loadSuccess ? listings :
         loading ? <p>Loading stores...</p> :
-        listings.length === 0 ? <div
+        <div className="pending-listing-container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px", marginBottom: "20px" }}>
+                <h2 style={{ margin: 0 }}>My Stores</h2>
+                <button onClick={() => navigate('/pending-sales')}>
+                    View Pending Sales
+                </button>
+            </div>
+
+            {listings.length === 0 ? <div
             className="listing-card add-new-card"
             onClick={() => navigate('/add-store') }
         >
@@ -80,6 +88,13 @@ export function SelectMyStore() {
                     <h4 className="card-title">
                         {listing.store_name}
                     </h4>
+
+                    <div className="card-quantity" onClick={(event) => {
+                        event.stopPropagation();
+                        navigate('/pending-sales');
+                    }} style={{ cursor: "pointer", fontWeight: "600" }}>
+                        Pending Orders: <strong>{listing.pending_order_count || 0}</strong>
+                    </div>
                     
                     <div className="card-footer">
                         <button onClick={(event) => {
@@ -100,6 +115,7 @@ export function SelectMyStore() {
                 </div>
                 <h3 className="add-card-text">Add New Store</h3>
             </div>
+        </div>}
         </div> 
     );
 }

@@ -14,7 +14,9 @@ class PersonalStoresView(APIView):
 
     #For logged in people to see their own stores
     def get(self, request):
-        shops = Shop.objects.filter(owner=request.user)
+        shops = Shop.objects.filter(owner=request.user).annotate(
+            pending_order_count=Count('products__shop_orders', filter=Q(products__shop_orders__order_status='pending'))
+        )
 
         data = []
         for shop in shops:
@@ -24,6 +26,7 @@ class PersonalStoresView(APIView):
                 "description": shop.description,
                 "store_name": shop.store_name,
                 "store_image": shop.store_image.url if shop.store_image else None,
+                "pending_order_count": shop.pending_order_count,
             })
 
         return Response(data)

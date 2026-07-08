@@ -63,6 +63,7 @@ export const ProfileDropdown = ({ user }) => {
               <hr />
               <Link to="/profile" className="dropdown-item" onClick={() => setIsOpen(false)}>My Profile</Link>
               <Link to="/orders" className="dropdown-item" onClick={() => setIsOpen(false)}>My Orders</Link>
+              <Link to="/pending-sales" className="dropdown-item" onClick={() => setIsOpen(false)}>Pending Sales</Link>
               <Link to="/PersonalListings" className="dropdown-item" onClick={() => setIsOpen(false)}>My Listings</Link>
               <Link to="/MyStores" className="dropdown-item" onClick={() => setIsOpen(false)}>My Stores</Link>
               <button className="dropdown-item logout-btn" onClick={() => { handleLogout(); setIsOpen(false); }}>

@@ -51,7 +51,6 @@ export function StoresPage() {
             throw new Error('Network response failure');
         }
         setStores(response.data);
-        console.log(response.data)
         } catch (error) {
             console.error('Error fetching stores:', error);
             if (error.response?.status === 401){
@@ -70,11 +69,23 @@ export function StoresPage() {
         fetchStores();
     }, []);
 
-    const { selectedCategory } = useOutletContext();
+    const { selectedCategory, searchTerm } = useOutletContext();
 
     const filteredStores = selectedCategory === "All"
         ? stores
         : stores.filter(store => store.category === selectedCategory);
+
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+    const searchedStores = normalizedSearch
+        ? filteredStores.filter(store =>
+            [
+                store.store_name,
+                store.owner,
+                store.description,
+                store.category
+            ].some(value => value?.toLowerCase().includes(normalizedSearch))
+        )
+        : filteredStores;
 
     return (
         !loadSuccess ? stores :
@@ -83,13 +94,13 @@ export function StoresPage() {
             <div className="stores-grid-header">
                 <h2>Registered Student Stores</h2>
             </div>
-            {stores.length === 0 ? (
+            {searchedStores.length === 0 ? (
                 <div className="no-stores-message">
                     <p>No stores currently registered.</p>
                 </div>
             ) : (
                 <div className="stores-grid">
-                    {filteredStores.map((store) => (
+                    {searchedStores.map((store) => (
                         <StoreCard key={store.id} store={store} />
                     ))}
                 </div>

@@ -13,7 +13,7 @@ export function Listings() {
     const [expandedId, setExpandedId] = useState(null);
     const navigate = useNavigate();
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const { selectedCategory } = useOutletContext();
+    const { selectedCategory, searchTerm } = useOutletContext();
 
     const fetchListings = async () => {
       try{
@@ -35,7 +35,6 @@ export function Listings() {
             throw new Error('Network response failure');
         }
         setListings(response.data);
-        console.log(response.data)
         } catch (error) {
             console.error('Error fetching listings:', error);
             if (error.response?.status === 401){
@@ -58,16 +57,23 @@ export function Listings() {
             ? listings
             : listings.filter(listing => listing.category === selectedCategory);
 
-    console.log(selectedCategory)
-    console.log(filteredListings)
-
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+    const searchedListings = normalizedSearch
+            ? filteredListings.filter(listing =>
+                [
+                    listing.item_name,
+                    listing.item_description,
+                    listing.category
+                ].some(value => value?.toLowerCase().includes(normalizedSearch))
+            )
+            : filteredListings;
 
     return (
         !loadSuccess ? listings :
         loading ? <p>Loading listings...</p> :
-        filteredListings.length === 0 ? <h2>No listings available</h2> :
+        searchedListings.length === 0 ? <h2>No listings available</h2> :
         <div className="listings-grid">
-            {filteredListings?.map((listing) => (
+            {searchedListings?.map((listing) => (
                 <div key={listing.id} 
                 className="listing-card"
                 onClick={() => setExpandedId(expandedId === listing.id ? null : listing.id)}

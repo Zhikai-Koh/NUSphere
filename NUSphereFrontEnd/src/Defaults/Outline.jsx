@@ -57,6 +57,7 @@ export function Outline() {
     const searchBar = useRef(null)
     const [currentUser, setCurrentUser] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState("All");
+    const [searchTerm, setSearchTerm] = useState("");
     const token = localStorage.getItem('access_token');
 
     useEffect(() => {
@@ -102,6 +103,8 @@ export function Outline() {
                             ref={searchBar}
                             type="text"
                             placeholder="Search for products..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <img src={searchIcon} alt="Search Icon" />
                     </form>
@@ -125,7 +128,7 @@ export function Outline() {
                 </aside>
 
                 <section className="page-content">
-                        <Outlet context={{ selectedCategory}} />
+                        <Outlet context={{ selectedCategory, searchTerm }} />
                 </section>
             </main>
         </div>

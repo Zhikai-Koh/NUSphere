@@ -62,9 +62,10 @@ class ConfirmSoldView(APIView):
         data = {}
         for order in pending_orders:
             listing_id = order.listingItem.listing.id
+            key = (listing_id, order.buyer.username)
 
-            if listing_id not in data:
-                data[listing_id] = {
+            if key not in data:
+                data[key] = {
                     "buyer": order.buyer.username,
                     "listing_id": listing_id,
                     "item_name": order.listingItem.listing.item_name,
@@ -73,6 +74,6 @@ class ConfirmSoldView(APIView):
                     "quantity": 1
                 }
             else:
-                data[listing_id]["quantity"] += 1
+                data[key]["quantity"] += 1
 
         return Response(list(data.values()), status=status.HTTP_200_OK)

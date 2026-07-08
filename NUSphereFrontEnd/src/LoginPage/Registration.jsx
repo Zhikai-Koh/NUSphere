@@ -30,15 +30,12 @@ export function RegistrationForm() {
 
             if (error.response) {
                 // The server responded with a status code outside the 2xx range
-                console.log("Django Validation Errors:", error.response.data);
                 alert(`Signup Failed: ${JSON.stringify(error.response.data)}`);
             } else if (error.request) {
                 // The request was made but no response was received (Backend is down/CORS issue)
-                console.log("No response received from server:", error.request);
                 alert("Server is not responding. Please try again later.");
             } else {
                 // Something happened in setting up the request
-                console.log("Error message:", error.message);
                 alert(`Error: ${error.message}`);
             }
         }

@@ -27,7 +27,6 @@ export function VisitStore() {
             throw new Error('Network response failure');
         }
         setListings(response.data);
-        console.log(response.data)
         } catch (error) {
             console.error('Error fetching listings:', error);
             if (error.response?.status === 401){
@@ -47,9 +46,6 @@ export function VisitStore() {
     }, []);
 
     const filteredListings = listings;
-
-    console.log(filteredListings)
-
 
     return (
         !loadSuccess ? listings :

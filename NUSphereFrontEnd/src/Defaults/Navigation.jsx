@@ -7,13 +7,13 @@ import { StoresPage } from "../Stores/StoresPage.jsx"
 
 import { AllProviders } from "./AllProviders.jsx";
 import { Cart } from "../UserSpecifics/CartItems.jsx";
+import { PendingSales } from "../UserSpecifics/PendingSales.jsx";
 
 import { AddListingForm } from "../OpenMarket/AddListing.jsx";
 import { RegistrationForm } from "../LoginPage/Registration.jsx";
 
 import "./Navigation.css";
 import { PersonalListings } from "../OpenMarket/MyListings.jsx";
-import { PendingListings } from "../OpenMarket/PendingListing.jsx";
 import { MyOrders } from "../OpenMarket/MyOrders.jsx";
 import { MyStore } from "../Stores/MyStore.jsx";
 import { SelectMyStore } from "../Stores/SelectMyStore.jsx";
@@ -52,8 +52,9 @@ export function NavigationBar() {
                     </Route>
                     
                     <Route path="add-listing" element={<AddListingForm />} />
-                    <Route path="/PersonalListings" element ={<><PersonalListings/><PendingListings/></>} />
+                    <Route path="/PersonalListings" element ={<PersonalListings/>} />
                     <Route path="/orders" element = {<MyOrders/>}/>
+                    <Route path="/pending-sales" element = {<PendingSales/>}/>
 
                     <Route path="stores" element={<AllProviders><Outline/></AllProviders>} >
                         <Route index element = {<StoresPage />}/>
