@@ -50,9 +50,9 @@ class AddStoreView(APIView):
     #When people load shop
     def get(self, request):
         if request.user.is_authenticated:
-            shops = Shop.objects.exclude(owner=request.user)
+            shops = Shop.objects.exclude(owner=request.user).filter(is_open=True)
         else:
-            shops = Shop.objects.all()
+            shops = Shop.objects.filter(is_open=True)
 
         data = []
         for shop in shops:
@@ -63,6 +63,7 @@ class AddStoreView(APIView):
                 "category": shop.category.name if shop.category else None,
                 "description": shop.description,
                 "store_name": shop.store_name,
+                "is_open": shop.is_open,
                 "image": shop.store_image.url if shop.store_image else None,
             })
         return Response(data)

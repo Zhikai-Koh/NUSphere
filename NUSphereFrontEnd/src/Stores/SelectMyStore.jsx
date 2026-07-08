@@ -26,6 +26,29 @@ export function SelectMyStore() {
         }
     };
 
+    const toggleStoreOpen = async (storeId, currentStatus) => {
+        try {
+            const nextStatus = !currentStatus;
+            await axios.patch(`${API_BASE_URL}/api/store/personal/`, {
+                shop_id: storeId,
+                is_open: nextStatus
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            });
+
+            setListings((currentStores) =>
+                currentStores.map((store) =>
+                    store.id === storeId ? { ...store, is_open: nextStatus } : store
+                )
+            );
+        } catch (error) {
+            console.error('Error updating store status:', error);
+            alert(error.response?.data?.error || "Failed to update store status.");
+        }
+    };
+
     //FETCH ALL MY STORES
     const fetchListings = async () => {
       try{
@@ -89,6 +112,10 @@ export function SelectMyStore() {
                         {listing.store_name}
                     </h4>
 
+                    <div className="card-quantity">
+                        Store Status: <strong>{listing.is_open ? "Open" : "Closed"}</strong>
+                    </div>
+
                     <div className="card-quantity" onClick={(event) => {
                         event.stopPropagation();
                         navigate('/pending-sales');
@@ -97,6 +124,12 @@ export function SelectMyStore() {
                     </div>
                     
                     <div className="card-footer">
+                        <button onClick={(event) => {
+                            event.stopPropagation();
+                            toggleStoreOpen(listing.id, listing.is_open);
+                        }}>
+                            {listing.is_open ? "Close Store" : "Open Store"}
+                        </button>
                         <button onClick={(event) => {
                             event.stopPropagation();
                             deleteStore(listing.id);
