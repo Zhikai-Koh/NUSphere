@@ -19,7 +19,12 @@ class StoreCheckOutView(APIView):
             return Response({"error": "Product ID is required"}, status=400)
 
         try:
-            itemCount = ShopProduct.objects.get(id=product_id).item_quantity
+            product = ShopProduct.objects.select_related('shop').get(id=product_id)
+
+            if not product.shop.is_open:
+                return Response({"error": "This store is currently closed."}, status=status.HTTP_400_BAD_REQUEST)
+
+            itemCount = product.item_quantity
             data = {
                 "item_quantity": itemCount
             }
@@ -42,8 +47,11 @@ class StoreCheckOutView(APIView):
 
         try:
             with transaction.atomic():
-                product = ShopProduct.objects.select_for_update().get(id=product_id)
+                product = ShopProduct.objects.select_for_update().select_related('shop').get(id=product_id)
                 productCount = product.item_quantity
+
+                if not product.shop.is_open:
+                    return Response({"error": "This store is currently closed."}, status=status.HTTP_400_BAD_REQUEST)
 
                 if productCount < quantity:
                     return Response(

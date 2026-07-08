@@ -17,6 +17,9 @@ class OthersStoreItemView(APIView):
         except Shop.DoesNotExist:
             return Response({"error": "Store not found."}, status=status.HTTP_404_NOT_FOUND)
 
+        if not shop.is_open:
+            return Response({"error": "This store is currently closed."}, status=status.HTTP_400_BAD_REQUEST)
+
         products = ShopProduct.objects.filter(shop = shop)
 
         data = []

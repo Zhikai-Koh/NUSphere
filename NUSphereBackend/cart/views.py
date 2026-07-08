@@ -48,10 +48,17 @@ class CartAPIView(APIView):
         if not product_id:
             return Response({"error": "product_id is required"}, status=status.HTTP_400_BAD_REQUEST)
 
+        if product_type == "shop_product":
+            try:
+                product = ShopProduct.objects.select_related('shop').get(id=product_id)
+            except ShopProduct.DoesNotExist:
+                return Response({"error": "Product not found."}, status=status.HTTP_404_NOT_FOUND)
+
+            if not product.shop.is_open:
+                return Response({"error": "This store is currently closed."}, status=status.HTTP_400_BAD_REQUEST)
+
         # Django auto make product_id column from the "product" ForeignKey in model.py, so we can immediate use it to find the specific row without manually querying for the product and then using it to query for the cart item.
         # Since we queried for the cart at the top, we dont need to use the cart's foreign key, instead we directly use the cart object to query for the cart item.
-
-
         cart_item, created = CartItem.objects.get_or_create(
             cart=cart,
             content_type=target_content_type, 
