@@ -8,6 +8,7 @@ import { StoresPage } from "../Stores/StoresPage.jsx"
 import { AllProviders } from "./AllProviders.jsx";
 import { Cart } from "../UserSpecifics/CartItems.jsx";
 import { PendingSales } from "../UserSpecifics/PendingSales.jsx";
+import { Messages } from "../UserSpecifics/Messages.jsx";
 
 import { AddListingForm } from "../OpenMarket/AddListing.jsx";
 import { RegistrationForm } from "../LoginPage/Registration.jsx";
@@ -55,6 +56,8 @@ export function NavigationBar() {
                     <Route path="/PersonalListings" element ={<PersonalListings/>} />
                     <Route path="/orders" element = {<MyOrders/>}/>
                     <Route path="/pending-sales" element = {<PendingSales/>}/>
+                    <Route path="/messages" element = {<Messages/>}/>
+                    <Route path="/messages/:conversationId" element = {<Messages/>}/>
 
                     <Route path="stores" element={<AllProviders><Outline/></AllProviders>} >
                         <Route index element = {<StoresPage />}/>

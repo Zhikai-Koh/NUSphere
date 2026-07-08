@@ -32,6 +32,7 @@ from shop.checkout.views import StoreCheckOutView
 from shop.confirmsold.views import StoreConfirmSoldView
 
 from cart.views import CartAPIView
+from chat.views import ConversationListView, ConversationMessagesView
 from django.conf.urls.static import static
 
 from login.views import LogoutView
@@ -46,6 +47,8 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/cart/', CartAPIView.as_view(), name='cart-detail'),
+    path('api/chat/conversations/', ConversationListView.as_view(), name='chat-conversations'),
+    path('api/chat/conversations/<int:conversation_id>/messages/', ConversationMessagesView.as_view(), name='chat-messages'),
 
     path('api/listings/', AddListingView.as_view(), name='add-listing'),
     path('api/listings/personal/', PersonalListingView.as_view(), name='personal-listing'),

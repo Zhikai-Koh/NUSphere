@@ -15,6 +15,27 @@ export function Listings() {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const { selectedCategory, searchTerm } = useOutletContext();
 
+    const openConversation = async (listingId) => {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            alert("Please log in to message sellers.");
+            return;
+        }
+
+        try {
+            const response = await axios.post(`${API_BASE_URL}/api/chat/conversations/`, {
+                source_type: "listing",
+                product_id: listingId
+            }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            navigate(`/messages/${response.data.id}`);
+        } catch (error) {
+            console.error("Error opening conversation:", error);
+            alert(error.response?.data?.error || "Failed to open conversation.");
+        }
+    };
+
     const fetchListings = async () => {
       try{
         const token = localStorage.getItem('access_token');
@@ -95,12 +116,20 @@ export function Listings() {
                     </div>
                     
                     <div className="card-footer">
-                        <button onClick={(e) =>{
-                            e.stopPropagation()
-                            setSelectedProduct(listing);
-                        }}>
-                            Add to Cart
-                        </button>
+                        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                            <button onClick={(e) =>{
+                                e.stopPropagation()
+                                setSelectedProduct(listing);
+                            }}>
+                                Add to Cart
+                            </button>
+                            <button onClick={(e) =>{
+                                e.stopPropagation()
+                                openConversation(listing.id);
+                            }}>
+                                Message Seller
+                            </button>
+                        </div>
 
                         <div className="card-price">
                             ${parseFloat(listing.item_price).toFixed(2)}
