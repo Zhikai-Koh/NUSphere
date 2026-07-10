@@ -28,6 +28,11 @@ const handleLogout = async () => {
 export const ProfileDropdown = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const profileImage = user?.profile_picture
+    ? user.profile_picture.startsWith('http')
+      ? user.profile_picture
+      : `${API_BASE_URL}${user.profile_picture}`
+    : profileIcon;
 
   // Toggle dropdown on click
   const toggleDropdown = () => setIsOpen(!isOpen);
@@ -47,7 +52,7 @@ export const ProfileDropdown = ({ user }) => {
     <div className="profile-dropdown-container" ref={dropdownRef}>
       <button className="profile-icon-btn" onClick={toggleDropdown}>
         <img 
-          src={user?.profile_pic || profileIcon} 
+          src={profileImage} 
           alt="Profile" 
           className="profile-avatar"
         />

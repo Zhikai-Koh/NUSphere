@@ -12,6 +12,7 @@ import { Messages } from "../UserSpecifics/Messages.jsx";
 
 import { AddListingForm } from "../OpenMarket/AddListing.jsx";
 import { RegistrationForm } from "../LoginPage/Registration.jsx";
+import { ProfilePage } from "../LoginPage/ProfilePage.jsx";
 
 import "./Navigation.css";
 import { PersonalListings } from "../OpenMarket/MyListings.jsx";
@@ -46,6 +47,7 @@ export function NavigationBar() {
                     <Route path="/" element={<Navigate to="open-market"/>} />
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/register" element={<RegistrationForm />} />
+                    <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/cart" element={<AllProviders><Cart /></AllProviders>} />
                     
                     <Route path="open-market" element={<AllProviders><Outline/></AllProviders>}>
