@@ -28,8 +28,19 @@
 
 .profile-icon,
 .notification-icon,
+.chat-icon-btn,
 .cart-link {
     width: 40px;
+}
+
+.chat-icon-btn {
+    height: 40px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--surface, #ffffff);
+    color: var(--text-main, #1a3644);
+    cursor: pointer;
+    font-weight: 600;
 }
 
 .icon-link img {
@@ -78,7 +89,7 @@
     width: 100%;
     max-width: 540px;
     display: grid;
-    grid-template-columns: 40px 72px minmax(160px, 1fr) 40px 40px;
+    grid-template-columns: 40px 72px minmax(160px, 1fr) 40px 40px 40px;
     align-items: center;
     gap: 14px;
 }
@@ -176,8 +187,14 @@
 
   .profile-icon,
   .notification-icon,
+  .chat-icon-btn,
   .cart-link {
     width: 34px;
+  }
+
+  .chat-icon-btn {
+    height: 34px;
+    font-size: 12px;
   }
 
   .nusphere-logo {

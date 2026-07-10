@@ -1,8 +1,9 @@
 import {createContext, useState, useEffect, useRef} from "react";
-import {Link, Outlet} from "react-router-dom";
+import {Link, Outlet, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config.js";
 import { CartButton } from "../UserSpecifics/CartButton.jsx"
+import { ChatButton } from "../Defaults/ChatButton.jsx"
 
 // Components
 import { ProfileDropdown } from "../LoginPage/ProfileDropDown";
@@ -24,6 +25,7 @@ import cartIcon from "../assets/CartIcon.png";
 import notificationIcon from "../assets/NotificationIcon.png";
 import profileIcon from "../assets/ProfilePhotoIcon.png";
 import searchIcon from "../assets/SearchIcon.png";
+import chatIcon from "../assets/ChatIcon.png";
 
 import "./Outline.css";
 
@@ -59,6 +61,7 @@ export function Outline() {
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [searchTerm, setSearchTerm] = useState("");
     const token = localStorage.getItem('access_token');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -91,6 +94,7 @@ export function Outline() {
                         <ProfileDropdown user={currentUser} style={{ width: '10%', height: 'auto', marginRight: '20px' }}/>                    <img className="nusphere-logo" src={nusphereLogo} alt="NUSphere Logo" />
                         <img className="nusphere-name" src={nusphereName} alt="NUSphere Name" />
                         <CartButton />
+                        <ChatButton />
                         <img className="notification-icon" src={notificationIcon} alt="Notification Icon" />
                     </div>
 
