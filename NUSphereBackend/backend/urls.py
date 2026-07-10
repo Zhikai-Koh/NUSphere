@@ -30,6 +30,7 @@ from shop.storeItems.views import StoreItemView
 from shop.othersStores.views import OthersStoreItemView
 from shop.checkout.views import StoreCheckOutView
 from shop.confirmsold.views import StoreConfirmSoldView
+from shop.analytics.views import SellerAnalyticsView
 
 from cart.views import CartAPIView
 from chat.views import ConversationListView, ConversationMessagesView
@@ -63,6 +64,7 @@ urlpatterns = [
     path('api/store/checkout/', StoreCheckOutView.as_view(), name='store-checkout'),
     path('api/store/orders/', StoreConfirmSoldView.as_view(), name='all-store-orders'),
     path('api/store/orders/<int:store_id>', StoreConfirmSoldView.as_view(), name='store-orders'),
+    path('api/seller/analytics/', SellerAnalyticsView.as_view(), name='seller-analytics'),
 
     # The registration route, React will POST user details here to create a new account
     path('api/auth/register/', RegisterView.as_view(), name='auth_register'),
