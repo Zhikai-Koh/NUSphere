@@ -17,10 +17,14 @@ export function Messages() {
         headers: { Authorization: `Bearer ${token}` }
     };
 
-    const fetchConversations = async () => {
+    const fetchConversations = async (openConversation = true) => {
         try {
             const response = await axios.get(`${API_BASE_URL}/api/chat/conversations/`, authHeaders);
             setConversations(response.data);
+
+            if (!openConversation) {
+                return;
+            }
 
             const conversationToOpen = response.data.find((conversation) => String(conversation.id) === String(conversationId))
                 || response.data[0];
@@ -28,6 +32,7 @@ export function Messages() {
             if (conversationToOpen) {
                 fetchMessages(conversationToOpen.id);
             }
+
         } catch (error) {
             console.error("Error fetching conversations:", error);
         } finally {
@@ -58,7 +63,8 @@ export function Messages() {
 
             setMessages((currentMessages) => [...currentMessages, response.data]);
             setMessageBody("");
-            fetchConversations();
+            fetchMessages(selectedConversation.id);
+            fetchConversations(false);
         } catch (error) {
             console.error("Error sending message:", error);
             alert(error.response?.data?.error || "Failed to send message.");
@@ -72,6 +78,30 @@ export function Messages() {
             setLoading(false);
         }
     }, [conversationId]);
+
+    useEffect(() => {
+        if (!selectedConversation?.id || !token) {
+            return;
+        }
+
+        const intervalId = setInterval(() => {
+            fetchMessages(selectedConversation.id);
+        }, 3000);
+
+        return () => clearInterval(intervalId);
+    }, [selectedConversation?.id, token]);
+
+    useEffect(() => {
+        if (!token) {
+            return;
+        }
+
+        const intervalId = setInterval(() => {
+            fetchConversations(false);
+        }, 12000);
+
+        return () => clearInterval(intervalId);
+    }, [conversationId, token]);
 
     if (!token) {
         return <p style={{ color: "red" }}>Please log in to view messages.</p>;
