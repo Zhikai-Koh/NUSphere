@@ -2,6 +2,7 @@ import { useState } from "react";
 import { API_BASE_URL } from "../config.js";
 import '../OpenMarket/AddListing.css';
 import { useNavigate } from "react-router-dom";
+import { StoreLocationPicker } from "./StoreLocationPicker.jsx";
 
 export function ListingCard({ listing }) {
         return (
@@ -22,6 +23,8 @@ export function AddStoreForm() {
     const [category, setCategory] = useState("");
     const [item_description, setDescription] = useState("");
     const [imageFile, setImageFile] = useState(null);
+    const [locationName, setLocationName] = useState("");
+    const [location, setLocation] = useState(null);
 
     const navigate = useNavigate()
     const logInToken = localStorage.getItem('access_token');
@@ -37,11 +40,18 @@ export function AddStoreForm() {
             alert("Please upload a store cover image.");
             return;
         }
+        if (!locationName.trim() || !location) {
+            alert("Please enter a location name and select the location on the map.");
+            return;
+        }
 
         const formData = new FormData();
         formData.append("store_name", shop_name);
         formData.append("category", category);
         formData.append("description", item_description);
+        formData.append("location_name", locationName.trim());
+        formData.append("latitude", location.latitude.toString());
+        formData.append("longitude", location.longitude.toString());
 
         if (imageFile) {
             formData.append("image", imageFile);
@@ -85,6 +95,14 @@ export function AddStoreForm() {
             </select>
             
             <textarea placeholder="Description" value={item_description} onChange={(e) => setDescription(e.target.value)} />
+
+            <StoreLocationPicker
+                locationName={locationName}
+                onLocationNameChange={setLocationName}
+                location={location}
+                onLocationChange={setLocation}
+            />
+
             <input 
                 type="file" 
                 accept="image/*" 

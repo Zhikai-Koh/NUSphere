@@ -3,11 +3,16 @@ import { API_BASE_URL } from "../config.js";
 import { useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import "../OpenMarket/Listings.css";
+import { StoreLocationPicker } from "./StoreLocationPicker.jsx";
 
 export function MyStore() {
     const [listings, setListings] = useState([]);
     const [loadSuccess, setLoadSuccess] = useState(true);
     const [loading, setLoading] = useState(true);
+    const [store, setStore] = useState(null);
+    const [editingLocation, setEditingLocation] = useState(false);
+    const [locationName, setLocationName] = useState("");
+    const [location, setLocation] = useState(null);
     const navigate = useNavigate();
     const {storeId} = useParams();
 
@@ -31,17 +36,31 @@ export function MyStore() {
     //fetching products
     const fetchShopProducts = async () => {
       try{
-        const response = await fetch(`${API_BASE_URL}/api/store/storeitems/${storeId}`, {
-          method: 'GET',
-          headers: {
+        const headers = {
             'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-          }
-        });
-          if (!response.ok) {
+        };
+        const [productsResponse, storesResponse] = await Promise.all([
+            fetch(`${API_BASE_URL}/api/store/storeitems/${storeId}`, { headers }),
+            fetch(`${API_BASE_URL}/api/store/personal/`, { headers })
+        ]);
+          if (!productsResponse.ok || !storesResponse.ok) {
               throw new Error('Network response failure');
           }
-          const data = await response.json();
-          setListings(data);
+          const products = await productsResponse.json();
+          const stores = await storesResponse.json();
+          const selectedStore = stores.find((item) => item.id === Number(storeId));
+
+          if (!selectedStore) {
+              throw new Error('Store not found');
+          }
+
+          setListings(products);
+          setStore(selectedStore);
+          setLocationName(selectedStore.location_name || "");
+          setLocation(selectedStore.latitude != null && selectedStore.longitude != null ? {
+              latitude: selectedStore.latitude,
+              longitude: selectedStore.longitude,
+          } : null);
       } catch (error) {
           console.error('Error fetching listings:', error);
           setLoadSuccess(false);
@@ -50,6 +69,46 @@ export function MyStore() {
           setLoading(false);
       }
   }
+
+    const saveLocation = async () => {
+        if (!locationName.trim() || !location) {
+            alert("Please enter a location name and select the location on the map.");
+            return;
+        }
+
+        try {
+            const response = await axios.patch(`${API_BASE_URL}/api/store/personal/`, {
+                shop_id: Number(storeId),
+                location_name: locationName.trim(),
+                latitude: location.latitude,
+                longitude: location.longitude,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            });
+
+            setStore((currentStore) => ({
+                ...currentStore,
+                location_name: response.data.location_name,
+                latitude: response.data.latitude,
+                longitude: response.data.longitude,
+            }));
+            setEditingLocation(false);
+        } catch (error) {
+            console.error('Error updating store location:', error);
+            alert(error.response?.data?.error || "Failed to update store location.");
+        }
+    };
+
+    const cancelLocationEdit = () => {
+        setLocationName(store.location_name || "");
+        setLocation(store.latitude != null && store.longitude != null ? {
+            latitude: store.latitude,
+            longitude: store.longitude,
+        } : null);
+        setEditingLocation(false);
+    };
 
     useEffect(() => {
         fetchShopProducts();
@@ -60,11 +119,42 @@ export function MyStore() {
         loading ? <p>Loading listings...</p> :
         <div className="pending-listing-container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px", marginBottom: "20px" }}>
-                <h2 style={{ margin: 0 }}>Store Products</h2>
+                <h2 style={{ margin: 0 }}>{store.store_name}</h2>
                 <button onClick={() => navigate('/pending-sales')}>
                     View Pending Sales
                 </button>
             </div>
+
+            <section className="store-location-section">
+                <div className="store-location-section-header">
+                    <h3>Store Location</h3>
+                    {!editingLocation && (
+                        <button type="button" onClick={() => setEditingLocation(true)}>
+                            {location ? "Edit Location" : "Add Location"}
+                        </button>
+                    )}
+                </div>
+
+                {(location || editingLocation) ? (
+                    <StoreLocationPicker
+                        locationName={locationName}
+                        onLocationNameChange={setLocationName}
+                        location={location}
+                        onLocationChange={setLocation}
+                        editable={editingLocation}
+                        inputId="store-location-edit-name"
+                    />
+                ) : (
+                    <p>No location has been set for this store.</p>
+                )}
+
+                {editingLocation && (
+                    <div className="store-location-actions">
+                        <button type="button" onClick={cancelLocationEdit}>Cancel</button>
+                        <button type="button" onClick={saveLocation}>Save Location</button>
+                    </div>
+                )}
+            </section>
 
             {listings.length === 0 ? <div
             className="listing-card add-new-card"

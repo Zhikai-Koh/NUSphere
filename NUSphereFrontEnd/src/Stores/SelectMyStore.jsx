@@ -116,6 +116,10 @@ export function SelectMyStore() {
                         Store Status: <strong>{listing.is_open ? "Open" : "Closed"}</strong>
                     </div>
 
+                    <div className="card-quantity">
+                        Location: <strong>{listing.location_name || "Not set"}</strong>
+                    </div>
+
                     <div className="card-quantity" onClick={(event) => {
                         event.stopPropagation();
                         navigate('/pending-sales');

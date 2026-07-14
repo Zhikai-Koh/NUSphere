@@ -3,6 +3,7 @@ import { API_BASE_URL } from "../config.js";
 import { useOutletContext, useNavigate} from "react-router-dom";
 import './StoresPage.css';
 import axios from "axios"
+import { NearbyStoresMap } from "./NearbyStoresMap.jsx";
 
 function StoreCard({ store }) {
     const navigate = useNavigate();
@@ -30,6 +31,8 @@ export function StoresPage() {
     const [stores, setStores] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadSuccess, setLoadSuccess] = useState(true);
+    const [viewMode, setViewMode] = useState("list");
+    const navigate = useNavigate();
 
     const fetchStores = async () => {
       try{
@@ -93,11 +96,32 @@ export function StoresPage() {
         <main className="stores-main-content">
             <div className="stores-grid-header">
                 <h2>Registered Student Stores</h2>
+                <div className="stores-view-toggle" role="group" aria-label="Store view">
+                    <button
+                        type="button"
+                        className={viewMode === "list" ? "active" : ""}
+                        onClick={() => setViewMode("list")}
+                    >
+                        List
+                    </button>
+                    <button
+                        type="button"
+                        className={viewMode === "map" ? "active" : ""}
+                        onClick={() => setViewMode("map")}
+                    >
+                        Nearby Map
+                    </button>
+                </div>
             </div>
             {searchedStores.length === 0 ? (
                 <div className="no-stores-message">
                     <p>No stores currently registered.</p>
                 </div>
+            ) : viewMode === "map" ? (
+                <NearbyStoresMap
+                    stores={searchedStores}
+                    onVisitStore={(storeId) => navigate(`../VisitStore/${storeId}`)}
+                />
             ) : (
                 <div className="stores-grid">
                     {searchedStores.map((store) => (

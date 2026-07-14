@@ -4,9 +4,16 @@
     gap: 20px;
 }
 
+.stores-grid-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
 .stores-grid-header h2 {
     color: #1a3644;
-    margin: 0 0 5px 0;
+    margin: 0;
     font-size: 1.6rem;
 }
 
@@ -103,4 +110,144 @@
     background-color: #ffffff;
     border-radius: 12px;
     color: #7e8b93;
+}
+
+.stores-view-toggle {
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid #1a3644;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.stores-view-toggle button {
+    min-width: 90px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 0;
+    background: #ffffff;
+    color: #1a3644;
+    cursor: pointer;
+}
+
+.stores-view-toggle button + button {
+    border-left: 1px solid #1a3644;
+}
+
+.stores-view-toggle button.active {
+    background: #1a3644;
+    color: #ffffff;
+}
+
+.nearby-stores-view {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.nearby-location-controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.nearby-location-controls button,
+.nearby-store-row button,
+.store-map-popup button {
+    border: 0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    background: #1a3644;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.nearby-location-error {
+    margin: 0;
+    color: #b42318;
+}
+
+.nearby-stores-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+    min-height: 560px;
+    border: 1px solid #d0d5dd;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.nearby-stores-map {
+    width: 100%;
+    height: 560px;
+}
+
+.buyer-location-marker {
+    display: grid;
+    place-items: center;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    background: #1677ff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+.buyer-location-marker span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+.nearby-store-list {
+    max-height: 560px;
+    overflow-y: auto;
+    border-left: 1px solid #d0d5dd;
+}
+
+.nearby-store-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid #eef2f5;
+}
+
+.nearby-store-row > div,
+.store-map-popup {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.nearby-store-row span,
+.store-map-popup span {
+    color: #4a5568;
+    font-size: 0.85rem;
+}
+
+.store-map-popup button {
+    margin-top: 6px;
+}
+
+@media (max-width: 760px) {
+    .stores-grid-header,
+    .nearby-location-controls {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .nearby-stores-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .nearby-stores-map {
+        height: 420px;
+    }
+
+    .nearby-store-list {
+        max-height: none;
+        border-top: 1px solid #d0d5dd;
+        border-left: 0;
+    }
 }
