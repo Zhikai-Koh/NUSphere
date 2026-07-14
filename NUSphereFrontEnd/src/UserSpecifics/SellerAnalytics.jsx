@@ -1,108 +1,174 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../config.js";
-import "../OpenMarket/Listings.css";
+import "./SellerAnalytics.css";
 
-function MetricCard({ label, value }) {
+const currencyFormatter = new Intl.NumberFormat("en-SG", {
+    style: "currency",
+    currency: "SGD",
+});
+
+function formatCurrency(value) {
+    const amount = Number(value);
+    return currencyFormatter.format(Number.isFinite(amount) ? amount : 0);
+}
+
+function MetricCard({ label, value, hint, tone = "blue" }) {
     return (
-        <div className="listing-card">
-            <div style={{ color: "#64748b", fontSize: "14px" }}>{label}</div>
-            <strong style={{ fontSize: "24px", color: "#1a3644" }}>{value}</strong>
-        </div>
+        <article className={`analytics-metric analytics-metric--${tone}`}>
+            <span className="analytics-metric__label">{label}</span>
+            <strong className="analytics-metric__value">{value}</strong>
+            {hint && <span className="analytics-metric__hint">{hint}</span>}
+        </article>
     );
 }
 
 export function SellerAnalytics() {
     const [analytics, setAnalytics] = useState(null);
     const [loading, setLoading] = useState(true);
-    const token = localStorage.getItem('access_token');
+    const [error, setError] = useState("");
+    const token = localStorage.getItem("access_token");
+
+    const fetchAnalytics = useCallback(async (signal) => {
+        if (!token) return;
+
+        setLoading(true);
+        setError("");
+
+        try {
+            const response = await axios.get(`${API_BASE_URL}/api/seller/analytics/`, {
+                headers: { Authorization: `Bearer ${token}` },
+                signal,
+            });
+            setAnalytics(response.data);
+        } catch (requestError) {
+            if (requestError.code !== "ERR_CANCELED") {
+                setError("Unable to load your seller analytics.");
+            }
+        } finally {
+            if (!signal?.aborted) setLoading(false);
+        }
+    }, [token]);
 
     useEffect(() => {
-        const fetchAnalytics = async () => {
-            try {
-                const response = await axios.get(`${API_BASE_URL}/api/seller/analytics/`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setAnalytics(response.data);
-            } catch (error) {
-                console.error("Error fetching seller analytics:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+        const controller = new AbortController();
+        const timer = window.setTimeout(() => fetchAnalytics(controller.signal), 0);
 
-        if (token) {
-            fetchAnalytics();
-        } else {
-            setLoading(false);
-        }
-    }, []);
+        return () => {
+            window.clearTimeout(timer);
+            controller.abort();
+        };
+    }, [fetchAnalytics]);
+
+    const summary = analytics?.summary ?? {};
+    const inventory = analytics?.inventory ?? {};
+    const lowStock = analytics?.low_stock ?? [];
+    const bestSelling = useMemo(
+        () => [...(analytics?.best_selling ?? [])].sort(
+            (first, second) => second.sold_count - first.sold_count,
+        ),
+        [analytics],
+    );
 
     if (!token) {
-        return <p style={{ color: "red" }}>Please log in to view seller analytics.</p>;
+        return <p className="analytics-message analytics-message--error">Please log in to view seller analytics.</p>;
     }
 
     if (loading) {
-        return <p>Loading seller analytics...</p>;
+        return <p className="analytics-message" aria-live="polite">Loading seller analytics…</p>;
     }
 
-    if (!analytics) {
-        return <p style={{ color: "red" }}>Failed to load seller analytics.</p>;
+    if (error) {
+        return (
+            <div className="analytics-error" role="alert">
+                <div>
+                    <strong>Analytics unavailable</strong>
+                    <p>{error}</p>
+                </div>
+                <button type="button" onClick={() => fetchAnalytics()}>Try again</button>
+            </div>
+        );
     }
 
-    const summary = analytics.summary;
-    const inventory = analytics.inventory;
+    if (!analytics) return null;
 
     return (
-        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
-            <h2>Seller Analytics</h2>
+        <section className="analytics-dashboard" aria-labelledby="seller-analytics-title">
+            <header className="analytics-header">
+                <div>
+                    <span className="analytics-eyebrow">Seller overview</span>
+                    <h2 id="seller-analytics-title">Your business at a glance</h2>
+                    <p>Track sales, orders, and inventory health.</p>
+                </div>
+                <span className="analytics-live-badge">Live data</span>
+            </header>
 
-            <div className="my-listings-grid" style={{ marginBottom: "24px" }}>
-                <MetricCard label="Total Revenue" value={`$${parseFloat(summary.total_revenue).toFixed(2)}`} />
-                <MetricCard label="Pending Orders" value={summary.pending_orders} />
-                <MetricCard label="Completed Orders" value={summary.completed_orders} />
-                <MetricCard label="Open Stores" value={`${summary.open_stores}/${summary.stores}`} />
+            <div className="analytics-metrics">
+                <MetricCard label="Total revenue" value={formatCurrency(summary.total_revenue)} hint="Across market and stores" />
+                <MetricCard label="Pending orders" value={summary.pending_orders ?? 0} hint="Awaiting completion" tone="amber" />
+                <MetricCard label="Completed orders" value={summary.completed_orders ?? 0} hint="Successfully fulfilled" tone="green" />
+                <MetricCard label="Open stores" value={`${summary.open_stores ?? 0} / ${summary.stores ?? 0}`} hint="Currently accepting orders" tone="violet" />
             </div>
 
-            <section style={{ marginBottom: "24px" }}>
-                <h3>Inventory</h3>
-                <div className="my-listings-grid">
-                    <MetricCard label="Open Market Unsold" value={inventory.market_unsold} />
-                    <MetricCard label="Open Market Pending" value={inventory.market_pending} />
-                    <MetricCard label="Open Market Sold" value={inventory.market_sold} />
-                    <MetricCard label="Store Stock" value={inventory.store_stock} />
-                </div>
-            </section>
+            <div className="analytics-details">
+                <article className="analytics-panel">
+                    <header className="analytics-panel__header">
+                        <h3>Inventory snapshot</h3>
+                        <p>Units by sales channel and status</p>
+                    </header>
+                    <dl className="inventory-list">
+                        <div><dt>Market unsold</dt><dd>{inventory.market_unsold ?? 0}</dd></div>
+                        <div><dt>Market pending</dt><dd>{inventory.market_pending ?? 0}</dd></div>
+                        <div><dt>Market sold</dt><dd>{inventory.market_sold ?? 0}</dd></div>
+                        <div><dt>Store stock</dt><dd>{inventory.store_stock ?? 0}</dd></div>
+                    </dl>
+                </article>
 
-            <section style={{ marginBottom: "24px" }}>
-                <h3>Best Selling Items</h3>
-                {analytics.best_selling.length === 0 ? <p>No completed sales yet.</p> :
-                <div className="my-listings-grid">
-                    {analytics.best_selling.map((item, index) => (
-                        <div key={`${item.source}-${item.item_name}-${index}`} className="listing-card">
-                            <span className={`order-source-badge ${item.source === "Store" ? "store" : "market"}`}>
-                                {item.source}
-                            </span>
-                            <h4 className="card-title">{item.item_name}</h4>
-                            <div className="card-quantity">Sold: <strong>{item.sold_count}</strong></div>
-                        </div>
-                    ))}
-                </div>}
-            </section>
+                <article className="analytics-panel">
+                    <header className="analytics-panel__header">
+                        <h3>Best-selling items</h3>
+                        <p>Strongest performers across all channels</p>
+                    </header>
+                    {bestSelling.length === 0 ? (
+                        <p className="analytics-empty">Completed sales will appear here.</p>
+                    ) : (
+                        <ol className="seller-ranking">
+                            {bestSelling.map((item, index) => (
+                                <li key={`${item.source}-${item.item_name}-${index}`}>
+                                    <span className="seller-ranking__position">{index + 1}</span>
+                                    <div className="seller-ranking__item">
+                                        <strong>{item.item_name}</strong>
+                                        <span>{item.source}</span>
+                                    </div>
+                                    <strong>{item.sold_count} sold</strong>
+                                </li>
+                            ))}
+                        </ol>
+                    )}
+                </article>
+            </div>
 
-            <section>
-                <h3>Low Stock Store Products</h3>
-                {analytics.low_stock.length === 0 ? <p>No low-stock store products.</p> :
-                <div className="my-listings-grid">
-                    {analytics.low_stock.map((item, index) => (
-                        <div key={`${item.store_name}-${item.item_name}-${index}`} className="listing-card">
-                            <h4 className="card-title">{item.item_name}</h4>
-                            <div className="card-quantity">Store: <strong>{item.store_name}</strong></div>
-                            <div className="card-quantity">Remaining: <strong>{item.quantity}</strong></div>
-                        </div>
-                    ))}
-                </div>}
-            </section>
-        </div>
+            <article className="analytics-panel">
+                <header className="analytics-panel__header analytics-panel__header--row">
+                    <div>
+                        <h3>Low-stock products</h3>
+                        <p>Products with three or fewer units remaining</p>
+                    </div>
+                    {lowStock.length > 0 && <span className="analytics-alert-count">{lowStock.length} need attention</span>}
+                </header>
+                {lowStock.length === 0 ? (
+                    <p className="analytics-empty">All products have healthy stock levels.</p>
+                ) : (
+                    <div className="low-stock-grid">
+                        {lowStock.map((item, index) => (
+                            <div className="low-stock-item" key={`${item.store_name}-${item.item_name}-${index}`}>
+                                <div><strong>{item.item_name}</strong><span>{item.store_name}</span></div>
+                                <strong>{item.quantity} left</strong>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </article>
+        </section>
     );
 }
