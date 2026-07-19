@@ -21,7 +21,6 @@ import dormImage from "../assets/Categories/Dorm.png";
 import serviceImage from "../assets/Categories/Service.png";
 import foodImage from "../assets/Categories/Food.png";
 import othersImage from "../assets/Categories/Others.png";
-import notificationIcon from "../assets/NotificationIcon.png";
 import searchIcon from "../assets/SearchIcon.png";
 
 import "./Outline.css";
@@ -87,13 +86,13 @@ export function Outline() {
                 <div className="main-banner-inner">
                     
                     <div className="banner-brand-row">
-                    
-                        <ProfileDropdown user={currentUser} style={{ width: '10%', height: 'auto', marginRight: '20px' }}/>                    
                         <img className="nusphere-logo" src={nusphereLogo} alt="NUSphere Logo" />
                         <img className="nusphere-name" src={nusphereName} alt="NUSphere Name" />
-                        <CartButton />
-                        <ChatButton />
-                        <img className="notification-icon" src={notificationIcon} alt="Notification Icon" />
+                        <div className="banner-actions">
+                            <CartButton />
+                            <ChatButton />
+                            <ProfileDropdown user={currentUser} />
+                        </div>
                     </div>
 
                     <form 
@@ -117,9 +116,9 @@ export function Outline() {
                 <aside className="categories-bar">
                     <h2>Categories</h2>
                     <div className="category-row">                        
-                        {categories.map((category, index) => (
+                        {categories.map((category) => (
                             <CategoryCards
-                                key={index}
+                                key={category.name}
                                 categoryName={category.name}
                                 categoryImage={category.image}
                                 isActive={selectedCategory === category.name}

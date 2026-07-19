@@ -5,6 +5,13 @@ export function ChatButton() {
     const navigate = useNavigate();
 
     return (
-        <img src={chatIcon} alt="Chat Icon" onClick={() => navigate('/messages')} />
+        <button
+            type="button"
+            className="chat-icon-btn"
+            aria-label="Open messages"
+            onClick={() => navigate('/messages')}
+        >
+            <img className="chat-icon" src={chatIcon} alt="" />
+        </button>
     )
 }

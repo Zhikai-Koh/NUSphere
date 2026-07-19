@@ -12,15 +12,16 @@ export function CartButton() {
 
     if (token !== null){
         return (
-            <Link to="/cart" className="cart-link">
-                <img src={cartIcon} alt="Cart Icon" />
+            <Link to="/cart" className="cart-icon-btn" aria-label="Open cart">
+                <img className="cart-icon" src={cartIcon} alt="" />
             </Link>
         );
     }
     else{
         return (
-            <img src={cartIcon} alt="Cart Icon" onClick={handleOnClick} />
+            <button type="button" className="cart-icon-btn" aria-label="Open cart" onClick={handleOnClick}>
+                <img className="cart-icon" src={cartIcon} alt="" />
+            </button>
         );
     }
-    return null;
 }
