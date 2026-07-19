@@ -68,10 +68,11 @@ export function VisitStore() {
     const filteredListings = listings;
 
     return (
-        !loadSuccess ? listings :
-        loading ? <p>Loading listings...</p> :
-        filteredListings.length === 0 ? <h2>No listings available</h2> :
-        <div className="listings-grid">
+        <main className="visit-store-page">
+            {!loadSuccess ? listings :
+            loading ? <p>Loading listings...</p> :
+            filteredListings.length === 0 ? <h2>No listings available</h2> :
+            <div className="listings-grid">
             {filteredListings?.map((listing) => (
                 <div key={listing.id} 
                 className="listing-card"
@@ -124,6 +125,7 @@ export function VisitStore() {
                     )}
                 </div>
             ))}
-        </div>
+            </div>}
+        </main>
     );
 }
