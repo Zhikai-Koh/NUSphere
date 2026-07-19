@@ -60,6 +60,35 @@
     animation: fadeIn 0.2s ease-in-out;
 }
 
+.card-description > p {
+    margin: 0;
+}
+
+.listing-meetup-location {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border, #e0e0e0);
+}
+
+.listing-meetup-location a {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    background-color: var(--text-main, #1a3644);
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.listing-meetup-location a:hover {
+    opacity: 0.85;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }

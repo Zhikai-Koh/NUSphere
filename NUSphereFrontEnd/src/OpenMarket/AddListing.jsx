@@ -2,6 +2,7 @@ import { useState } from "react";
 import { API_BASE_URL } from "../config.js";
 import './AddListing.css';
 import { useNavigate } from "react-router-dom";
+import { LocationPicker } from "../Stores/LocationPicker.jsx";
 
 export function ListingCard({ listing }) {
         return (
@@ -24,6 +25,9 @@ export function AddListingForm() {
     const [item_quantity, setQuantity] = useState("");
     const [item_description, setDescription] = useState("");
     const [imageFile, setImageFile] = useState(null);
+    const [includeLocation, setIncludeLocation] = useState(false);
+    const [locationName, setLocationName] = useState("");
+    const [location, setLocation] = useState(null);
 
     const navigate = useNavigate()
     const logInToken = localStorage.getItem('access_token');
@@ -56,12 +60,23 @@ export function AddListingForm() {
             return;
         }
 
+        if(includeLocation && (!locationName.trim() || !location)) {
+            alert("Please enter a meetup location name and select it on the map.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("item_name", item_name);
         formData.append("item_price", item_price);
         formData.append("category", category);
         formData.append("item_quantity", item_quantity);
         formData.append("item_description", item_description);
+
+        if (includeLocation) {
+            formData.append("location_name", locationName.trim());
+            formData.append("latitude", location.latitude.toString());
+            formData.append("longitude", location.longitude.toString());
+        }
 
         if (imageFile) {
             formData.append("image", imageFile);
@@ -106,6 +121,28 @@ export function AddListingForm() {
             
             <input type="number" placeholder="Quantity" value={item_quantity} onChange={(e) => setQuantity(e.target.value)} required />
             <textarea placeholder="Description" value={item_description} onChange={(e) => setDescription(e.target.value)} />
+
+            <label className="listing-location-toggle">
+                <input
+                    type="checkbox"
+                    checked={includeLocation}
+                    onChange={(event) => setIncludeLocation(event.target.checked)}
+                />
+                Add meetup location
+            </label>
+
+            {includeLocation && (
+                <LocationPicker
+                    locationName={locationName}
+                    onLocationNameChange={setLocationName}
+                    location={location}
+                    onLocationChange={setLocation}
+                    inputId="listing-meetup-location"
+                    label="Meet-up location"
+                    placeholder="Location name, e.g. Central Library entrance"
+                />
+            )}
+
             <input 
                 type="file" 
                 accept="image/*" 

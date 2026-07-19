@@ -5,7 +5,8 @@ import "leaflet/dist/leaflet.css";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
-import "./StoreLocationPicker.css";
+import "./LocationPicker.css";
+import { buildGoogleMapsUrl } from "../utils/googleMaps.js";
 
 const NUS_MAP_CENTRE = [1.2966, 103.7764];
 
@@ -62,13 +63,16 @@ function LocationMarker({ position, onPositionChange, editable }) {
     );
 }
 
-export function StoreLocationPicker({
+export function LocationPicker({
     locationName,
     onLocationNameChange,
     location,
     onLocationChange,
     editable = true,
-    inputId = "store-location-name",
+    inputId = "location-name",
+    label = "Location",
+    placeholder = "Location name",
+    showGoogleMapsLink = false,
 }) {
     const [locationError, setLocationError] = useState("");
     const [findingLocation, setFindingLocation] = useState(false);
@@ -104,14 +108,14 @@ export function StoreLocationPicker({
     };
 
     return (
-        <div className="store-location-picker">
-            <label htmlFor={editable ? inputId : undefined}>Store location</label>
+        <div className="location-picker">
+            <label htmlFor={editable ? inputId : undefined}>{label}</label>
             {editable ? (
                 <>
                     <input
                         id={inputId}
                         type="text"
-                        placeholder="Location name, e.g. UTown Residence Lobby"
+                        placeholder={placeholder}
                         value={locationName}
                         onChange={(event) => onLocationNameChange(event.target.value)}
                         required
@@ -119,17 +123,29 @@ export function StoreLocationPicker({
                     <button type="button" onClick={useCurrentLocation} disabled={findingLocation}>
                         {findingLocation ? "Finding Location..." : "Use My Current Location"}
                     </button>
-                    {locationError && <p className="store-location-error">{locationError}</p>}
+                    {locationError && <p className="location-picker-error">{locationError}</p>}
                 </>
             ) : (
-                <p className="store-location-name">{locationName || "No location set"}</p>
+                <>
+                    <p className="location-picker-name">{locationName || "No location set"}</p>
+                    {showGoogleMapsLink && location && (
+                        <a
+                            className="location-picker-google-link"
+                            href={buildGoogleMapsUrl(location.latitude, location.longitude)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Show on Google Maps
+                        </a>
+                    )}
+                </>
             )}
 
             <MapContainer
                 center={markerPosition || NUS_MAP_CENTRE}
                 zoom={markerPosition ? 17 : 15}
                 scrollWheelZoom={editable}
-                className="store-location-map"
+                className="location-picker-map"
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -143,7 +159,7 @@ export function StoreLocationPicker({
                 />
             </MapContainer>
             {editable && (
-                <p className="store-location-selection">
+                <p className="location-picker-selection">
                     {location ? "Location selected" : "Select a location on the map"}
                 </p>
             )}

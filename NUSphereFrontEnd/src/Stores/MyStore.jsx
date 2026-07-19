@@ -3,7 +3,7 @@ import { API_BASE_URL } from "../config.js";
 import { useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import "../OpenMarket/Listings.css";
-import { StoreLocationPicker } from "./StoreLocationPicker.jsx";
+import { LocationPicker } from "./LocationPicker.jsx";
 
 export function MyStore() {
     const [listings, setListings] = useState([]);
@@ -136,13 +136,16 @@ export function MyStore() {
                 </div>
 
                 {(location || editingLocation) ? (
-                    <StoreLocationPicker
+                    <LocationPicker
                         locationName={locationName}
                         onLocationNameChange={setLocationName}
                         location={location}
                         onLocationChange={setLocation}
                         editable={editingLocation}
                         inputId="store-location-edit-name"
+                        label="Store location"
+                        placeholder="Location name, e.g. UTown Residence Lobby"
+                        showGoogleMapsLink
                     />
                 ) : (
                     <p>No location has been set for this store.</p>

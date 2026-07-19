@@ -4,6 +4,7 @@ import L from "leaflet";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
+import { buildGoogleMapsUrl, hasMapLocation } from "../utils/googleMaps.js";
 
 const NUS_MAP_CENTRE = [1.2966, 103.7764];
 
@@ -82,7 +83,7 @@ export function NearbyStoresMap({ stores, onVisitStore }) {
     const [findingLocation, setFindingLocation] = useState(false);
 
     const mappedStores = useMemo(() => stores
-        .filter((store) => Number.isFinite(Number(store.latitude)) && Number.isFinite(Number(store.longitude)))
+        .filter(hasMapLocation)
         .map((store) => {
             const storeLocation = {
                 latitude: Number(store.latitude),
@@ -177,6 +178,13 @@ export function NearbyStoresMap({ stores, onVisitStore }) {
                                     <strong>{store.store_name}</strong>
                                     <span>{store.location_name}</span>
                                     <span>{formatDistance(store.distanceKm)}</span>
+                                    <a
+                                        href={buildGoogleMapsUrl(store.latitude, store.longitude)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Show on Google Maps
+                                    </a>
                                     <button type="button" onClick={() => onVisitStore(store.id)}>Visit Store</button>
                                 </div>
                             </Popup>
@@ -192,7 +200,16 @@ export function NearbyStoresMap({ stores, onVisitStore }) {
                                 <span>{store.location_name}</span>
                                 <span>{formatDistance(store.distanceKm)}</span>
                             </div>
-                            <button type="button" onClick={() => onVisitStore(store.id)}>Visit Store</button>
+                            <div className="nearby-store-actions">
+                                <a
+                                    href={buildGoogleMapsUrl(store.latitude, store.longitude)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Show on Google Maps
+                                </a>
+                                <button type="button" onClick={() => onVisitStore(store.id)}>Visit Store</button>
+                            </div>
                         </div>
                     ))}
                 </div>

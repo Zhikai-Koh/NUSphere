@@ -23,3 +23,19 @@
 .add-listing-form button:hover {
     background-color: #0056b3;
 }
+
+.listing-location-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.add-listing-form .listing-location-toggle input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+}

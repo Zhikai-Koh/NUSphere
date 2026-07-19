@@ -2,7 +2,7 @@ import { useState } from "react";
 import { API_BASE_URL } from "../config.js";
 import '../OpenMarket/AddListing.css';
 import { useNavigate } from "react-router-dom";
-import { StoreLocationPicker } from "./StoreLocationPicker.jsx";
+import { LocationPicker } from "./LocationPicker.jsx";
 
 export function ListingCard({ listing }) {
         return (
@@ -96,11 +96,13 @@ export function AddStoreForm() {
             
             <textarea placeholder="Description" value={item_description} onChange={(e) => setDescription(e.target.value)} />
 
-            <StoreLocationPicker
+            <LocationPicker
                 locationName={locationName}
                 onLocationNameChange={setLocationName}
                 location={location}
                 onLocationChange={setLocation}
+                label="Store location"
+                placeholder="Location name, e.g. UTown Residence Lobby"
             />
 
             <input 

@@ -4,6 +4,7 @@ import { useOutletContext, useNavigate} from "react-router-dom";
 import './StoresPage.css';
 import axios from "axios"
 import { NearbyStoresMap } from "./NearbyStoresMap.jsx";
+import { buildGoogleMapsUrl, hasMapLocation } from "../utils/googleMaps.js";
 
 function StoreCard({ store }) {
     const navigate = useNavigate();
@@ -18,6 +19,19 @@ function StoreCard({ store }) {
                 <h3 className="store-title">{store.store_name}</h3>
                 <span className="store-owner">By: {store.owner}</span>
                 <p className="store-description">{store.description}</p>
+                {hasMapLocation(store) && (
+                    <div className="store-location-details">
+                        <strong>Location</strong>
+                        <span>{store.location_name}</span>
+                        <a
+                            href={buildGoogleMapsUrl(store.latitude, store.longitude)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Show on Google Maps
+                        </a>
+                    </div>
+                )}
                 <div className="store-card-footer">
                     <span className="store-category-tag">{store.category}</span>
                     <button className="view-store-btn" onClick={() => handleViewStore(store.id)}>Visit Store</button>
@@ -85,6 +99,7 @@ export function StoresPage() {
                 store.store_name,
                 store.owner,
                 store.description,
+                store.location_name,
                 store.category
             ].some(value => value?.toLowerCase().includes(normalizedSearch))
         )

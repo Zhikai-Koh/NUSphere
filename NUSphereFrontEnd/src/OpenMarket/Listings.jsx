@@ -5,6 +5,7 @@ import {useNavigate, useOutletContext} from "react-router-dom";
 import "./Listings.css";
 import axios from "axios";
 import {SelectQuantity} from "./SelectQuantity.jsx"
+import { buildGoogleMapsUrl, hasMapLocation } from "../utils/googleMaps.js";
 
 export function Listings() {
     const [listings, setListings] = useState([]);
@@ -84,6 +85,7 @@ export function Listings() {
                 [
                     listing.item_name,
                     listing.item_description,
+                    listing.location_name,
                     listing.category
                 ].some(value => value?.toLowerCase().includes(normalizedSearch))
             )
@@ -141,7 +143,21 @@ export function Listings() {
 
                     {expandedId === listing.id && (
                         <div className="card-description">
-                            {listing.item_description || "No description provided for this listing."}
+                            <p>{listing.item_description || "No description provided for this listing."}</p>
+                            {hasMapLocation(listing) && (
+                                <div className="listing-meetup-location">
+                                    <strong>Meet-up location</strong>
+                                    <span>{listing.location_name}</span>
+                                    <a
+                                        href={buildGoogleMapsUrl(listing.latitude, listing.longitude)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(event) => event.stopPropagation()}
+                                    >
+                                        Show on Google Maps
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
