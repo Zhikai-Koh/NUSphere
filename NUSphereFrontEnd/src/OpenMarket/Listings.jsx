@@ -1,15 +1,15 @@
-import {useContext, createContext, useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import { API_BASE_URL } from "../config.js";
-import { CartContext } from "../UserSpecifics/CartContext.jsx";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import "./Listings.css";
 import axios from "axios";
 import {SelectQuantity} from "./SelectQuantity.jsx"
 import { buildGoogleMapsUrl, hasMapLocation } from "../utils/googleMaps.js";
+import { PageState } from "../Defaults/PageState.jsx";
 
 export function Listings() {
     const [listings, setListings] = useState([]);
-    const [loadSuccess, setLoadSuccess] = useState(true);
+    const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
     const [expandedId, setExpandedId] = useState(null);
     const navigate = useNavigate();
@@ -38,6 +38,8 @@ export function Listings() {
     };
 
     const fetchListings = async () => {
+      setLoading(true);
+      setError("");
       try{
         const token = localStorage.getItem('access_token');
 
@@ -64,15 +66,15 @@ export function Listings() {
                 localStorage.removeItem('refresh_token');
                 window.location.reload();
             }
-            setLoadSuccess(false);
-            setListings(<p style={{ color: 'red' }}>Failed to load listings. Please try again later.</p>);
+            setError("Check your connection and try again.");
         } finally {
             setLoading(false);
         }
     }
 
     useEffect(() => {
-        fetchListings();
+        const timer = window.setTimeout(fetchListings, 0);
+        return () => window.clearTimeout(timer);
     }, []);
 
     const filteredListings = selectedCategory === "All"
@@ -91,10 +93,19 @@ export function Listings() {
             )
             : filteredListings;
 
+    if (loading) {
+        return <PageState title="Loading marketplace" message="Finding available listings for you…" />;
+    }
+
+    if (error) {
+        return <PageState title="We couldn’t load the marketplace" message={error} actionLabel="Try again" onAction={fetchListings} tone="error" />;
+    }
+
+    if (searchedListings.length === 0) {
+        return <PageState title="No listings found" message="Try another category or search term." />;
+    }
+
     return (
-        !loadSuccess ? listings :
-        loading ? <p>Loading listings...</p> :
-        searchedListings.length === 0 ? <h2>No listings available</h2> :
         <div className="listings-grid">
             {searchedListings?.map((listing) => (
                 <div key={listing.id} 
@@ -102,24 +113,32 @@ export function Listings() {
                 onClick={() => setExpandedId(expandedId === listing.id ? null : listing.id)}
                 >
 
-                    {listing.image && (
-                        <img src={listing.image.startsWith('http') ? listing.image : `${API_BASE_URL}${listing.image}`}
-                        alt={listing.item_name}
-                        className="listing-image"
-                        />
-                    )}
+                    <div className="listing-image-frame">
+                        <span aria-hidden="true">Image unavailable</span>
+                        {listing.image && (
+                            <img
+                                src={listing.image.startsWith('http') ? listing.image : `${API_BASE_URL}${listing.image}`}
+                                alt={listing.item_name}
+                                className="listing-image"
+                                onError={(event) => {
+                                    event.currentTarget.hidden = true;
+                                }}
+                            />
+                        )}
+                    </div>
 
                     <h4 className="card-title">
                         {listing.item_name}
                     </h4>
 
-                    <div className="card-quantity">
-                        Quantity: <strong>{listing.inventory.unsold}</strong>
+                    <div className="listing-meta">
+                        {listing.category && <span className="listing-category">{listing.category}</span>}
+                        <span>{listing.inventory.unsold} available</span>
                     </div>
-                    
+
                     <div className="card-footer">
-                        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                            <button onClick={(e) =>{
+                        <div className="card-actions">
+                            <button className="button-secondary" onClick={(e) =>{
                                 e.stopPropagation()
                                 setSelectedProduct(listing);
                             }}>

@@ -1,0 +1,22 @@
+.page-state {
+    width: min(100%, 560px);
+    margin: 32px auto;
+    padding: 32px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+}
+
+.page-state h2 {
+    margin-bottom: 8px;
+}
+
+.page-state p {
+    margin-bottom: 20px;
+}
+
+.page-state--error {
+    border-color: var(--danger-border);
+}

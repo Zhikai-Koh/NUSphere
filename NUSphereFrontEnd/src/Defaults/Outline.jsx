@@ -1,5 +1,5 @@
-import {createContext, useState, useEffect, useRef} from "react";
-import {Link, Outlet, useNavigate} from "react-router-dom";
+import {useState, useEffect, useRef} from "react";
+import {Outlet} from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config.js";
 import { CartButton } from "../UserSpecifics/CartButton.jsx"
@@ -21,11 +21,8 @@ import dormImage from "../assets/Categories/Dorm.png";
 import serviceImage from "../assets/Categories/Service.png";
 import foodImage from "../assets/Categories/Food.png";
 import othersImage from "../assets/Categories/Others.png";
-import cartIcon from "../assets/CartIcon.png";
 import notificationIcon from "../assets/NotificationIcon.png";
-import profileIcon from "../assets/ProfilePhotoIcon.png";
 import searchIcon from "../assets/SearchIcon.png";
-import chatIcon from "../assets/ChatIcon.png";
 
 import "./Outline.css";
 
@@ -44,14 +41,15 @@ const categories = [
 function CategoryCards({categoryName, categoryImage, isActive, onClick}) {
     
     return(
-        <div 
+        <button
+            type="button"
             className={`category-card ${isActive ? "active" : ""}`}
             onClick={onClick}
-            style={{ cursor: "pointer", fontWeight: isActive ? "bold" : "normal" }}
+            aria-pressed={isActive}
         >
             <img src={categoryImage} alt={`${categoryName} Image`} />
-            {categoryName}
-        </div>
+            <span>{categoryName}</span>
+        </button>
     )
 }
 
@@ -61,7 +59,6 @@ export function Outline() {
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [searchTerm, setSearchTerm] = useState("");
     const token = localStorage.getItem('access_token');
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -79,7 +76,7 @@ export function Outline() {
         if (token) {
             fetchProfile();
         }
-    }, []);
+    }, [token]);
 
 
     return(
@@ -117,7 +114,7 @@ export function Outline() {
 
             <main className="main-content-wrapper">
                 <aside className="categories-bar">
-                    <h1>Categories</h1>
+                    <h2>Categories</h2>
                     <div className="category-row">                        
                         {categories.map((category, index) => (
                             <CategoryCards

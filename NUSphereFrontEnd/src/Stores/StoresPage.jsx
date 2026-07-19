@@ -5,6 +5,7 @@ import './StoresPage.css';
 import axios from "axios"
 import { NearbyStoresMap } from "./NearbyStoresMap.jsx";
 import { buildGoogleMapsUrl, hasMapLocation } from "../utils/googleMaps.js";
+import { PageState } from "../Defaults/PageState.jsx";
 
 function StoreCard({ store }) {
     const navigate = useNavigate();
@@ -43,12 +44,14 @@ function StoreCard({ store }) {
 
 export function StoresPage() {
     const [stores, setStores] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [loadSuccess, setLoadSuccess] = useState(true);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
     const [viewMode, setViewMode] = useState("list");
     const navigate = useNavigate();
 
     const fetchStores = async () => {
+      setLoading(true);
+      setError("");
       try{
         const token = localStorage.getItem('access_token');
 
@@ -75,15 +78,15 @@ export function StoresPage() {
                 localStorage.removeItem('refresh_token');
                 window.location.reload();
             }
-            setLoadSuccess(false);
-            setStores(<p style={{ color: 'red' }}>Failed to load listings. Please try again later.</p>);
+            setError("Check your connection and try again.");
         } finally {
             setLoading(false);
         }
     }
 
     useEffect(() => {
-        fetchStores();
+        const timer = window.setTimeout(fetchStores, 0);
+        return () => window.clearTimeout(timer);
     }, []);
 
     const { selectedCategory, searchTerm } = useOutletContext();
@@ -105,9 +108,15 @@ export function StoresPage() {
         )
         : filteredStores;
 
+    if (loading) {
+        return <PageState title="Loading student stores" message="Finding stores near you…" />;
+    }
+
+    if (error) {
+        return <PageState title="We couldn’t load the stores" message={error} actionLabel="Try again" onAction={fetchStores} tone="error" />;
+    }
+
     return (
-        !loadSuccess ? stores :
-        loading ? <p>Loading stores...</p> :
         <main className="stores-main-content">
             <div className="stores-grid-header">
                 <h2>Registered Student Stores</h2>
@@ -129,9 +138,7 @@ export function StoresPage() {
                 </div>
             </div>
             {searchedStores.length === 0 ? (
-                <div className="no-stores-message">
-                    <p>No stores currently registered.</p>
-                </div>
+                <PageState title="No stores found" message="Try another category or search term." />
             ) : viewMode === "map" ? (
                 <NearbyStoresMap
                     stores={searchedStores}
