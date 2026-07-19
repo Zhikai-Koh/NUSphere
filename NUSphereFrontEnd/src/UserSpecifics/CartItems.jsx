@@ -38,8 +38,7 @@ function CartItems({ data }) {
   }
 
   return (
-    <>
-      <section className="cart-page">
+      <section>
         <div className="cart-header">
           <h2>Cart Items</h2>
           <span>{data.length} item{data.length === 1 ? "" : "s"}</span>
@@ -81,7 +80,6 @@ function CartItems({ data }) {
 
           </div>
       </section>
-    </>
   );
 }
 
@@ -89,8 +87,8 @@ export function Cart() {
   const { cartItems } = useContext(CartContext);
 
   return (
-    <>
+    <main className="cart-page">
       <CartItems data = {cartItems}/>
-    </>
+    </main>
   );
 }
