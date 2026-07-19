@@ -138,6 +138,7 @@ ALLOWED_HOSTS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    'https://frontend-production-8aca.up.railway.app',
     'https://nusphere-production-28af.up.railway.app',
     'https://nusphere-production.up.railway.app',
     'http://localhost:3000',
