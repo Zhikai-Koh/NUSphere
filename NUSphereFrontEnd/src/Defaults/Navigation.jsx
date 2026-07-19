@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { BrowserRouter, Routes, Route, NavLink, Navigate} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import { Outline } from "./Outline.jsx";
 import { Listings } from "../OpenMarket/Listings.jsx";
 import { LoginForm } from "../LoginPage/Login.jsx";
@@ -24,23 +23,7 @@ import { AddProductForm } from "../Stores/AddProduct.jsx";
 import { VisitStore } from "../Stores/VisitStore.jsx";
 import { BackButton } from "./BackButton.jsx";
 
-function NavigateTo({page, buttonDisplay, setActivePage}) {
-    
-        return(
-            <NavLink to={page}
-            className ={({isActive}) => 
-                isActive ? "bottom-nav-link active" : "bottom-nav-link"
-            }
-            onClick={() => setActivePage(page)}
-            >
-                {buttonDisplay}
-            </NavLink>
-        );
-    }
-
 export function NavigationBar() {
-    const [activePageName, setActivePageName] = useState('open-market');
-
     return(
         <BrowserRouter>
             <div className="app-shell">
@@ -73,11 +56,6 @@ export function NavigationBar() {
                     <Route path="/VisitStore/:storeId" element={<AllProviders><VisitStore /></AllProviders>} />
 
                 </Routes>
-                
-                <nav className="bottom-nav">
-                    <NavigateTo page="open-market" buttonDisplay="Open Market" setActivePage={(page) => setActivePageName(page)} />
-                    <NavigateTo page="stores" buttonDisplay="Stores" setActivePage={(page) => setActivePageName(page)}/>
-                </nav>
             </div>
         </BrowserRouter>
     )

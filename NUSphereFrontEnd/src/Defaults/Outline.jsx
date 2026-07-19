@@ -1,5 +1,5 @@
 import {useState, useEffect, useRef} from "react";
-import {Outlet} from "react-router-dom";
+import {NavLink, Outlet} from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config.js";
 import { CartButton } from "../UserSpecifics/CartButton.jsx"
@@ -11,8 +11,6 @@ import { ProfileDropdown } from "../LoginPage/ProfileDropDown";
 // Assets
 import nusphereLogo from "../assets/NUSphereLogo.png";
 import nusphereName from "../assets/NUSphereName.png";
-import bannerImage from "../assets/MainBanner.jpg";
-import allImage from "../assets/Categories/All.png"
 import electronicsImage from "../assets/Categories/Electronics.png";
 import furnitureImage from "../assets/Categories/Furniture.png";
 import academicsImage from "../assets/Categories/Academics.png";
@@ -26,7 +24,7 @@ import searchIcon from "../assets/SearchIcon.png";
 import "./Outline.css";
 
 const categories = [
-    { name: 'All', image: allImage },
+    { name: 'All' },
     { name: 'Electronics', image: electronicsImage },
     { name: 'Fashion', image: clothingImage },
     { name: 'Furniture', image: furnitureImage },
@@ -46,8 +44,14 @@ function CategoryCards({categoryName, categoryImage, isActive, onClick}) {
             onClick={onClick}
             aria-pressed={isActive}
         >
-            <img src={categoryImage} alt={`${categoryName} Image`} />
-            <span>{categoryName}</span>
+            {categoryName === "All" ? (
+                <span className="category-icon category-icon-all" aria-hidden="true">
+                    {Array.from({ length: 9 }, (_, index) => <i key={index} />)}
+                </span>
+            ) : (
+                <img src={categoryImage} alt="" />
+            )}
+            <span className="category-label">{categoryName}</span>
         </button>
     )
 }
@@ -80,18 +84,13 @@ export function Outline() {
 
     return(
         <div className="outline-page">
-            <section className="main-banner"
-                style={{ "--banner-image": `url(${bannerImage})` }}
-            >
+            <header className="main-banner">
                 <div className="main-banner-inner">
-                    
-                    <div className="banner-brand-row">
+                    <div className="brand-lockup">
                         <img className="nusphere-logo" src={nusphereLogo} alt="NUSphere Logo" />
-                        <img className="nusphere-name" src={nusphereName} alt="NUSphere Name" />
-                        <div className="banner-actions">
-                            <CartButton />
-                            <ChatButton />
-                            <ProfileDropdown user={currentUser} />
+                        <div className="brand-copy">
+                            <img className="nusphere-name" src={nusphereName} alt="NUSphere Name" />
+                            <span>Your Connected Campus Marketplace &amp; Ecosystem</span>
                         </div>
                     </div>
 
@@ -109,8 +108,21 @@ export function Outline() {
                         />
                         <img src={searchIcon} alt="Search Icon" />
                     </form>
+
+                    <div className="banner-actions">
+                        <CartButton />
+                        <ChatButton />
+                        <ProfileDropdown user={currentUser} />
+                    </div>
                 </div>
-            </section>
+            </header>
+
+            <nav className="market-tabs" aria-label="Marketplace sections">
+                <div className="market-tabs-inner">
+                    <NavLink to="/open-market">Open Market</NavLink>
+                    <NavLink to="/stores">Stores</NavLink>
+                </div>
+            </nav>
 
             <main className="main-content-wrapper">
                 <aside className="categories-bar">

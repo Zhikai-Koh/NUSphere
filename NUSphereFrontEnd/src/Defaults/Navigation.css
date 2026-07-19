@@ -1,7 +1,6 @@
 .app-shell {
     min-height: 100vh;
     background: var(--page-bg);
-    padding-bottom: var(--nav-height);
 }
 
 .back-navigation {
@@ -18,33 +17,4 @@
 
 .back-navigation button:hover {
     background: var(--surface-muted);
-}
-
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    min-height: var(--nav-height);
-    background: var(--surface);
-    gap: 8px;
-    padding: 10px;
-    border-top: 1px solid var(--border);
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-}
-
-.bottom-nav-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius);
-    color: var(--text-main);
-    font-weight: 650;
-}
-
-.bottom-nav-link.active {
-    background: var(--text-main);
-    color: #ffffff;
 }
