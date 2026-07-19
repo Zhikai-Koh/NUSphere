@@ -22,6 +22,7 @@ import { SelectMyStore } from "../Stores/SelectMyStore.jsx";
 import { AddStoreForm } from "../Stores/AddStore.jsx";
 import { AddProductForm } from "../Stores/AddProduct.jsx";
 import { VisitStore } from "../Stores/VisitStore.jsx";
+import { BackButton } from "./BackButton.jsx";
 
 function NavigateTo({page, buttonDisplay, setActivePage}) {
     
@@ -43,6 +44,7 @@ export function NavigationBar() {
     return(
         <BrowserRouter>
             <div className="app-shell">
+                <BackButton />
                 <Routes>
                     <Route path="/" element={<Navigate to="open-market"/>} />
                     <Route path="/login" element={<LoginForm />} />
