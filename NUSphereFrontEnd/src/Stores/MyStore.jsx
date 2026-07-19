@@ -125,16 +125,16 @@ export function MyStore() {
                 </button>
             </div>
 
-            <section className="store-location-section">
-                <div className="store-location-section-header">
-                    <h3>Store Location</h3>
-                    {!editingLocation && (
-                        <button type="button" onClick={() => setEditingLocation(true)}>
-                            {location ? "Edit Location" : "Add Location"}
-                        </button>
-                    )}
-                </div>
+            <div className="store-location-section-header">
+                <h3>Store Location Settings:</h3>
+                {!editingLocation && (
+                    <button type="button" onClick={() => setEditingLocation(true)}>
+                        {location ? "Edit Location" : "Add Location"}
+                    </button>
+                )}
+            </div>
 
+            <section className="store-location-section">
                 {(location || editingLocation) ? (
                     <LocationPicker
                         locationName={locationName}
@@ -150,6 +150,7 @@ export function MyStore() {
                 ) : (
                     <p>No location has been set for this store.</p>
                 )}
+                
 
                 {editingLocation && (
                     <div className="store-location-actions">

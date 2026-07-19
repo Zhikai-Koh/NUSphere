@@ -91,7 +91,8 @@ export function Outline() {
                     
                     <div className="banner-brand-row">
                     
-                        <ProfileDropdown user={currentUser} style={{ width: '10%', height: 'auto', marginRight: '20px' }}/>                    <img className="nusphere-logo" src={nusphereLogo} alt="NUSphere Logo" />
+                        <ProfileDropdown user={currentUser} style={{ width: '10%', height: 'auto', marginRight: '20px' }}/>                    
+                        <img className="nusphere-logo" src={nusphereLogo} alt="NUSphere Logo" />
                         <img className="nusphere-name" src={nusphereName} alt="NUSphere Name" />
                         <CartButton />
                         <ChatButton />
