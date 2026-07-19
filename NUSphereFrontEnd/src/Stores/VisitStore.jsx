@@ -79,12 +79,19 @@ export function VisitStore() {
                 onClick={() => setExpandedId(expandedId === listing.id ? null : listing.id)}
                 >
 
-                    {listing.item_image && (
-                        <img src={listing.item_image.startsWith('http') ? listing.item_image : `${API_BASE_URL}${listing.item_image}`}
-                        alt={listing.item_name}
-                        className="listing-image"
-                        />
-                    )}
+                    <div className="listing-image-frame">
+                        <span aria-hidden="true">Image unavailable</span>
+                        {listing.item_image && (
+                            <img
+                                src={listing.item_image.startsWith('http') ? listing.item_image : `${API_BASE_URL}${listing.item_image}`}
+                                alt={listing.item_name}
+                                className="listing-image"
+                                onError={(event) => {
+                                    event.currentTarget.hidden = true;
+                                }}
+                            />
+                        )}
+                    </div>
 
                     <h4 className="card-title">
                         {listing.item_name}
