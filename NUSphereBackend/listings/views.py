@@ -18,6 +18,9 @@ class AddListingView(APIView):
     def post(self, request):
         item_name = request.data.get("item_name")
         image = request.FILES.get("image")
+        location_name = request.data.get("location_name", "").strip()
+        latitude = request.data.get("latitude")
+        longitude = request.data.get("longitude")
 
         try:
             item_price = Decimal(request.data.get("item_price", ""))
@@ -41,6 +44,24 @@ class AddListingView(APIView):
         if not image:
             return Response({"error": "Listing image is required."}, status=status.HTTP_400_BAD_REQUEST)
 
+        location_supplied = bool(location_name) or latitude is not None or longitude is not None
+        if location_supplied:
+            if not location_name or latitude is None or longitude is None:
+                return Response({"error": "Location name, latitude and longitude are all required."}, status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                latitude = float(latitude)
+                longitude = float(longitude)
+            except (TypeError, ValueError):
+                return Response({"error": "Listing coordinates must be valid numbers."}, status=status.HTTP_400_BAD_REQUEST)
+
+            if not -90 <= latitude <= 90 or not -180 <= longitude <= 180:
+                return Response({"error": "Listing coordinates are outside the valid range."}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            location_name = None
+            latitude = None
+            longitude = None
+
         try:
             category = Categories.objects.get(name=request.data.get("category"))
         except Categories.DoesNotExist:
@@ -53,7 +74,10 @@ class AddListingView(APIView):
             category=category,
             item_quantity=item_quantity,
             item_description=request.data.get("item_description"),
-            image=image
+            image=image,
+            location_name=location_name,
+            latitude=latitude,
+            longitude=longitude
         )
         newListing.save()
 
@@ -87,6 +111,9 @@ class AddListingView(APIView):
                     "item_quantity": str(listing.item_quantity),
                     "image": listing.image.url if listing.image else None,
                     "category": listing.category.name if listing.category else None,
+                    "location_name": listing.location_name,
+                    "latitude": listing.latitude,
+                    "longitude": listing.longitude,
                     "inventory": {
                         "unsold": listing.total_unsold,
                         "pending": listing.total_pending,

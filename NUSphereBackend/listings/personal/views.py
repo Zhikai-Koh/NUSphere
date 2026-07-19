@@ -27,6 +27,9 @@ class PersonalListingView(APIView):
                 "item_price": str(listing.item_price),
                 "item_quantity": str(listing.item_quantity),
                 "image": listing.image.url if listing.image else None,
+                "location_name": listing.location_name,
+                "latitude": listing.latitude,
+                "longitude": listing.longitude,
                 "inventory": {
                     "unsold": listing.total_unsold,
                     "pending": listing.total_pending,

@@ -28,28 +28,65 @@ class PersonalStoresView(APIView):
                 "is_open": shop.is_open,
                 "store_image": shop.store_image.url if shop.store_image else None,
                 "pending_order_count": shop.pending_order_count,
+                "location_name": shop.location_name,
+                "latitude": shop.latitude,
+                "longitude": shop.longitude,
             })
 
         return Response(data)
 
     def patch(self, request):
         shop_id = request.data.get("shop_id")
-        is_open = request.data.get("is_open")
 
-        if shop_id is None or is_open is None:
-            return Response({"error": "Store ID and open status are required."}, status=status.HTTP_400_BAD_REQUEST)
-
-        if not isinstance(is_open, bool):
-            return Response({"error": "Open status must be true or false."}, status=status.HTTP_400_BAD_REQUEST)
+        if shop_id is None:
+            return Response({"error": "Store ID is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             shop = Shop.objects.get(id=shop_id, owner=request.user)
-            shop.is_open = is_open
+            updated_fields = []
+
+            if "is_open" in request.data:
+                is_open = request.data.get("is_open")
+                if not isinstance(is_open, bool):
+                    return Response({"error": "Open status must be true or false."}, status=status.HTTP_400_BAD_REQUEST)
+                shop.is_open = is_open
+                updated_fields.append("is_open")
+
+            location_fields = ("location_name", "latitude", "longitude")
+            supplied_location_fields = [field for field in location_fields if field in request.data]
+
+            if supplied_location_fields:
+                if len(supplied_location_fields) != len(location_fields):
+                    return Response({"error": "Location name, latitude and longitude are all required."}, status=status.HTTP_400_BAD_REQUEST)
+
+                location_name = request.data.get("location_name", "").strip()
+                try:
+                    latitude = float(request.data.get("latitude"))
+                    longitude = float(request.data.get("longitude"))
+                except (TypeError, ValueError):
+                    return Response({"error": "Store coordinates must be valid numbers."}, status=status.HTTP_400_BAD_REQUEST)
+
+                if not location_name:
+                    return Response({"error": "Location name is required."}, status=status.HTTP_400_BAD_REQUEST)
+                if not -90 <= latitude <= 90 or not -180 <= longitude <= 180:
+                    return Response({"error": "Store coordinates are outside the valid range."}, status=status.HTTP_400_BAD_REQUEST)
+
+                shop.location_name = location_name
+                shop.latitude = latitude
+                shop.longitude = longitude
+                updated_fields.extend(location_fields)
+
+            if not updated_fields:
+                return Response({"error": "No store changes were supplied."}, status=status.HTTP_400_BAD_REQUEST)
+
             shop.save()
 
             return Response({
                 "id": shop.id,
                 "is_open": shop.is_open,
+                "location_name": shop.location_name,
+                "latitude": shop.latitude,
+                "longitude": shop.longitude,
             }, status=status.HTTP_200_OK)
         
         except Shop.DoesNotExist:

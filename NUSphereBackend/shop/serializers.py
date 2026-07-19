@@ -4,7 +4,10 @@ from .models import Shop, ShopProduct
 class ShopSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shop
-        fields = ['id', 'store_name', 'owner', 'description', 'category', 'store_image']
+        fields = [
+            'id', 'store_name', 'owner', 'description', 'category',
+            'store_image', 'location_name', 'latitude', 'longitude'
+        ]
 
 class ShopProductSerializer(serializers.ModelSerializer):
     shop = ShopSerializer(read_only = True)

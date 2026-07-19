@@ -10,6 +10,9 @@ class Shop(models.Model):
     category = models.ForeignKey(Categories, on_delete=models.SET_NULL, null=True, blank=True)
     is_open = models.BooleanField(default=False)
     store_image = models.ImageField(upload_to='store_image/', null=True, blank=True)
+    location_name = models.CharField(max_length=255, blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
 
 
 class ShopProduct(models.Model):

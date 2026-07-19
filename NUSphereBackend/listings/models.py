@@ -15,6 +15,9 @@ class Listing(models.Model):
     item_description = models.TextField(default="", null=True, blank=True)
     category = models.ForeignKey(Categories, on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(upload_to='listings/', null=True, blank=True)
+    location_name = models.CharField(max_length=255, null=True, blank=True)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
 class ListingItem(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listing_item")
