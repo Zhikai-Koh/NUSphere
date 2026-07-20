@@ -10,7 +10,6 @@
 }
 
 .main-banner-inner {
-    /* Matches the 1080px content wrapper after its 24px side padding. */
     max-width: 1032px;
     margin: 0 auto;
     display: grid;
@@ -69,11 +68,21 @@
     object-fit: contain;
 }
 
+.nusphere-name-frame {
+    width: 168px;
+    height: 34px;
+    display: block;
+    overflow: hidden;
+    margin-bottom: -3px;
+    --wordmark-offset: -29px;
+}
+
 .nusphere-name {
-    width: 156px;
-    max-height: 28px;
-    object-fit: contain;
-    object-position: left center;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 44%;
+    transform: translateX(var(--wordmark-offset)) scale(1.22);
 }
 
 .brand-lockup {
@@ -86,7 +95,9 @@
 .brand-copy {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    justify-content: center;
+    align-self: center;
+    gap: 0;
     min-width: 0;
 }
 
@@ -134,6 +145,9 @@
 }
 
 .market-tabs {
+    position: sticky;
+    top: 0;
+    z-index: 900;
     background: var(--surface);
     border-bottom: 1px solid var(--border);
     box-shadow: 0 2px 5px rgba(16, 24, 40, 0.05);
@@ -307,6 +321,49 @@
     min-width: 0;
 }
 
+.scroll-to-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 850;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    border-radius: 50%;
+    background: var(--text-main);
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.22);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.2s ease;
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+    background: #244b5f;
+}
+
+.scroll-to-top svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
 @media (max-width: 960px) {
   .main-banner-inner {
     grid-template-columns: 1fr auto;
@@ -347,12 +404,13 @@
   }
 
   .brand-copy {
-    gap: 1px;
+    gap: 0;
   }
 
-  .nusphere-name {
-    width: min(32vw, 128px);
-    max-height: 24px;
+  .nusphere-name-frame {
+    width: min(32vw, 136px);
+    height: 29px;
+    --wordmark-offset: -24px;
   }
 
   .brand-copy span {
@@ -412,6 +470,13 @@
     min-height: 40px;
     justify-content: center;
     padding-inline: 12px;
+  }
+
+  .scroll-to-top {
+    right: 16px;
+    bottom: 16px;
+    width: 40px;
+    height: 40px;
   }
 
   .category-card img,

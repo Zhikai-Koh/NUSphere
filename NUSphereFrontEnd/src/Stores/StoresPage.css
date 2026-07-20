@@ -8,19 +8,28 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 24px;
+    padding-bottom: 2px;
 }
 
 .stores-grid-header h2 {
     color: var(--text-main);
     margin: 0;
-    font-size: 1.6rem;
+    font-size: 1.25rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
 }
 
 .stores-grid-header p {
     color: var(--text-muted);
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 0.78rem;
+}
+
+.stores-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
 .stores-grid {
@@ -128,30 +137,54 @@
 }
 
 .stores-view-toggle {
-    display: inline-grid;
-    grid-template-columns: 1fr 1fr;
-    border: 1px solid #1a3644;
-    border-radius: 6px;
-    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 3px;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface-muted);
 }
 
 .stores-view-toggle button {
-    min-width: 90px;
-    padding: 8px 12px;
-    border: 0;
-    border-radius: 0;
-    background: #ffffff;
-    color: #1a3644;
+    min-width: 92px;
+    min-height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 7px 12px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--text-muted);
     cursor: pointer;
+    font-size: 0.76rem;
+    font-weight: 650;
+    transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
 }
 
-.stores-view-toggle button + button {
-    border-left: 1px solid #1a3644;
+.stores-view-toggle button:hover {
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+    color: var(--text-main);
 }
 
 .stores-view-toggle button.active {
-    background: #1a3644;
-    color: #ffffff;
+    border-color: color-mix(in srgb, var(--border) 75%, transparent);
+    background: var(--surface);
+    color: var(--text-main);
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1);
+}
+
+.stores-view-toggle svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .nearby-stores-view {
@@ -261,6 +294,10 @@
 
     .nearby-stores-layout {
         grid-template-columns: 1fr;
+    }
+
+    .stores-view-toggle {
+        align-self: flex-start;
     }
 
     .nearby-stores-map {

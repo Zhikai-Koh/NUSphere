@@ -61,6 +61,7 @@ export function Outline() {
     const [currentUser, setCurrentUser] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [searchTerm, setSearchTerm] = useState("");
+    const [showScrollTop, setShowScrollTop] = useState(false);
     const token = localStorage.getItem('access_token');
 
     useEffect(() => {
@@ -81,6 +82,12 @@ export function Outline() {
         }
     }, [token]);
 
+    useEffect(() => {
+        const handleScroll = () => setShowScrollTop(window.scrollY > 320);
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
 
     return(
         <div className="outline-page">
@@ -89,7 +96,9 @@ export function Outline() {
                     <div className="brand-lockup">
                         <img className="nusphere-logo" src={nusphereLogo} alt="NUSphere Logo" />
                         <div className="brand-copy">
-                            <img className="nusphere-name" src={nusphereName} alt="NUSphere Name" />
+                            <span className="nusphere-name-frame">
+                                <img className="nusphere-name" src={nusphereName} alt="NUSphere Name" />
+                            </span>
                             <span>Your Connected Campus Marketplace &amp; Ecosystem</span>
                         </div>
                     </div>
@@ -144,6 +153,19 @@ export function Outline() {
                         <Outlet context={{ selectedCategory, searchTerm }} />
                 </section>
             </main>
+
+            <button
+                type="button"
+                className={`scroll-to-top ${showScrollTop ? "visible" : ""}`}
+                aria-label="Scroll to top"
+                title="Back to top"
+                tabIndex={showScrollTop ? 0 : -1}
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 14 6-6 6 6" />
+                </svg>
+            </button>
         </div>
     );
 }

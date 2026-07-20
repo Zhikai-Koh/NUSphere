@@ -119,20 +119,32 @@ export function StoresPage() {
     return (
         <main className="stores-main-content">
             <div className="stores-grid-header">
-                <h2>Registered Student Stores</h2>
+                <div className="stores-heading">
+                    <h2>Student Stores</h2>
+                    <p>Browse every store or discover what is nearby.</p>
+                </div>
                 <div className="stores-view-toggle" role="group" aria-label="Store view">
                     <button
                         type="button"
                         className={viewMode === "list" ? "active" : ""}
+                        aria-pressed={viewMode === "list"}
                         onClick={() => setViewMode("list")}
                     >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 6h2M9 6h11M4 12h2M9 12h11M4 18h2M9 18h11" />
+                        </svg>
                         List
                     </button>
                     <button
                         type="button"
                         className={viewMode === "map" ? "active" : ""}
+                        aria-pressed={viewMode === "map"}
                         onClick={() => setViewMode("map")}
                     >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="m9 18-5 2V6l5-2 6 2 5-2v14l-5 2-6-2Z" />
+                            <path d="M9 4v14M15 6v14" />
+                        </svg>
                         Nearby Map
                     </button>
                 </div>
