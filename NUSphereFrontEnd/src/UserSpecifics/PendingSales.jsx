@@ -134,10 +134,13 @@ export function PendingSales() {
                 {displayedSales.map((sale) => (
                     <div key={`${sale.source_type}-${sale.id}-${sale.buyer}`} className="listing-card">
                         {sale.image && (
-                            <img src={sale.image.startsWith('http') ? sale.image : `${API_BASE_URL}${sale.image}`}
-                            alt={sale.item_name}
-                            className="listing-image"
-                            />
+                            <div className="listing-image-frame">
+                                <img
+                                    src={sale.image.startsWith('http') ? sale.image : `${API_BASE_URL}${sale.image}`}
+                                    alt={sale.item_name}
+                                    className="listing-image"
+                                />
+                            </div>
                         )}
 
                         <h4 className="card-title">

@@ -2,6 +2,7 @@ import {useContext, createContext, useState, useEffect} from "react";
 import { API_BASE_URL } from "../config.js";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./Listings.css";
 
 export function PersonalListings() {
     const [listings, setListings] = useState([]);
@@ -78,10 +79,13 @@ export function PersonalListings() {
                     <div key={listing.id} className="listing-card">
 
                         {listing.image && (
-                            <img src={listing.image.startsWith('http') ? listing.image : `${API_BASE_URL}${listing.image}`} 
-                            alt={listing.item_name}
-                            className="listing-image"
-                            />
+                            <div className="listing-image-frame">
+                                <img
+                                    src={listing.image.startsWith('http') ? listing.image : `${API_BASE_URL}${listing.image}`}
+                                    alt={listing.item_name}
+                                    className="listing-image"
+                                />
+                            </div>
                         )}
 
                         <h4 className="card-title">
