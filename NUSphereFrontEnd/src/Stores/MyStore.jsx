@@ -176,10 +176,13 @@ export function MyStore() {
                 <div key={listing.id} className="listing-card">
 
                     {listing.item_image && (
-                        <img src={listing.item_image.startsWith('http') ? listing.item_image : `${API_BASE_URL}${listing.item_image}`}
-                        alt={listing.item_name}
-                        className="listing-image"
-                        />
+                        <div className="listing-image-frame">
+                            <img
+                                src={listing.item_image.startsWith('http') ? listing.item_image : `${API_BASE_URL}${listing.item_image}`}
+                                alt={listing.item_name}
+                                className="listing-image"
+                            />
+                        </div>
                     )}
 
                     <h4 className="card-title">
