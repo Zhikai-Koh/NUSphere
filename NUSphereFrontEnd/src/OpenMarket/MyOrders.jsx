@@ -80,11 +80,13 @@ const displayOrders = orders[activeTab] || [];
 
                             {/* image */}
                             {order.image && (
-                                <img src={order.image.startsWith('http') ? order.image : `${API_BASE_URL}${order.image}`} 
-                                     alt={order.item_name}
-                                     className="listing-image"
-                                     style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "6px" }}
-                                />
+                                <div className="listing-image-frame" style={{ height: "200px" }}>
+                                    <img
+                                        src={order.image.startsWith('http') ? order.image : `${API_BASE_URL}${order.image}`}
+                                        alt={order.item_name}
+                                        className="listing-image"
+                                    />
+                                </div>
                             )}
 
                             {/* Name */}

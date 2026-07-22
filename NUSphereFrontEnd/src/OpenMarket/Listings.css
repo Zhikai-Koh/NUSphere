@@ -51,6 +51,14 @@
     padding: 20px;
 }
 
+.visit-store-page .listing-card {
+    height: auto;
+}
+
+.visit-store-page .listing-card:hover {
+    transform: none;
+}
+
 .my-listings-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
