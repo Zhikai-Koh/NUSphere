@@ -1,4 +1,4 @@
-import {useContext, createContext, useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import { API_BASE_URL } from "../config.js";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -20,9 +20,13 @@ export function PersonalListings() {
                     listing_id: listingId
                 }
             });
+            if (response.data?.message) {
+                alert(response.data.message);
+            }
             fetchListings();
         } catch (error) {
             console.error('Error deleting listing:', error);
+            alert(error.response?.data?.error || "Failed to delete listing.");
         }
     };
 
