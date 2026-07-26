@@ -1,33 +1,37 @@
 .listing-card {
-    border: 1px solid var(--border);
-    padding: 15px;
-    border-radius: var(--radius-lg);
+    border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
+    padding: 14px;
+    border-radius: 8px;
     background-color: var(--surface);
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     height: 100%;
     box-sizing: border-box;
+    min-height: 390px;
 }
 
 .listing-card:hover {
-    box-shadow: var(--shadow);
-    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--text-main) 20%, var(--border));
+    box-shadow: 0 14px 34px rgba(16, 24, 40, 0.08);
+    transform: translateY(-1px);
     cursor: pointer;
 }
 
 .listing-image-frame {
     position: relative;
     width: 100%;
-    height: 180px;
-    border-radius: var(--radius);
+    aspect-ratio: 4 / 3;
+    height: auto;
+    border-radius: 6px;
     overflow: hidden;
     display: grid;
     place-items: center;
-    background: var(--surface-muted);
+    background: #f4f7f9;
     color: var(--text-muted);
-    font-size: 0.85rem;
+    font-size: 0.78rem;
+    border: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
 }
 
 .listing-image {
@@ -35,12 +39,15 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    padding: 10px;
+    box-sizing: border-box;
+    background: #ffffff;
 }
 
 .listings-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
 }
 
@@ -68,9 +75,11 @@
 
 .card-title {
     margin: 0;
-    font-size: 0.9rem;
     color: var(--text-main);
-    font-size: 1.05rem;
+    font-size: 1.02rem;
+    line-height: 1.25;
+    letter-spacing: 0;
+    min-height: 2.55em;
 }
 
 .listing-meta,
@@ -83,23 +92,24 @@
 
 .listing-meta {
     color: var(--text-muted);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
 }
 
 .listing-category {
-    padding: 4px 8px;
+    padding: 5px 9px;
     border-radius: 999px;
-    background: var(--market-badge-bg);
+    background: #eef3f6;
     color: var(--market-badge-text);
     font-weight: 650;
 }
 
 .card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 12px;
     margin-top: auto;
-    padding-top: 15px;
+    padding-top: 12px;
 }
 
 .card-description {
@@ -147,13 +157,44 @@
 }
 
 .card-price {
-    font-size: 1.15rem;
-    font-weight: bold;
-    color: #2e7d32;
+    font-size: 1.1rem;
+    font-weight: 750;
+    color: #217346;
+    line-height: 1;
+    white-space: nowrap;
+    justify-self: end;
 }
 
 .card-footer button {
-    padding: 8px 16px;
+    min-height: 36px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    line-height: 1;
+}
+
+.card-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.card-actions button {
+    width: 100%;
+    min-width: 0;
+    white-space: nowrap;
+}
+
+.card-actions .button-secondary {
+    background: #ffffff;
+    color: var(--text-main);
+    border-color: color-mix(in srgb, var(--border) 85%, var(--text-main));
+}
+
+.card-actions .button-secondary:hover {
+    background: #f7fafc;
 }
 
 .add-new-card {
