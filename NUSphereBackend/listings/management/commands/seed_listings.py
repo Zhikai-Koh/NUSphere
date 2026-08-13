@@ -67,10 +67,10 @@ class Command(BaseCommand):
             "longitude": 103.7730,
         },
         {
-            "item_name": "Foldable Floor Chair",
+            "item_name": "Wooden Chair",
             "item_price": Decimal("18.00"),
             "item_quantity": 3,
-            "item_description": "Lightly used floor chair for compact hostel rooms and late-night study sessions.",
+            "item_description": "Lightly used and sturdy chair for compact hostel rooms and late-night study sessions.",
             "category": "Furniture",
             "image": "listings/Chair.jpeg",
             "location_name": "Ridge View Residential College",

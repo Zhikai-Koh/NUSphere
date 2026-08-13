@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, NavLink, useLocation} from 'react-router-dom';
 import { Outline } from "./Outline.jsx";
 import { Listings } from "../OpenMarket/Listings.jsx";
 import { LoginForm } from "../LoginPage/Login.jsx";
@@ -23,10 +23,46 @@ import { AddProductForm } from "../Stores/AddProduct.jsx";
 import { VisitStore } from "../Stores/VisitStore.jsx";
 import { BackButton } from "./BackButton.jsx";
 
+function AppTopBar() {
+    const location = useLocation();
+    const hiddenRoutes = new Set(["/login", "/register"]);
+    const isLoggedIn = Boolean(localStorage.getItem('access_token'));
+
+    if (hiddenRoutes.has(location.pathname.toLowerCase())) {
+        return null;
+    }
+
+    return (
+        <nav className="app-top-bar" aria-label="Main navigation">
+            <div className="app-top-bar-inner">
+                <div className="app-top-links">
+                    <NavLink to="/open-market">Open Market</NavLink>
+                    <NavLink to="/stores">Stores</NavLink>
+                </div>
+                {isLoggedIn && (
+                    <div className="app-top-actions">
+                        <NavLink to="/add-listing">Create Listing</NavLink>
+                        <NavLink to="/add-store">Create Store</NavLink>
+                    </div>
+                )}
+            </div>
+        </nav>
+    );
+}
+
+function ProtectedRoute({ children }) {
+    if (!localStorage.getItem('access_token')) {
+        return <Navigate to="/login" replace />;
+    }
+
+    return children;
+}
+
 export function NavigationBar() {
     return(
         <BrowserRouter>
             <div className="app-shell">
+                <AppTopBar />
                 <BackButton />
                 <Routes>
                     <Route path="/" element={<Navigate to="open-market"/>} />
@@ -39,7 +75,7 @@ export function NavigationBar() {
                         <Route index element = {<Listings />}/>
                     </Route>
                     
-                    <Route path="add-listing" element={<AddListingForm />} />
+                    <Route path="add-listing" element={<ProtectedRoute><AddListingForm /></ProtectedRoute>} />
                     <Route path="/PersonalListings" element ={<PersonalListings/>} />
                     <Route path="/orders" element = {<MyOrders/>}/>
                     <Route path="/pending-sales" element = {<PendingSales/>}/>
@@ -49,7 +85,7 @@ export function NavigationBar() {
                     <Route path="stores" element={<AllProviders><Outline/></AllProviders>} >
                         <Route index element = {<StoresPage />}/>
                     </Route>
-                    <Route path="add-store" element={<AddStoreForm />} />
+                    <Route path="add-store" element={<ProtectedRoute><AddStoreForm /></ProtectedRoute>} />
                     <Route path="/MyStores" element = {<SelectMyStore/>}/>
                     <Route path="/MyStores/:storeId" element = {<MyStore/>}/>
                     <Route path="/AddProduct/:storeId" element={<AddProductForm />} />

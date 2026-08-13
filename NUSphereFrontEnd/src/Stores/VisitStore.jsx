@@ -102,7 +102,7 @@ export function VisitStore() {
                     </div>
                     
                     <div className="card-footer">
-                        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                        <div className="card-actions">
                             <button onClick={(e) =>{
                                 e.stopPropagation()
                                 setSelectedProduct(listing);

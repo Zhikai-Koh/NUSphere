@@ -1,5 +1,5 @@
 import {useState, useEffect, useRef} from "react";
-import {NavLink, Outlet} from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config.js";
 import { CartButton } from "../UserSpecifics/CartButton.jsx"
@@ -125,13 +125,6 @@ export function Outline() {
                     </div>
                 </div>
             </header>
-
-            <nav className="market-tabs" aria-label="Marketplace sections">
-                <div className="market-tabs-inner">
-                    <NavLink to="/open-market">Open Market</NavLink>
-                    <NavLink to="/stores">Stores</NavLink>
-                </div>
-            </nav>
 
             <main className="main-content-wrapper">
                 <aside className="categories-bar">

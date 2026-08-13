@@ -3,6 +3,74 @@
     background: var(--page-bg);
 }
 
+.app-top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 950;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 5px rgba(16, 24, 40, 0.05);
+}
+
+.app-top-bar-inner {
+    width: min(100%, 1080px);
+    min-height: 44px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding-inline: 24px;
+}
+
+.app-top-links,
+.app-top-actions {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.app-top-bar a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 12px;
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    text-decoration: none;
+}
+
+.app-top-bar a:hover,
+.app-top-bar a.active {
+    color: var(--text-main);
+}
+
+.app-top-bar a.active {
+    border-bottom-color: var(--text-main);
+}
+
+.app-top-actions a {
+    min-height: 32px;
+    align-self: center;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #ffffff;
+    color: var(--text-main);
+    font-weight: 650;
+}
+
+.app-top-actions a:hover,
+.app-top-actions a.active {
+    border-color: color-mix(in srgb, var(--border) 70%, var(--accent));
+    background: #f7fafc;
+    color: var(--text-main);
+}
+
+.app-top-actions a.active {
+    border-bottom-color: color-mix(in srgb, var(--border) 70%, var(--accent));
+}
+
 .back-navigation {
     width: min(1200px, calc(100% - 32px));
     margin: 0 auto;
@@ -17,4 +85,28 @@
 
 .back-navigation button:hover {
     background: var(--surface-muted);
+}
+
+@media (max-width: 640px) {
+    .app-top-bar-inner {
+        min-height: 40px;
+        align-items: stretch;
+        padding-inline: 12px;
+        overflow-x: auto;
+    }
+
+    .app-top-links,
+    .app-top-actions {
+        flex: 0 0 auto;
+    }
+
+    .app-top-bar a {
+        min-height: 40px;
+        white-space: nowrap;
+    }
+
+    .app-top-actions a {
+        min-height: 30px;
+        margin-block: auto;
+    }
 }
